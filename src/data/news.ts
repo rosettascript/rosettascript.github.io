@@ -13,6 +13,65 @@ export interface NewsArticle {
 
 export const newsArticles: NewsArticle[] = [
   {
+    id: "issues-page-launch",
+    slug: "issues-page-launch",
+    title: "New Issues Page: Submit Feedback & Report Bugs",
+    excerpt: "We've launched a new Issues page to make it easier for users to report bugs, request features, and share feedback. The page provides direct links to GitHub Issues with helpful guidelines.",
+    date: "2024-12-17",
+    category: "Features",
+    image: "/blog-images/issues.png",
+    author: "RosettaScript Team",
+    tags: ["Features", "Community", "Feedback"],
+    content: `## New Issues Page: Submit Feedback & Report Bugs
+
+We're excited to announce the launch of our new **Issues** page! This dedicated page makes it easier than ever for users to report bugs, request features, and share feedback with the RosettaScript team.
+
+### What's New
+
+The Issues page provides a streamlined way to interact with our GitHub Issues system. Whether you've found a bug, have a feature idea, or want to share general feedback, the new page guides you through the process.
+
+### Key Features
+
+#### Easy Navigation
+
+- **Quick Access**: The Issues page is now accessible from both the main navigation menu and the footer
+- **Direct Links**: One-click access to view all issues or create a new issue on GitHub
+- **Clear Categories**: Organized sections for bug reports, feature requests, and general issues
+
+#### Helpful Guidelines
+
+Before submitting an issue, the page provides helpful guidelines to ensure your feedback is as useful as possible:
+
+- **Search existing issues** to avoid duplicates
+- **Provide clear details** about the issue, including steps to reproduce
+- **Include relevant information** such as browser version, OS, and error messages
+- **Be respectful** and constructive in your feedback
+
+### How to Access
+
+You can access the Issues page in several ways:
+
+1. **Navigation Menu**: Click "Issues" in the main navigation bar
+2. **Footer**: Find it under "Resources" in the footer
+3. **Direct URL**: Visit \`/issues\` on the RosettaScript website
+
+### Why This Matters
+
+Your feedback is invaluable in helping us improve RosettaScript. By making it easier to submit issues and feedback, we hope to:
+
+- **Respond faster** to bug reports and feature requests
+- **Build better tools** based on your needs
+- **Foster community** engagement and collaboration
+
+### Get Started
+
+Ready to share your feedback? Visit the [Issues page](/issues) and let us know what you think!
+
+---
+
+*Released: December 17, 2024*`
+  },
+  {
     id: "patch-1-0-2",
     slug: "patch-1-0-2",
     title: "Patch 1.0.2 Released: Enhanced Shoppables Mode & HTML Cleanup",

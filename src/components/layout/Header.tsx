@@ -13,6 +13,7 @@ const navLinks = [
   { name: "News", path: "/news" },
   { name: "School Projects", path: "/school-projects" },
   { name: "About", path: "/about" },
+  { name: "Issues", path: "/issues" },
 ];
 
 export function Header() {

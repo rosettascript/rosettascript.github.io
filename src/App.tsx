@@ -33,6 +33,7 @@ import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import SchoolProjects from "./pages/SchoolProjects";
 import About from "./pages/About";
+import Issues from "./pages/Issues";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -108,6 +109,7 @@ const App = () => (
             <Route path="/news/:slug" element={<NewsArticle />} />
             <Route path="/school-projects" element={<SchoolProjects />} />
             <Route path="/about" element={<About />} />
+            <Route path="/issues" element={<Issues />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

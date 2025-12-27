@@ -59,6 +59,11 @@ export function Footer() {
                   About Us
                 </Link>
               </li>
+              <li>
+                <Link to="/issues" className="text-muted-foreground hover:text-primary transition-colors">
+                  Issues
+                </Link>
+              </li>
             </ul>
           </div>
 
