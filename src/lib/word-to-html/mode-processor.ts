@@ -81,6 +81,10 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
     
     // Link spacing (at the end, after all other processing)
     processedHtml = addLinkSpacing(processedHtml);
+    
+    // Final list normalization pass (after all processing that might modify list items)
+    // This ensures spacing is normalized even if other functions reintroduced multiple spaces
+    processedHtml = normalizeLists(processedHtml);
   }
 
   // Shoppables mode features
@@ -131,6 +135,10 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
     
     // Link spacing (at the end, after all other processing)
     processedHtml = addLinkSpacing(processedHtml);
+    
+    // Final list normalization pass (after all processing that might modify list items)
+    // This ensures spacing is normalized even if other functions reintroduced multiple spaces
+    processedHtml = normalizeLists(processedHtml);
   }
 
   return processedHtml;
