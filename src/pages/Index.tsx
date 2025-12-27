@@ -205,9 +205,9 @@ export default function Index() {
                     </p>
                   </div>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {getLatestNews(2).map((article, index) => (
-                      <Link key={article.id} to={`/news/${article.slug}`}>
+                      <Link key={article.id} to={`/news/${article.slug}`} className="block">
                         <Card 
                           className="bg-card/50 border-border hover:border-primary/30 transition-all group overflow-hidden"
                           style={{ animationDelay: `${index * 50}ms` }}
