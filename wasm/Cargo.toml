@@ -1,0 +1,31 @@
+[package]
+name = "ruc-wasm"
+version = "0.2.0"
+edition = "2021"
+authors = ["RosettaScript Team"]
+description = "WebAssembly-accelerated Random Universe Cipher"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+sha3 = "0.10"              # For SHAKE256
+chacha20 = "0.9"           # For ChaCha20 PRNG
+rand_chacha = "0.3"        # ChaCha20 utilities
+js-sys = "0.3"
+web-sys = "0.3"
+getrandom = { version = "0.2", features = ["js"] }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"
+
+[profile.release]
+opt-level = 3          # Maximum optimization
+lto = true             # Link-time optimization
+codegen-units = 1      # Better optimization (slower compile, faster runtime)
+panic = 'abort'        # Smaller WASM size
+
+[profile.dev]
+opt-level = 2          # Some optimization for dev builds
+

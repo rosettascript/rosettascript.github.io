@@ -1,0 +1,12 @@
+{
+  "name": "ruc-cpp-wasm",
+  "version": "0.1.0",
+  "description": "Random Universe Cipher - C++ WebAssembly",
+  "type": "module",
+  "main": "ruc_wasm.js",
+  "files": [
+    "ruc_wasm.js",
+    "ruc_wasm.wasm"
+  ]
+}
+

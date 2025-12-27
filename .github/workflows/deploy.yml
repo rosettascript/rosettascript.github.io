@@ -1,0 +1,80 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          # Set the base path for GitHub Pages
+          # For user/organization pages (rosettascript.github.io): use /
+          GITHUB_PAGES_BASE: /
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Verify .nojekyll exists
+        run: |
+          if [ ! -f dist/.nojekyll ]; then
+            echo "Creating .nojekyll file"
+            touch dist/.nojekyll
+          fi
+          echo "✅ .nojekyll file verified"
+      
+      - name: Check for standalone RUC app
+        run: |
+          if [ -d "dist/RUC-random-universe-cipher" ]; then
+            echo "✅ RUC-random-universe-cipher directory found in dist"
+          elif [ -d "public/RUC-random-universe-cipher" ]; then
+            echo "✅ RUC-random-universe-cipher found in public, copying to dist"
+            cp -r public/RUC-random-universe-cipher dist/
+          else
+            echo "⚠️  RUC-random-universe-cipher directory not found"
+            echo "   The standalone app should be in public/RUC-random-universe-cipher/ to be copied to dist"
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
