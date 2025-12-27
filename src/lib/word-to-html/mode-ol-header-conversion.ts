@@ -1,7 +1,55 @@
 /**
  * Mode Utility: OL Header Conversion
  * Converts single <ol> elements containing headers into manually numbered headers
+ * 
+ * Rules:
+ * - Lists must be fully header-only; mixed lists (containing both headers and regular content) are ignored
+ * - Preserves original heading levels (h1-h6) - does not normalize to a single level
+ * - Numbering resets per <h2> section and stops at <h1> boundaries
+ * - Supports both Word-style structures: <li><strong><hX>...</hX></strong></li> and <li><hX><strong>...</strong></hX></li>
+ * - Non-heading content inside list items is discarded (only headings are extracted and numbered)
  */
+
+/**
+ * Checks if a list item has a <strong> tag wrapping a heading (Word-style structure)
+ * Example: <li><strong><h3>Title</h3></strong></li>
+ */
+function hasStrongWrappedHeading(li: Element): boolean {
+  const strongTag = li.querySelector(':scope > strong');
+  if (!strongTag) {
+    return false;
+  }
+
+  const headingChildren = Array.from(strongTag.children).filter(
+    node => /^h[1-6]$/i.test((node as Element).tagName)
+  );
+  
+  if (headingChildren.length !== 1) {
+    return false;
+  }
+
+  // Ensure no text nodes (only the heading element)
+  const textNodes = Array.from(strongTag.childNodes).filter(
+    node => node.nodeType === 3 && (node as Text).textContent?.trim() !== ''
+  );
+  
+  return textNodes.length === 0;
+}
+
+/**
+ * Checks if a list item has a heading directly containing a <strong> tag
+ * Example: <li><h3><strong>Title</strong></h3></li>
+ * Note: querySelector will find headings even if there are empty <p> tags before them
+ */
+function hasDirectStrongHeading(li: Element): boolean {
+  const directHeading = li.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6');
+  if (!directHeading) {
+    return false;
+  }
+  
+  const strongInHeading = directHeading.querySelector(':scope > strong');
+  return strongInHeading !== null;
+}
 
 function isHeaderList(olElement: Element): boolean {
   const listItems = olElement.querySelectorAll(':scope > li');
@@ -10,30 +58,9 @@ function isHeaderList(olElement: Element): boolean {
     return false;
   }
 
+  // All list items must be valid headers; mixed lists are rejected
   for (const li of listItems) {
-    const children = Array.from(li.childNodes);
-    const elementChildren = children.filter(node => node.nodeType === 1);
-    if (elementChildren.length !== 1) {
-      return false;
-    }
-
-    const strongTag = elementChildren[0] as Element;
-    if (strongTag.tagName.toLowerCase() !== 'strong') {
-      return false;
-    }
-
-    const headingChildren = Array.from(strongTag.children).filter(
-      node => /^h[1-6]$/i.test((node as Element).tagName)
-    );
-    
-    if (headingChildren.length !== 1) {
-      return false;
-    }
-
-    const textNodes = Array.from(strongTag.childNodes).filter(
-      node => node.nodeType === 3 && (node as Text).textContent?.trim() !== ''
-    );
-    if (textNodes.length > 0) {
+    if (!hasStrongWrappedHeading(li) && !hasDirectStrongHeading(li)) {
       return false;
     }
   }
@@ -47,7 +74,8 @@ function isFollowedByHeaderList(element: Element): boolean {
   while (nextSibling) {
     if (nextSibling.tagName.toLowerCase() === 'p') {
       const text = nextSibling.textContent?.trim() || '';
-      if (text === '' || text === '\u00A0' || text === '&nbsp;') {
+      // textContent returns decoded \u00A0, not the entity string '&nbsp;'
+      if (text === '' || text === '\u00A0') {
         nextSibling = nextSibling.nextElementSibling;
         continue;
       }
@@ -102,23 +130,39 @@ export function convertOlHeaders(html: string): string {
         }
       }
       
+      // null represents "before first h2 or under h1" - used as section key for top-level numbering
       const sectionKey = parentH2 || null;
       if (!sectionCounters.has(sectionKey)) {
         sectionCounters.set(sectionKey, 1);
       }
       
-      const counter = sectionCounters.get(sectionKey)!;
+      let counter = sectionCounters.get(sectionKey)!;
       
       const listItems = ol.querySelectorAll(':scope > li');
       const newElements: Element[] = [];
 
       listItems.forEach((li) => {
-        const strongTag = li.querySelector(':scope > strong');
-        if (!strongTag) return;
-
-        const heading = strongTag.querySelector('h1, h2, h3, h4, h5, h6');
+        // Find the heading - it could be in a <strong> tag or directly in the <li>
+        let heading: Element | null = null;
+        let strongTag: Element | null = null;
+        
+        // First, try to find a heading directly in the <li> (new structure)
+        const directHeading = li.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6');
+        if (directHeading) {
+          heading = directHeading as Element;
+          strongTag = heading.querySelector(':scope > strong');
+        } else {
+          // Fall back to the original logic: <strong> containing a heading
+          strongTag = li.querySelector(':scope > strong');
+          if (strongTag) {
+            heading = strongTag.querySelector('h1, h2, h3, h4, h5, h6') as Element | null;
+          }
+        }
+        
+        // Defensive: should be impossible due to isHeaderList validation, but protects against edge cases
         if (!heading) return;
 
+        // Clone the heading to preserve its original level (h1-h6) and structure
         const newHeading = heading.cloneNode(true) as Element;
         
         const innerStrong = newHeading.querySelector(':scope > strong');
@@ -131,12 +175,19 @@ export function convertOlHeaders(html: string): string {
           newHeading.textContent = `${counter}. ${headingText}`;
         }
         
-        sectionCounters.set(sectionKey, counter + 1);
+        // Increment counter for next item
+        counter++;
+        sectionCounters.set(sectionKey, counter);
         
         newElements.push(newHeading);
       });
 
       if (newElements.length > 0) {
+        // Safety guard: ensure ol is still in the DOM (should always be true given doc.body)
+        if (!ol.parentNode) {
+          return; // Skip this ol if it's been removed from DOM
+        }
+        
         newElements.forEach((heading, index) => {
           if (index === 0) {
             ol.parentNode!.insertBefore(heading, ol);
