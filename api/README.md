@@ -47,7 +47,7 @@ The web scraper currently uses a CORS proxy service (`api.allorigins.win`) for d
    ```toml
    name = "web-scraper"
    main = "api/scrape.ts"
-   compatibility_date = "2024-01-01"
+   compatibility_date = "2025-01-01"
    ```
 
 3. Deploy:

@@ -185,7 +185,7 @@ export function TimestampConverterTool() {
             <Input
               value={dateString}
               onChange={(e) => setDateString(e.target.value)}
-              placeholder="e.g., 2024-12-11T12:00:00.000Z"
+              placeholder="e.g., 2025-12-28T12:00:00.000Z"
               className="font-mono bg-background/50"
             />
             <Button

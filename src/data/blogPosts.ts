@@ -16,7 +16,7 @@ export const blogPosts: BlogPost[] = [
     id: "how-to-scrape-any-website-free-web-scraper",
     title: "How to Scrape Any Website for Free Using the Web Scraper",
     excerpt: "Learn how to scrape any website using the free Web Scraper tool. Collect data, export it cleanly, and use it for analysis or automation—no coding required.",
-    date: "2024-01-20",
+    date: "2025-12-28",
     readTime: "5 min read",
     category: "Tutorial",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",

@@ -17,7 +17,7 @@ export const newsArticles: NewsArticle[] = [
     slug: "issues-page-launch",
     title: "New Issues Page: Submit Feedback & Report Bugs",
     excerpt: "We've launched a new Issues page to make it easier for users to report bugs, request features, and share feedback. The page provides direct links to GitHub Issues with helpful guidelines.",
-    date: "2024-12-17",
+    date: "2025-12-28",
     category: "Features",
     image: "/blog-images/issues.png",
     author: "RosettaScript Team",
@@ -69,14 +69,14 @@ Ready to share your feedback? Visit the [Issues page](/issues) and let us know w
 
 ---
 
-*Released: December 17, 2024*`
+*Released: December 28, 2025*`
   },
   {
     id: "patch-1-0-2",
     slug: "patch-1-0-2",
     title: "Patch 1.0.2 Released: Enhanced Shoppables Mode & HTML Cleanup",
     excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and comprehensive HTML cleanup enhancements.",
-    date: "2024-01-15",
+    date: "2025-12-28",
     category: "Updates",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
     author: "RosettaScript Team",
@@ -120,7 +120,7 @@ We'd love to hear your feedback on these improvements! If you encounter any issu
 
 ---
 
-*Released: January 15, 2024*`
+*Released: December 28, 2025*`
   }
 ];
 
@@ -137,7 +137,7 @@ export function getLatestNews(count: number = 3): NewsArticle[] {
 }
 
 /**
- * Format date to "January 15, 2024" format
+ * Format date to "December 28, 2025" format
  */
 export function formatNewsDate(dateString: string): string {
   const date = new Date(dateString);
