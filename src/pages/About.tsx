@@ -49,7 +49,7 @@ export default function About() {
     <Layout>
       <SEO
         title="About RosettaScript"
-        description="Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven platform."
+        description="Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven."
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

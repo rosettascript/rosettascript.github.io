@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Terminal, Github, Bug, AlertCircle, Lightbulb, ExternalLink } from "lucide-react";
@@ -32,6 +33,10 @@ export default function Issues() {
 
   return (
     <Layout>
+      <SEO
+        title="Report Issues & Share Feedback"
+        description="Report bugs, request features, and share feedback for RosettaScript. Help us improve our developer tools through GitHub Issues."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-16">

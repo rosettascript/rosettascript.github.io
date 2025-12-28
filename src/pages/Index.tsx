@@ -83,7 +83,7 @@ export default function Index() {
   return (
     <Layout>
       <SEO
-        title="Home"
+        title="Developer Tools Made Simple"
         description="RosettaScript provides powerful developer tools to convert, automate, and build. From Word to HTML converters to database visualization—we've got you covered."
       />
       

@@ -292,8 +292,8 @@ function generatePageStructuredData(route, metadata) {
  */
 function injectMetaTags(html, metadata, route, structuredData = null) {
   const siteName = "RosettaScript";
-  const fullTitle = metadata.title === "Home" 
-    ? siteName 
+  const fullTitle = metadata.title === "Home" || route === "/"
+    ? `${metadata.title} | ${siteName}`
     : `${metadata.title} | ${siteName}`;
   
   // Escape HTML in metadata

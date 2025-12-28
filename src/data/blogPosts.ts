@@ -587,7 +587,7 @@ Whether you're protecting sensitive data for decades, preparing for quantum comp
     image: "/blog-images/db-manager-thumbnail.png",
     author: "RosettaScript Team",
     tags: ["PostgreSQL", "Database Management", "Full-Stack", "React", "NestJS", "Electron", "TypeScript"],
-    content: `# Building a Modern PostgreSQL Database Manager: A Full-Stack Journey
+    content: `## Building a Modern PostgreSQL Database Manager: A Full-Stack Journey
 
 > **A powerful, modern PostgreSQL database management and visualization tool built with React, NestJS, and Electron. Manage multiple database connections, explore schemas, execute queries, visualize relationships, and export data—all from a beautiful, intuitive interface.**
 

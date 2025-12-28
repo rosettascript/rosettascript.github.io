@@ -61,6 +61,8 @@ function getNewsArticleSlugs() {
 
 // Routes that need static HTML files
 const routes = [
+  '/',
+  '/issues',
   '/tools',
   '/tools/word-to-html',
   '/tools/json-formatter',
@@ -141,7 +143,15 @@ const routeMetadata = {
   },
   '/about': {
     title: 'About RosettaScript',
-    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven platform.'
+    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven.'
+  },
+  '/': {
+    title: 'Developer Tools Made Simple',
+    description: 'RosettaScript provides powerful developer tools to convert, automate, and build. From Word to HTML converters to database visualization—we\'ve got you covered.'
+  },
+  '/issues': {
+    title: 'Report Issues & Share Feedback',
+    description: 'Report bugs, request features, and share feedback for RosettaScript. Help us improve our developer tools through GitHub Issues.'
   }
 };
 
