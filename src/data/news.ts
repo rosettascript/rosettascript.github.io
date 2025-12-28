@@ -15,7 +15,7 @@ export const newsArticles: NewsArticle[] = [
   {
     id: "issues-page-launch",
     slug: "issues-page-launch",
-    title: "New Issues Page: Submit Feedback & Report Bugs",
+    title: "New Issues Page: Submit Feedback & Bugs",
     excerpt: "We've launched a new Issues page to make it easier for users to report bugs, request features, and share feedback. The page provides direct links to GitHub Issues with helpful guidelines.",
     date: "2025-12-28",
     category: "Features",
@@ -74,8 +74,8 @@ Ready to share your feedback? Visit the [Issues page](/issues) and let us know w
   {
     id: "patch-1-0-2",
     slug: "patch-1-0-2",
-    title: "Patch 1.0.2 Released: Enhanced Shoppables Mode & HTML Cleanup",
-    excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and comprehensive HTML cleanup enhancements.",
+    title: "Patch 1.0.2: Enhanced Shoppables & Cleanup",
+    excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and HTML cleanup enhancements.",
     date: "2025-12-28",
     category: "Updates",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",

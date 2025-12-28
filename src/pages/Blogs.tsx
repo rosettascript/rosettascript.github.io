@@ -17,7 +17,7 @@ export default function Blogs() {
   return (
     <Layout>
       <SEO
-        title="Blog"
+        title="Developer Blog & Tutorials"
         description="Tutorials, tips, and developer resources. Learn about HTML conversion, database management, Windows automation, and more."
       />
       <div className="container mx-auto px-4 py-12">

@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +47,10 @@ export default function About() {
 
   return (
     <Layout>
+      <SEO
+        title="About RosettaScript"
+        description="Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven platform."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-16">

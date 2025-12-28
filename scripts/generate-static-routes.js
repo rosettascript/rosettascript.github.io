@@ -124,15 +124,15 @@ const routeMetadata = {
     description: '20+ free developer tools: formatters, converters, encoders, generators. JSON formatter, Base64 encoder, hash generator, QR code generator, and more.'
   },
   '/downloads': {
-    title: 'Downloads',
+    title: 'Free Downloads & Scripts',
     description: 'Downloadable scripts and utilities for Windows, PERN setup, and more. Free developer tools including Microsoft Script and PostgreSQL Manager.'
   },
   '/blogs': {
-    title: 'Blog',
+    title: 'Developer Blog & Tutorials',
     description: 'Tutorials, tips, and developer resources. Learn about web scraping, cryptography, post-quantum security, and more developer topics.'
   },
   '/news': {
-    title: 'News',
+    title: 'Latest News & Updates',
     description: 'Latest updates, announcements, and feature highlights from RosettaScript. Stay informed about new tools, bug fixes, and improvements.'
   },
   '/school-projects': {
@@ -140,8 +140,8 @@ const routeMetadata = {
     description: 'Ready-to-use project templates for students. Logic gates calculator, audio bandpass filter, and other educational projects with source code.'
   },
   '/about': {
-    title: 'About',
-    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers.'
+    title: 'About RosettaScript',
+    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven platform.'
   }
 };
 

@@ -76,7 +76,7 @@ export default function News() {
   return (
     <Layout>
       <SEO
-        title="News & Updates"
+        title="Latest News & Updates"
         description="Stay updated with the latest news, announcements, and feature highlights from RosettaScript. Get notified about new tools, updates, and improvements."
       />
       <div className="container mx-auto px-4 py-12">

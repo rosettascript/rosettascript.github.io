@@ -14,7 +14,7 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     id: "how-to-scrape-any-website-free-web-scraper",
-    title: "How to Scrape Any Website for Free Using the Web Scraper",
+    title: "How to Scrape Any Website: Free Guide",
     excerpt: "Learn how to scrape any website using the free Web Scraper tool. Collect data, export it cleanly, and use it for analysis or automation—no coding required.",
     date: "2025-12-28",
     readTime: "5 min read",
@@ -119,7 +119,7 @@ Get started today at [rosettascript.github.io/tools/web-scraper](https://rosetta
   },
   {
     id: "random-universe-cipher-ruc-post-quantum-security",
-    title: "Random Universe Cipher (RUC): A New Era of Post-Quantum Cryptography",
+    title: "RUC: Quantum-Resistant Cipher Explained",
     excerpt: "Discover RUC, a revolutionary 256-bit quantum-resistant symmetric cipher. Protects data against classical and quantum attacks with 512-bit keys.",
     date: "2025-01-15",
     readTime: "15 min read",
@@ -579,7 +579,7 @@ Whether you're protecting sensitive data for decades, preparing for quantum comp
   },
   {
     id: "building-modern-postgresql-database-manager",
-    title: "Building a Modern PostgreSQL Database Manager: A Full-Stack Journey",
+    title: "Modern PostgreSQL Database Manager Guide",
     excerpt: "A modern PostgreSQL database manager built with React, NestJS, and Electron. Manage connections, explore schemas, execute queries, and visualize relationships.",
     date: "2025-01-20",
     readTime: "20 min read",

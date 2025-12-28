@@ -131,19 +131,46 @@ function getToolsMetadata() {
     
     const toolsArrayContent = toolsArrayMatch[1];
     
-    // Extract each tool object - find id patterns
+    // Find each tool object by locating id patterns and extracting the complete object
     const idPattern = /id:\s*"([^"]+)"/g;
     let idMatch;
     
     while ((idMatch = idPattern.exec(toolsArrayContent)) !== null) {
       const toolId = idMatch[1];
-      const searchStart = Math.max(0, idMatch.index - 200);
-      const searchEnd = Math.min(toolsArrayContent.length, idMatch.index + 500);
-      const block = toolsArrayContent.substring(searchStart, searchEnd);
+      const idIndex = idMatch.index;
       
-      const titleMatch = block.match(/title:\s*"([^"]+)"/);
-      const descriptionMatch = block.match(/description:\s*"([^"]+)"/);
-      const pathMatch = block.match(/path:\s*"([^"]+)"/);
+      // Find the start of this object (look backwards for opening brace)
+      let objectStart = idIndex;
+      while (objectStart > 0 && toolsArrayContent[objectStart] !== '{') {
+        objectStart--;
+      }
+      
+      // Find the end of this object (look forwards for closing brace, handling nested braces)
+      let objectEnd = idIndex;
+      let braceCount = 0;
+      let foundOpening = false;
+      
+      while (objectEnd < toolsArrayContent.length) {
+        const char = toolsArrayContent[objectEnd];
+        if (char === '{') {
+          braceCount++;
+          foundOpening = true;
+        } else if (char === '}') {
+          braceCount--;
+          if (foundOpening && braceCount === 0) {
+            break;
+          }
+        }
+        objectEnd++;
+      }
+      
+      // Extract the tool object block
+      const toolBlock = toolsArrayContent.substring(objectStart, objectEnd + 1);
+      
+      // Extract properties from this specific tool object
+      const titleMatch = toolBlock.match(/title:\s*"([^"]+)"/);
+      const descriptionMatch = toolBlock.match(/description:\s*"([^"]+)"/);
+      const pathMatch = toolBlock.match(/path:\s*"([^"]+)"/);
       
       if (titleMatch && descriptionMatch && pathMatch) {
         tools.push({
