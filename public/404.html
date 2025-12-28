@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RosettaScript - Developer Tools Made Simple</title>
+    <!-- Meta refresh for bots that don't execute JavaScript - redirects to homepage -->
+    <!-- JavaScript below will override this with a path-preserving redirect -->
+    <meta http-equiv="refresh" content="0;url=/" id="redirect-meta">
     <script>
       // GitHub Pages SPA redirect - optimized for bots and browsers
       // This script redirects 404s to index.html for client-side routing
@@ -14,12 +17,15 @@
         var pathname = l.pathname;
         
         // Don't redirect if this is a static file request
-        var staticExtensions = ['.xml', '.txt', '.html', '.json', '.ico', '.png', '.jpg', '.jpeg', '.svg', '.webmanifest', '.js', '.css', '.woff', '.woff2', '.ttf', '.eot'];
+        var staticExtensions = ['.xml', '.txt', '.html', '.json', '.ico', '.png', '.jpg', '.jpeg', '.svg', '.webmanifest', '.js', '.css', '.woff', '.woff2', '.ttf', '.eot', '.wasm'];
         var isStaticFile = staticExtensions.some(function(ext) {
           return pathname.toLowerCase().endsWith(ext);
         });
         
         if (isStaticFile) {
+          // Remove the meta refresh for static files
+          var meta = document.getElementById('redirect-meta');
+          if (meta) meta.remove();
           return; // Let GitHub Pages serve the file directly
         }
         
@@ -35,6 +41,9 @@
         });
         
         if (isStandaloneApp) {
+          // Remove the meta refresh for standalone apps
+          var meta = document.getElementById('redirect-meta');
+          if (meta) meta.remove();
           // If the standalone app directory exists, GitHub Pages will serve it
           // If it doesn't exist, we'll let the 404 show (don't redirect to SPA)
           // This prevents the React Router from catching these paths
@@ -46,21 +55,34 @@
         if (basePath === '') basePath = '/';
         if (!basePath.endsWith('/')) basePath += '/';
         
-        var redirectPath = basePath + '?/' + 
-          pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash;
+        // Encode the path properly for the redirect
+        var pathToRedirect = pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
         
-        // Add meta refresh tag for bots that might be slow to execute JavaScript
-        try {
-          var meta = document.createElement('meta');
+        // Handle root path case - if pathToRedirect is empty, just redirect to /
+        var redirectPath;
+        if (!pathToRedirect || pathToRedirect === '') {
+          redirectPath = basePath;
+        } else {
+          redirectPath = basePath + '?/' + 
+            pathToRedirect.replace(/&/g, '~and~') +
+            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash;
+        }
+        
+        // Update the meta refresh tag with the correct redirect path
+        // This ensures bots that read the meta tag get the correct URL
+        var meta = document.getElementById('redirect-meta');
+        if (meta) {
+          meta.content = '0;url=' + redirectPath;
+        } else {
+          // Fallback: create meta tag if it doesn't exist
+          meta = document.createElement('meta');
           meta.httpEquiv = 'refresh';
           meta.content = '0;url=' + redirectPath;
-          var head = document.head || document.getElementsByTagName('head')[0];
-          if (head) head.appendChild(meta);
-        } catch(e) {}
+          document.head.insertBefore(meta, document.head.firstChild);
+        }
         
-        // Immediate JavaScript redirect - fastest for modern browsers and bots
+        // JavaScript redirect for modern browsers (after meta refresh is set)
         // Use replace instead of assign to avoid adding to history
         l.replace(redirectPath);
       })();
