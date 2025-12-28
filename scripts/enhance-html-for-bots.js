@@ -299,10 +299,10 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
   // Escape HTML in metadata
   const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/&/g, '&amp;');
   
-  // Create canonical URL - add trailing slash for directory routes (not root, not file-based routes)
-  // Root route stays as-is, blog/news routes stay as-is (they're file-based)
+  // Create canonical URL - add trailing slash for all directory routes (all routes except root)
+  // All routes create directories with index.html, so they should all have trailing slashes
   let canonicalUrl = `${baseUrl}${route}`;
-  if (route !== '/' && !route.includes('/blogs/') && !route.includes('/news/') && !route.includes('/tools/')) {
+  if (route !== '/') {
     canonicalUrl = `${baseUrl}${route}/`;
   }
   
