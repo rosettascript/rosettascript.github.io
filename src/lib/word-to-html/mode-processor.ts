@@ -16,7 +16,16 @@ import { addLinkSpacing } from './mode-link-spacing';
 import { addBrBeforeReadMore, addBrBeforeSources } from './mode-br-spacing';
 import type { OutputMode, FeatureFlags } from './converter';
 
-export function processMode(html: string, mode: OutputMode, features: FeatureFlags): string {
+/**
+ * Applies heading strong tag wrapping/unwrapping based on feature flag
+ */
+function applyHeadingStrong(html: string, features: FeatureFlags): string {
+  return features.headingStrong === false
+    ? unwrapHeadingsFromStrong(html)
+    : wrapHeadingsInStrong(html);
+}
+
+export function processMode(html: string, mode: OutputMode, features: FeatureFlags = {}): string {
   if (!html || typeof html !== 'string') {
     return '';
   }
@@ -26,9 +35,8 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
   // List normalization - applies to all modes (regular, blogs, shoppables)
   processedHtml = normalizeLists(processedHtml);
 
-  // Regular mode: no special processing beyond list normalization
+  // Regular mode: minimal processing (list + link spacing only)
   if (mode === 'regular') {
-    // Add link spacing for regular mode too
     processedHtml = addLinkSpacing(processedHtml);
     return processedHtml;
   }
@@ -36,13 +44,7 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
   // Blogs mode features
   if (mode === 'blogs') {
     // Heading strong tags (must be first to wrap headings before other processing)
-    if (features.headingStrong === false) {
-      // Explicitly disabled - unwrap any existing strong tags
-      processedHtml = unwrapHeadingsFromStrong(processedHtml);
-    } else {
-      // Enabled (default or explicitly true) - wrap headings in strong
-      processedHtml = wrapHeadingsInStrong(processedHtml);
-    }
+    processedHtml = applyHeadingStrong(processedHtml, features);
 
     // Key Takeaways formatting
     if (features.keyTakeaways !== false) {
@@ -85,18 +87,13 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
     // Final list normalization pass (after all processing that might modify list items)
     // This ensures spacing is normalized even if other functions reintroduced multiple spaces
     processedHtml = normalizeLists(processedHtml);
+    return processedHtml;
   }
 
   // Shoppables mode features
   if (mode === 'shoppables') {
     // Heading strong tags (must be first to wrap headings before other processing)
-    if (features.headingStrong === false) {
-      // Explicitly disabled - unwrap any existing strong tags
-      processedHtml = unwrapHeadingsFromStrong(processedHtml);
-    } else {
-      // Enabled (default or explicitly true) - wrap headings in strong
-      processedHtml = wrapHeadingsInStrong(processedHtml);
-    }
+    processedHtml = applyHeadingStrong(processedHtml, features);
 
     // Link attributes
     if (features.linkAttributes !== false) {
@@ -139,6 +136,7 @@ export function processMode(html: string, mode: OutputMode, features: FeatureFla
     // Final list normalization pass (after all processing that might modify list items)
     // This ensures spacing is normalized even if other functions reintroduced multiple spaces
     processedHtml = normalizeLists(processedHtml);
+    return processedHtml;
   }
 
   return processedHtml;

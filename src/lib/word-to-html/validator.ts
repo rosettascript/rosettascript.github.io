@@ -317,15 +317,16 @@ function validateH1Removal(html: string, mode: OutputMode): TestResult {
     };
   }
 
-  let elementAfterUl = nextSibling.nextElementSibling;
+  let nodeAfterUl: Node | null = nextSibling.nextSibling;
   while (
-    elementAfterUl &&
-    elementAfterUl.nodeType === Node.TEXT_NODE &&
-    !(elementAfterUl as Text).textContent?.trim()
+    nodeAfterUl &&
+    nodeAfterUl.nodeType === Node.TEXT_NODE &&
+    !(nodeAfterUl as Text).textContent?.trim()
   ) {
-    elementAfterUl = elementAfterUl.nextElementSibling;
+    nodeAfterUl = nodeAfterUl.nextSibling;
   }
 
+  const elementAfterUl = nodeAfterUl && nodeAfterUl.nodeType === Node.ELEMENT_NODE ? nodeAfterUl as Element : null;
   const hasH1After = elementAfterUl && elementAfterUl.tagName.toLowerCase() === 'h1';
 
   return {

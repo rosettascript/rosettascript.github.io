@@ -1,7 +1,12 @@
 /**
  * Mode Utility: Link Spacing
  * Ensures proper spacing before links, especially in list items
+ * 
+ * Idempotent: safe to run multiple times without adding extra spaces
  */
+
+// Regex pattern for checking if text ends with whitespace (space, newline, or non-breaking space)
+const WHITESPACE_END_RE = /[\s\u00A0]$/;
 
 export function addLinkSpacing(html: string): string {
   if (!html || typeof html !== 'string') {
@@ -12,29 +17,47 @@ export function addLinkSpacing(html: string): string {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     
+    // Helper function to check if text ends with whitespace
+    const endsWithWhitespace = (text: string): boolean => {
+      return WHITESPACE_END_RE.test(text);
+    };
+    
+    // Helper function to get the last text node from an element
+    const getLastTextNodeFromElement = (element: Element): Text | null => {
+      const walker = doc.createTreeWalker(
+        element,
+        NodeFilter.SHOW_TEXT
+      );
+      let lastTextNode: Text | null = null;
+      let node;
+      while ((node = walker.nextNode())) {
+        lastTextNode = node as Text;
+      }
+      return lastTextNode;
+    };
+    
+    // Helper function to find the previous meaningful sibling (skips empty text nodes)
+    const findPreviousMeaningfulSibling = (node: Node | null): Node | null => {
+      let current = node;
+      while (
+        current &&
+        current.nodeType === Node.TEXT_NODE &&
+        !(current as Text).textContent?.trim()
+      ) {
+        current = current.previousSibling;
+      }
+      return current;
+    };
+    
     const allAnchors = doc.querySelectorAll('a');
     
     allAnchors.forEach(anchor => {
+      // Guard against missing parentNode (defensive safety check)
+      if (!anchor.parentNode) {
+        return;
+      }
+      
       const prevSibling = anchor.previousSibling;
-      
-      // Helper function to check if text ends with whitespace
-      const endsWithWhitespace = (text: string): boolean => {
-        return /[\s\u00A0]$/.test(text);
-      };
-      
-      // Helper function to get the last text node from an element
-      const getLastTextNodeFromElement = (element: Element): Text | null => {
-        const walker = doc.createTreeWalker(
-          element,
-          NodeFilter.SHOW_TEXT
-        );
-        let lastTextNode: Text | null = null;
-        let node;
-        while (node = walker.nextNode()) {
-          lastTextNode = node as Text;
-        }
-        return lastTextNode;
-      };
       
       // Find the last meaningful text node before the anchor
       let textNodeToModify: Text | null = null;
@@ -43,7 +66,7 @@ export function addLinkSpacing(html: string): string {
       if (!prevSibling) {
         // No previous sibling - insert space node
         const spaceNode = doc.createTextNode(' ');
-        anchor.parentNode!.insertBefore(spaceNode, anchor);
+        anchor.parentNode.insertBefore(spaceNode, anchor);
         return;
       }
       
@@ -55,10 +78,7 @@ export function addLinkSpacing(html: string): string {
           textContent = text;
         } else {
           // Empty text node - look for previous element's last text
-          let prevElement = prevSibling.previousSibling;
-          while (prevElement && prevElement.nodeType === Node.TEXT_NODE && !(prevElement as Text).textContent?.trim()) {
-            prevElement = prevElement.previousSibling;
-          }
+          const prevElement = findPreviousMeaningfulSibling(prevSibling.previousSibling);
           if (prevElement && prevElement.nodeType === Node.ELEMENT_NODE) {
             const lastText = getLastTextNodeFromElement(prevElement as Element);
             if (lastText) {
@@ -83,7 +103,7 @@ export function addLinkSpacing(html: string): string {
       } else if (!textNodeToModify) {
         // No text node found - insert a space node before the anchor
         const spaceNode = doc.createTextNode(' ');
-        anchor.parentNode!.insertBefore(spaceNode, anchor);
+        anchor.parentNode.insertBefore(spaceNode, anchor);
       }
       // If text ends with whitespace, we don't need to do anything
     });

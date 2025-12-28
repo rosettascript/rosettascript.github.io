@@ -126,8 +126,21 @@ function addSpacingBeforeSources(doc: Document): void {
     const text = p.textContent?.trim().toLowerCase() || '';
     if (text.startsWith('sources:') &&
         p.previousElementSibling &&
-        p.previousElementSibling.tagName.toLowerCase() === 'p' &&
-        p.previousElementSibling.innerHTML.trim() !== '&nbsp;') {
+        p.previousElementSibling.tagName.toLowerCase() === 'p') {
+      
+      let prevSibling = p.previousElementSibling;
+      const hasExistingSpacing = prevSibling && isSpacingElement(prevSibling);
+      if (hasExistingSpacing) {
+        return;
+      }
+      
+      let node = p.previousSibling;
+      while (node && node.nodeType === Node.TEXT_NODE && !(node as Text).textContent?.trim()) {
+        node = node.previousSibling;
+      }
+      if (node && node.nodeType === Node.ELEMENT_NODE && isSpacingElement(node as Element)) {
+        return;
+      }
       
       const spacing = doc.createElement('p');
       spacing.innerHTML = '&nbsp;';
