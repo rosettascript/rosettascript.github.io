@@ -32,6 +32,13 @@ export default defineConfig(({ mode }) => {
         registerType: "autoUpdate",
         workbox: {
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+          // Exclude static files from navigation route to prevent service worker from intercepting them
+          // This allows sitemap.xml, robots.txt, and other static files to be served directly
+          navigateFallbackDenylist: [
+            /^\/_/, // Exclude files starting with underscore
+            // Exclude common static file extensions
+            /\.(xml|txt|json|ico|png|jpg|jpeg|svg|webmanifest|js|css|woff|woff2|ttf|eot|wasm|map)$/i,
+          ],
         },
         manifest: {
           name: "RosettaScript",
