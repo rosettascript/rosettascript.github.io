@@ -299,8 +299,12 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
   // Escape HTML in metadata
   const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/&/g, '&amp;');
   
-  // Create canonical URL
-  const canonicalUrl = `${baseUrl}${route}`;
+  // Create canonical URL - add trailing slash for directory routes (not root, not file-based routes)
+  // Root route stays as-is, blog/news routes stay as-is (they're file-based)
+  let canonicalUrl = `${baseUrl}${route}`;
+  if (route !== '/' && !route.includes('/blogs/') && !route.includes('/news/') && !route.includes('/tools/')) {
+    canonicalUrl = `${baseUrl}${route}/`;
+  }
   
   // Remove any existing meta tags and canonical link to avoid duplicates
   html = html.replace(/<link[^>]*rel=["']canonical["'][^>]*>/gi, '');

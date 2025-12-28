@@ -264,6 +264,37 @@ routes.forEach(route => {
   fs.writeFileSync(routeHtml, routeHtmlContent);
   
   console.log(`Created: ${route}/index.html`);
+  
+  // Create redirect HTML file for ALL routes except root (to prevent GitHub Pages 301 redirect)
+  // This creates a standalone HTML file that redirects to the trailing-slash version
+  // Note: GitHub Pages will still redirect /route to /route/ if a directory exists,
+  // but this provides a fallback and ensures canonical URLs are correct
+  // Skip root route as it doesn't need a redirect
+  if (route !== '/') {
+    const redirectHtml = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=${route}/">
+  <link rel="canonical" href="${baseUrl}${route}/">
+  <script>
+    // Immediate redirect to prevent double request
+    window.location.replace("${route}/");
+  </script>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to <a href="${route}/">${route}/</a>...</p>
+</body>
+</html>`.trim();
+    
+    const redirectFileName = routePath + '.html';
+    const redirectFilePath = path.join(distDir, redirectFileName);
+    fs.writeFileSync(redirectFilePath, redirectHtml);
+    console.log(`Created redirect: ${redirectFileName} -> ${route}/`);
+  }
 });
 
 // Ensure .nojekyll file exists in dist (for GitHub Pages)
