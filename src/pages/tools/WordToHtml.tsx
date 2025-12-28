@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { WordToHtmlConverter } from "@/components/tools/WordToHtmlConverter";
 import { UpdateNotification } from "@/components/UpdateNotification";
 import { Code2, FileText, Home } from "lucide-react";
@@ -24,6 +25,10 @@ export default function WordToHtml() {
   }, []);
   return (
     <Layout>
+      <SEO
+        title="Word to HTML Converter"
+        description="Convert text content to clean HTML code with multiple output formats including regular, blog, and shoppable options. Perfect for content creators."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Update Notification */}
         <UpdateNotification />

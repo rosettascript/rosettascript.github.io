@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { ColorConverterTool } from "@/components/tools/ColorConverterTool";
 import { Code2, Palette, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,10 @@ import {
 export default function ColorConverter() {
   return (
     <Layout>
+      <SEO
+        title="Color Converter Tool"
+        description="Convert colors between HEX, RGB, and HSL formats with a live color preview. Perfect for web developers and designers working with color palettes and CSS."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">

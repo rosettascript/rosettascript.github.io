@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -71,6 +72,10 @@ export default function SchoolProjects() {
 
   return (
     <Layout>
+      <SEO
+        title="School Projects"
+        description="Ready-to-use project templates for students. Logic gates calculator, audio bandpass filter, and other educational projects with source code."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-12">

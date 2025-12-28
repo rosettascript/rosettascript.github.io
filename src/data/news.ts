@@ -75,7 +75,7 @@ Ready to share your feedback? Visit the [Issues page](/issues) and let us know w
     id: "patch-1-0-2",
     slug: "patch-1-0-2",
     title: "Patch 1.0.2: Enhanced Shoppables & Cleanup",
-    excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and HTML cleanup.",
+    excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and cleanup enhancements.",
     date: "2025-12-28",
     category: "Updates",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",

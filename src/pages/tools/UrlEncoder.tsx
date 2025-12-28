@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { UrlEncoderTool } from "@/components/tools/UrlEncoderTool";
 import { Code2, Link as LinkIcon, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,10 @@ import {
 export default function UrlEncoder() {
   return (
     <Layout>
+      <SEO
+        title="URL Encoder/Decoder"
+        description="Encode special characters for URLs or decode URL-encoded strings for readable text. Handle percent encoding, query parameters, and ensure proper URL formatting."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">

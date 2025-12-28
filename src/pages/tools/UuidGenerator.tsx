@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { UuidGeneratorTool } from "@/components/tools/UuidGeneratorTool";
 import { Code2, Fingerprint, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,10 @@ import {
 export default function UuidGenerator() {
   return (
     <Layout>
+      <SEO
+        title="UUID Generator Tool"
+        description="Generate random UUID v4 identifiers instantly. Create single or multiple UUIDs with optional hyphen formatting. Essential for database IDs and API keys."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">

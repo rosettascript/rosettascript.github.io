@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { Base64Tool } from "@/components/tools/Base64Tool";
 import { Code2, Binary, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,10 @@ import {
 export default function Base64() {
   return (
     <Layout>
+      <SEO
+        title="Base64 Encoder/Decoder"
+        description="Encode text to Base64 or decode Base64 strings back to plain text with UTF-8 support. Essential for data encoding, API development, and secure transmission."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">

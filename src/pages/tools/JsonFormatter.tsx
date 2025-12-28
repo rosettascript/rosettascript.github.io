@@ -1,4 +1,5 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEO } from "@/components/SEO";
 import { JsonFormatterTool } from "@/components/tools/JsonFormatterTool";
 import { Code2, Braces, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,10 @@ import {
 export default function JsonFormatter() {
   return (
     <Layout>
+      <SEO
+        title="JSON Formatter & Validator"
+        description="Format, minify, and validate JSON data with customizable indentation and syntax highlighting. Beautify messy JSON, detect errors, and optimize data structures."
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
         <Breadcrumb className="mb-8">
