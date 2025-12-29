@@ -15,9 +15,11 @@ import {
   Zap,
   Shield,
   Newspaper,
-  Calendar
+  Calendar,
+  Clock
 } from "lucide-react";
 import { getLatestNews, formatNewsDate } from "@/data/news";
+import { getLatestBlogPosts } from "@/data/blogPosts";
 
 const features = [
   {
@@ -152,43 +154,83 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-12 bg-card/30 w-full">
-        <div className="container mx-auto px-4 w-full">
+      {/* News & Blog Posts Section */}
+      <section className="py-12 bg-card/30">
+        <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-5 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-4">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-3">Everything You Need</h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Explore our collection of online tools, downloadable utilities, educational resources, and developer guides
-                </p>
-              </div>
+            {/* Blog Posts - Main Content */}
+            {getLatestBlogPosts(3).length > 0 && (
+              <div className="lg:col-span-4">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent-foreground text-sm font-mono mb-4">
+                    <BookOpen className="h-4 w-4" />
+                    Latest Blog Posts
+                  </div>
+                  <h2 className="text-3xl font-bold mb-3">Learn & Explore</h2>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Discover tutorials, tips, and guides to help you build better and work smarter
+                  </p>
+                </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {features.map((feature) => (
-                  <Link key={feature.title} to={feature.link}>
-                    <Card className="h-full bg-card/50 border-border hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group flex flex-col min-h-[280px]">
-                      <CardHeader className="pb-4">
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                          <feature.icon className={`h-6 w-6 ${feature.color} group-hover:scale-110 transition-transform`} />
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                  {getLatestBlogPosts(3).map((post, index) => (
+                    <Link key={post.id} to={`/blogs/${post.id}`}>
+                      <Card 
+                        className="h-full bg-card/50 border-border hover:border-primary/30 transition-all group overflow-hidden"
+                        style={{ animationDelay: `${index * 50}ms` }}
+                      >
+                        <div className="aspect-video overflow-hidden">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            loading="lazy"
+                          />
                         </div>
-                        <CardTitle className="text-xl font-bold mb-2 leading-tight">{feature.title}</CardTitle>
-                        <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-                          {feature.description}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="pt-0 mt-auto">
-                        <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
-                          <span>Explore</span>
-                          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                ))}
+                        <CardHeader>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {post.category}
+                            </Badge>
+                          </div>
+                          <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                            {post.title}
+                          </CardTitle>
+                          <CardDescription className="line-clamp-2">
+                            {post.excerpt}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(post.date).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {post.readTime}
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+
+                <div className="text-center">
+                  <Button asChild variant="outline" size="lg">
+                    <Link to="/blogs">
+                      View All Blog Posts
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* News Sidebar */}
             {getLatestNews(2).length > 0 && (
@@ -257,6 +299,42 @@ export default function Index() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-12 bg-card/30 w-full">
+        <div className="container mx-auto px-4 w-full">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold mb-3">Everything You Need</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Explore our collection of online tools, downloadable utilities, educational resources, and developer guides
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {features.map((feature) => (
+              <Link key={feature.title} to={feature.link}>
+                <Card className="h-full bg-card/50 border-border hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group flex flex-col min-h-[280px]">
+                  <CardHeader className="pb-4">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                      <feature.icon className={`h-6 w-6 ${feature.color} group-hover:scale-110 transition-transform`} />
+                    </div>
+                    <CardTitle className="text-xl font-bold mb-2 leading-tight">{feature.title}</CardTitle>
+                    <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="pt-0 mt-auto">
+                    <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
+                      <span>Explore</span>
+                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

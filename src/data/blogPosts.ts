@@ -1118,4 +1118,10 @@ export function getBlogPostsByCategory(category: string): BlogPost[] {
   return blogPosts.filter((post) => post.category === category);
 }
 
+export function getLatestBlogPosts(count: number = 3): BlogPost[] {
+  return [...blogPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, count);
+}
+
 export const categories = ["All", "Tutorial", "Tips", "Tools"];
