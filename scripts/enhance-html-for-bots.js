@@ -28,7 +28,7 @@ function getBlogPosts() {
     while ((idMatch = idPattern.exec(content)) !== null) {
       const postId = idMatch[1];
       const searchStart = Math.max(0, idMatch.index - 500);
-      const searchEnd = Math.min(content.length, idMatch.index + 5000);
+      const searchEnd = Math.min(content.length, idMatch.index + 10000);
       const block = content.substring(searchStart, searchEnd);
       
       const titleMatch = block.match(/title:\s*"([^"]+)"/);
@@ -36,6 +36,24 @@ function getBlogPosts() {
       const dateMatch = block.match(/date:\s*"([^"]+)"/);
       const authorMatch = block.match(/author:\s*"([^"]+)"/);
       const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/);
+      // Extract first paragraph of content (before first ##)
+      const contentMatch = block.match(/content:\s*`([^`]+)/);
+      let firstParagraph = '';
+      if (contentMatch) {
+        const contentText = contentMatch[1];
+        // Get text before first ## or first newline after first sentence
+        const firstSection = contentText.split('##')[0].trim();
+        // Get first 2-3 sentences (roughly 400 chars)
+        firstParagraph = firstSection.substring(0, 500).replace(/\n/g, ' ').trim();
+        // Cut at last sentence end
+        const lastPeriod = Math.max(
+          firstParagraph.lastIndexOf('. '),
+          firstParagraph.lastIndexOf('.\n')
+        );
+        if (lastPeriod > 100) {
+          firstParagraph = firstParagraph.substring(0, lastPeriod + 1);
+        }
+      }
       
       if (titleMatch && excerptMatch && dateMatch) {
         const tags = tagsMatch 
@@ -51,7 +69,8 @@ function getBlogPosts() {
           excerpt: excerptMatch[1],
           date: dateMatch[1],
           author: authorMatch ? authorMatch[1] : 'RosettaScript Team',
-          tags: tags
+          tags: tags,
+          firstParagraph: firstParagraph || excerptMatch[1]
         });
       }
     }
@@ -457,20 +476,27 @@ ${JSON.stringify(structuredData, null, 2)}
  * Pre-render blog post content for bots
  */
 function preRenderBlogPostContent(post) {
+  const escapeHtml = (str) => str ? str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+  const firstParagraph = post.firstParagraph || post.excerpt || '';
+  const hasContent = firstParagraph && firstParagraph.length > 100;
+  
   return `
     <noscript>
       <article style="padding: 2rem; max-width: 900px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
-          <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">${post.title.replace(/"/g, '&quot;')}</h1>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; color: #6b7280; font-size: 0.9rem;">
-            <span>Author: ${post.author}</span>
+          <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">${escapeHtml(post.title)}</h1>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
+            <span>Author: ${escapeHtml(post.author || 'RosettaScript Team')}</span>
             <span>Published: ${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            ${post.tags.length > 0 ? `<span>Tags: ${post.tags.join(', ')}</span>` : ''}
+            ${post.tags && post.tags.length > 0 ? `<span>Tags: ${post.tags.join(', ')}</span>` : ''}
           </div>
         </header>
         <div style="font-size: 1.125rem; color: #374151; margin-bottom: 2rem;">
-          <p style="font-weight: 500; margin-bottom: 1rem;">${post.excerpt.replace(/"/g, '&quot;')}</p>
-          <p style="color: #6b7280;">This article contains detailed information about ${post.title.toLowerCase().replace(/"/g, '&quot;')}. Please enable JavaScript to view the full article content.</p>
+          <p style="font-weight: 500; margin-bottom: 1rem; font-size: 1.25rem;">${escapeHtml(post.excerpt)}</p>
+          ${hasContent ? `<div style="margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #22c55e;">
+            <p style="color: #374151; line-height: 1.8; margin-bottom: 1rem;">${escapeHtml(firstParagraph)}</p>
+          </div>` : ''}
+          <p style="color: #6b7280; margin-top: 1.5rem;">This article contains detailed information about ${escapeHtml(post.title.toLowerCase())}. Please enable JavaScript to view the full article content with code examples, images, and interactive elements.</p>
         </div>
         <nav style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
           <a href="/blogs" style="color: #22c55e; text-decoration: none;">← Back to Blog</a> | 
@@ -482,20 +508,85 @@ function preRenderBlogPostContent(post) {
 }
 
 /**
+ * Extract intro paragraphs from tool component file
+ */
+function extractToolIntroParagraphs(toolId) {
+  try {
+    const toolFileMap = {
+      'word-to-html': 'WordToHtml.tsx',
+      'json-formatter': 'JsonFormatter.tsx',
+      'base64': 'Base64.tsx',
+      'url-encoder': 'UrlEncoder.tsx',
+      'color-converter': 'ColorConverter.tsx',
+      'uuid-generator': 'UuidGenerator.tsx',
+      'regex-tester': 'RegexTester.tsx',
+      'hash-generator': 'HashGenerator.tsx',
+      'hash-decoder': 'HashDecoder.tsx',
+      'jwt-decoder': 'JwtDecoder.tsx',
+      'jwt-encoder': 'JwtEncoder.tsx',
+      'timestamp-converter': 'TimestampConverter.tsx',
+      'web-scraper': 'WebScraper.tsx',
+      'json-extractor': 'JsonExtractor.tsx',
+      'qr-code-generator': 'QrCodeGenerator.tsx',
+      'text-diff': 'TextDiff.tsx',
+      'csv-to-json': 'CsvToJson.tsx',
+      'image-tool': 'ImageTool.tsx',
+      'random-universe-cipher': 'RandomUniverseCipher.tsx'
+    };
+    
+    const componentFile = toolFileMap[toolId];
+    if (!componentFile) return '';
+    
+    const toolsDir = path.join(__dirname, '..', 'src', 'pages', 'tools');
+    const componentPath = path.join(toolsDir, componentFile);
+    
+    if (!fs.existsSync(componentPath)) return '';
+    
+    const componentContent = fs.readFileSync(componentPath, 'utf-8');
+    
+    // Extract paragraphs from the header section (between h1 and the tool component)
+    // Look for <p className="text-muted-foreground"> patterns
+    const paragraphMatches = componentContent.matchAll(/<p className="text-muted-foreground[^"]*">([^<]+)<\/p>/g);
+    const paragraphs = Array.from(paragraphMatches, match => match[1].trim()).filter(p => p.length > 50);
+    
+    return paragraphs.slice(0, 2).join(' '); // Get first 2 paragraphs
+  } catch (error) {
+    return '';
+  }
+}
+
+/**
  * Pre-render tool content for bots
  */
 function preRenderToolContent(tool) {
-  const escapeHtml = (str) => str.replace(/"/g, '&quot;');
+  const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  
+  // Extract intro paragraphs from the tool component
+  const introText = extractToolIntroParagraphs(tool.id);
+  const hasIntro = introText && introText.length > 50;
+  
   return `
     <noscript>
       <main style="padding: 2rem; max-width: 900px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
         <header style="margin-bottom: 2rem;">
           <h1 style="font-size: 2rem; margin-bottom: 1rem; color: #111827;">${escapeHtml(tool.title)}</h1>
           <p style="font-size: 1.125rem; color: #374151; margin-bottom: 1rem;">${escapeHtml(tool.description)}</p>
+          ${hasIntro ? `<div style="margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #22c55e;">
+            <p style="color: #374151; margin-bottom: 1rem; line-height: 1.7;">${escapeHtml(introText)}</p>
+          </div>` : ''}
         </header>
         <div style="background: #f3f4f6; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
           <p style="color: #6b7280; margin: 0;">This is an interactive tool. Please enable JavaScript to use ${escapeHtml(tool.title.toLowerCase())}.</p>
         </div>
+        <section style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+          <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">About This Tool</h2>
+          <p style="color: #6b7280; margin-bottom: 1rem;">
+            ${escapeHtml(tool.title)} is a free online developer tool that runs entirely in your browser. No signup required, no data uploaded to servers—complete privacy and security for your content.
+          </p>
+          <p style="color: #6b7280; margin-bottom: 1rem;">
+            Perfect for developers, content editors, technical writers, and anyone who needs to ${escapeHtml(tool.description.toLowerCase())}. All processing happens locally in your browser, ensuring your data never leaves your device.
+          </p>
+        </section>
         <nav style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
           <a href="/tools" style="color: #22c55e; text-decoration: none;">← Back to Tools</a> | 
           <a href="/" style="color: #22c55e; text-decoration: none;">Home</a>
@@ -509,21 +600,27 @@ function preRenderToolContent(tool) {
  * Pre-render news article content for bots
  */
 function preRenderNewsArticleContent(article) {
-  const escapeHtml = (str) => str.replace(/"/g, '&quot;');
+  const escapeHtml = (str) => str ? str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+  const firstParagraph = article.firstParagraph || article.excerpt || '';
+  const hasContent = firstParagraph && firstParagraph.length > 100;
+  
   return `
     <noscript>
       <article style="padding: 2rem; max-width: 900px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
           <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">${escapeHtml(article.title)}</h1>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap; color: #6b7280; font-size: 0.9rem;">
-            <span>Category: ${escapeHtml(article.category)}</span>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap; color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
+            <span>Category: ${escapeHtml(article.category || 'Updates')}</span>
             <span>Published: ${new Date(article.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            ${article.tags.length > 0 ? `<span>Tags: ${article.tags.join(', ')}</span>` : ''}
+            ${article.tags && article.tags.length > 0 ? `<span>Tags: ${article.tags.join(', ')}</span>` : ''}
           </div>
         </header>
         <div style="font-size: 1.125rem; color: #374151; margin-bottom: 2rem;">
-          <p style="font-weight: 500; margin-bottom: 1rem;">${escapeHtml(article.excerpt)}</p>
-          <p style="color: #6b7280;">This news article contains detailed information about ${escapeHtml(article.title.toLowerCase())}. Please enable JavaScript to view the full article content.</p>
+          <p style="font-weight: 500; margin-bottom: 1rem; font-size: 1.25rem;">${escapeHtml(article.excerpt)}</p>
+          ${hasContent ? `<div style="margin-top: 1.5rem; padding: 1.5rem; background: #f9fafb; border-radius: 8px; border-left: 4px solid #22c55e;">
+            <p style="color: #374151; line-height: 1.8; margin-bottom: 1rem;">${escapeHtml(firstParagraph)}</p>
+          </div>` : ''}
+          <p style="color: #6b7280; margin-top: 1.5rem;">This news article contains detailed information about ${escapeHtml(article.title.toLowerCase())}. Please enable JavaScript to view the full article content with images, code examples, and interactive elements.</p>
         </div>
         <nav style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
           <a href="/news" style="color: #22c55e; text-decoration: none;">← Back to News</a> | 
@@ -534,10 +631,332 @@ function preRenderNewsArticleContent(article) {
   `;
 }
 
+/**
+ * Pre-render homepage content for bots and search engines
+ */
+function preRenderHomepageContent(metadata) {
+  const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return `
+    <noscript>
+      <main style="padding: 2rem; max-width: 1200px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
+        <header style="margin-bottom: 3rem; text-align: center;">
+          <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">Free Online Developer Tools for Text, Code & Document Conversion</h1>
+          <p style="font-size: 1.125rem; color: #374151; margin-bottom: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+            RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <a href="/tools/word-to-html" style="color: #22c55e; text-decoration: none;">Word to HTML converter</a>, <a href="/tools/json-formatter" style="color: #22c55e; text-decoration: none;">JSON formatter</a>, <a href="/tools/base64" style="color: #22c55e; text-decoration: none;">Base64 encoder</a>, or more, our tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
+          </p>
+        </header>
+
+        <section style="margin-bottom: 3rem;">
+          <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #111827; text-align: center;">Popular Online Developer Tools</h2>
+          <p style="color: #6b7280; margin-bottom: 2rem; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto;">
+            Our collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/word-to-html" style="color: inherit; text-decoration: none;">Word to HTML Converter</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Clean up Word-generated HTML and convert documents to semantic, SEO-friendly HTML code.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/json-formatter" style="color: inherit; text-decoration: none;">JSON Formatter & Validator</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Format, validate, and beautify JSON data with syntax highlighting and error detection.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/base64" style="color: inherit; text-decoration: none;">Base64 Encode/Decode</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Encode images or text to Base64, or decode Base64 strings back to readable format.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/hash-generator" style="color: inherit; text-decoration: none;">Hash Generator</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes for passwords and data integrity.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/regex-tester" style="color: inherit; text-decoration: none;">Regex Tester</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Test and debug regular expressions with live matching and capture group extraction.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/web-scraper" style="color: inherit; text-decoration: none;">Web Scraper</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Extract data from websites using CSS selectors. Free, fast, and runs in your browser.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/json-extractor" style="color: inherit; text-decoration: none;">JSON Data Extractor</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Extract specific fields from JSON structures using path syntax or field names.</p>
+            </div>
+            <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;"><a href="/tools/text-diff" style="color: inherit; text-decoration: none;">Text Cleanup & Case Converter</a></h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Normalize text, convert cases, and clean up formatting issues in your content.</p>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <a href="/tools" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Explore All Free Developer Tools →</a>
+          </div>
+        </section>
+
+        <section style="margin-bottom: 3rem; background: #f9fafb; padding: 2rem; border-radius: 8px;">
+          <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #111827; text-align: center;">Why Use RosettaScript Developer Tools</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">No Signup Required</h3>
+              <p style="color: #6b7280; margin: 0;">All our developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Runs Locally in Browser</h3>
+              <p style="color: #6b7280; margin: 0;">Every tool processes data entirely in your browser. Your content never leaves your device, ensuring complete privacy and security for sensitive documents and code.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Privacy-Focused</h3>
+              <p style="color: #6b7280; margin: 0;">We don't store, track, or analyze your data. All processing happens client-side, making our tools perfect for handling confidential information and proprietary code.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Open Source</h3>
+              <p style="color: #6b7280; margin: 0;">RosettaScript is an open-source project built by developers, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.</p>
+            </div>
+          </div>
+        </section>
+
+        <section style="margin-bottom: 3rem;">
+          <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #111827; text-align: center;">Who These Tools Are For</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Web Developers</h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Format JSON, encode data, generate UUIDs, test regex patterns, and convert between formats quickly.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Content Editors</h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Convert Word documents to clean HTML, format text, and prepare content for web publishing.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Technical Writers</h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Clean up HTML from documentation tools, format code snippets, and ensure consistent formatting.</p>
+            </div>
+            <div>
+              <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">SEO Specialists</h3>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Generate clean HTML code, test regex patterns, and extract data from websites for SEO analysis.</p>
+            </div>
+          </div>
+        </section>
+
+        <nav style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e5e7eb; text-align: center;">
+          <p style="color: #6b7280; margin-bottom: 1rem;">Please enable JavaScript to access the full content and interactive features.</p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/tools" style="color: #22c55e; text-decoration: none;">Browse Tools</a> |
+            <a href="/blogs" style="color: #22c55e; text-decoration: none;">Read Blog</a> |
+            <a href="/downloads" style="color: #22c55e; text-decoration: none;">Downloads</a> |
+            <a href="/about" style="color: #22c55e; text-decoration: none;">About</a>
+          </div>
+        </nav>
+      </main>
+    </noscript>
+  `;
+}
+
+/**
+ * Pre-render main page content (tools, blogs, etc.) for bots
+ */
+function preRenderMainPageContent(route, metadata) {
+  const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  
+  let content = '';
+  
+  if (route === '/tools') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Browse Our Complete Collection</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Browse our complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
+        </p>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          All tools run entirely in your browser with no signup required. Your data stays private, processing happens locally, and everything is completely free. Perfect for web developers, content editors, technical writers, and SEO specialists.
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/tools" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">View All Tools →</a>
+        </div>
+      </section>
+    `;
+  } else if (route === '/blogs') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Tutorials, Tips & Resources</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Learn how to use our tools effectively and discover best practices for development, automation, and more. Our blog covers topics like web scraping, HTML conversion, database management, and Windows automation.
+        </p>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Explore our collection of tutorials, tips, and developer resources. Whether you're learning about web scraping techniques, understanding HTML conversion best practices, or exploring cryptography and post-quantum security, our blog has something for every developer.
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/blogs" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Read Blog Posts →</a>
+        </div>
+      </section>
+    `;
+  } else if (route === '/news') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Latest Updates & Announcements</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Stay informed about new tools, bug fixes, improvements, and feature highlights from RosettaScript. Get notified about updates and enhancements to our developer tools.
+        </p>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Our news section keeps you up-to-date with the latest developments, new tool releases, performance improvements, and important announcements. Follow along to see how RosettaScript evolves to better serve the developer community.
+        </p>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/news" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">View All News →</a>
+        </div>
+      </section>
+    `;
+  } else if (route === '/downloads') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Free Developer Scripts & Utilities</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Download powerful automation scripts and utilities for Windows, PERN stack setup, and more. All scripts are free, open-source, and ready to use.
+        </p>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Our downloadable tools include Microsoft Script for Windows automation, PostgreSQL Manager for database management, and other developer utilities. Each script comes with documentation and examples to help you get started quickly.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Microsoft Script</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Powerful automation scripts for Windows machines. Automate repetitive tasks and streamline your workflow.</p>
+          </div>
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">PostgreSQL Manager</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Database management utilities for PERN stack development. Simplify your database operations.</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/downloads" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Browse Downloads →</a>
+        </div>
+      </section>
+    `;
+  } else if (route === '/about') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Developer Tools Made Simple</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          RosettaScript was born from a simple idea: developers shouldn't waste time on repetitive tasks. We build tools that let you focus on what matters—creating amazing software.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; margin-bottom: 2rem;">
+          <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+            <div style="font-size: 2rem; font-weight: bold; color: #22c55e; margin-bottom: 0.5rem;">10K+</div>
+            <div style="color: #6b7280; font-size: 0.9rem;">Downloads</div>
+          </div>
+          <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+            <div style="font-size: 2rem; font-weight: bold; color: #22c55e; margin-bottom: 0.5rem;">19+</div>
+            <div style="color: #6b7280; font-size: 0.9rem;">Tools & Scripts</div>
+          </div>
+          <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+            <div style="font-size: 2rem; font-weight: bold; color: #22c55e; margin-bottom: 0.5rem;">5K+</div>
+            <div style="color: #6b7280; font-size: 0.9rem;">Happy Developers</div>
+          </div>
+          <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
+            <div style="font-size: 2rem; font-weight: bold; color: #22c55e; margin-bottom: 0.5rem;">100%</div>
+            <div style="color: #6b7280; font-size: 0.9rem;">Free to Use</div>
+          </div>
+        </div>
+        <div style="background: #f9fafb; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: #111827;">Our Values</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Simplicity</h4>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Developer tools should be simple and intuitive. No steep learning curves, just solutions that work.</p>
+            </div>
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Efficiency</h4>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Every tool is designed to save you time. Focus on building, not configuring.</p>
+            </div>
+            <div>
+              <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Community</h4>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Built by developers, for developers. All tools are free to use and many are open source.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  } else if (route === '/school-projects') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Ready-to-Use Project Templates</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Access free educational project templates for students. These projects include source code, documentation, and are perfect for learning and academic use.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Logic Gates Calculator</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem;">4-bit calculator implementation using logic gates in Proteus. Available in two versions: with memory and without memory.</p>
+            <p style="color: #9ca3af; font-size: 0.85rem; margin: 0;">Category: Electronics | Difficulty: Intermediate</p>
+          </div>
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Audio Bandpass Filter</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem;">Matlab implementation of an audio bandpass filter for signal processing applications.</p>
+            <p style="color: #9ca3af; font-size: 0.85rem; margin: 0;">Category: Signal Processing | Difficulty: Intermediate</p>
+          </div>
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Copy Paste Listener</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 0.5rem;">Windows utility tool built with Python that monitors clipboard activity.</p>
+            <p style="color: #9ca3af; font-size: 0.85rem; margin: 0;">Category: Utility | Difficulty: Beginner</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/school-projects" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">View All Projects →</a>
+        </div>
+      </section>
+    `;
+  } else if (route === '/issues') {
+    content = `
+      <section style="margin-bottom: 2rem;">
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Help Us Improve RosettaScript</h2>
+        <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Your feedback helps us improve RosettaScript. Whether you've found a bug, have a feature request, or just want to share your thoughts, we're here to listen.
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Report a Bug</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Found something that's not working as expected? Let us know so we can fix it.</p>
+            <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none; font-size: 0.9rem;">Report Bug →</a>
+          </div>
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Feature Request</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Have an idea for a new tool or feature? We'd love to hear your suggestions.</p>
+            <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none; font-size: 0.9rem;">Request Feature →</a>
+          </div>
+          <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
+            <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">General Issue</h3>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Something else on your mind? Open a general issue to discuss.</p>
+            <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none; font-size: 0.9rem;">Open Issue →</a>
+          </div>
+        </div>
+        <p style="color: #6b7280; margin-top: 2rem; text-align: center;">
+          All issues are tracked on <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none;">GitHub Issues</a>. We review every submission and respond as quickly as possible.
+        </p>
+      </section>
+    `;
+  } else {
+    content = `<p style="color: #6b7280; margin-bottom: 1.5rem;">${escapeHtml(metadata.description)}</p>`;
+  }
+  
+  return `
+    <noscript>
+      <main style="padding: 2rem; max-width: 1200px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
+        <header style="margin-bottom: 2rem; text-align: center;">
+          <h1 style="font-size: 2rem; margin-bottom: 1rem; color: #111827;">${escapeHtml(metadata.title)}</h1>
+          ${content}
+        </header>
+        <nav style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; text-align: center;">
+          <p style="color: #6b7280; margin-bottom: 1rem;">Please enable JavaScript to access the full content and interactive features.</p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="/" style="color: #22c55e; text-decoration: none;">Home</a> |
+            <a href="/tools" style="color: #22c55e; text-decoration: none;">Tools</a> |
+            <a href="/blogs" style="color: #22c55e; text-decoration: none;">Blog</a> |
+            <a href="/about" style="color: #22c55e; text-decoration: none;">About</a>
+          </div>
+        </nav>
+      </main>
+    </noscript>
+  `;
+}
+
 export { 
   getBlogPosts,
   getNewsArticles,
-  getToolsMetadata, 
+  getToolsMetadata,
   generateBlogPostStructuredData,
   generateNewsArticleStructuredData,
   generateToolStructuredData,
@@ -546,5 +965,7 @@ export {
   preRenderBlogPostContent,
   preRenderNewsArticleContent,
   preRenderToolContent,
+  preRenderHomepageContent,
+  preRenderMainPageContent,
   baseUrl
 };

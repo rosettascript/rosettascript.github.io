@@ -18,6 +18,8 @@ import {
   preRenderBlogPostContent,
   preRenderNewsArticleContent,
   preRenderToolContent,
+  preRenderHomepageContent,
+  preRenderMainPageContent,
   baseUrl
 } from './enhance-html-for-bots.js';
 
@@ -261,21 +263,15 @@ function enhanceHtmlForRoute(html, route) {
     // Remove existing noscript blocks from base template
     enhancedHtml = enhancedHtml.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
     
-    // Add noscript fallback content with route-specific metadata
-    const noscriptContent = `
-    <noscript>
-      <div style="padding: 2rem; max-width: 800px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem; color: #111827;">${metadata.title}</h1>
-        <p style="font-size: 1.125rem; color: #374151; margin-bottom: 1rem;">${metadata.description}</p>
-        <p style="color: #6b7280; margin-bottom: 2rem;">Please enable JavaScript to access the full content and interactive features.</p>
-        <nav>
-          <a href="/" style="color: #22c55e; text-decoration: none;">Return to Home</a>
-        </nav>
-      </div>
-    </noscript>
-  `;
+    // Pre-render content for bots and search engines
+    let preRenderedContent;
+    if (route === '/') {
+      preRenderedContent = preRenderHomepageContent(metadata);
+    } else {
+      preRenderedContent = preRenderMainPageContent(route, metadata);
+    }
     
-    enhancedHtml = enhancedHtml.replace('<div id="root"></div>', `${noscriptContent}<div id="root"></div>`);
+    enhancedHtml = enhancedHtml.replace('<div id="root"></div>', `${preRenderedContent}<div id="root"></div>`);
   }
   
   return enhancedHtml;
