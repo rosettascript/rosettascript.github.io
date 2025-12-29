@@ -16,8 +16,18 @@ export default function JwtEncoder() {
   return (
     <Layout>
       <SEO
-        title="JWT Encoder - Encode JSON Web Tokens Online"
-        description="Encode and create JWT tokens. Generate signed JSON Web Tokens with HS256, HS384, and HS512 algorithms. Free online JWT encoder tool."
+        title="JWT Encoder - Encode JSON Web Tokens"
+        description="Encode and create JWT tokens instantly. Generate signed JSON Web Tokens with HS256, HS384, and HS512 algorithms. Free online JWT encoder. Perfect for testing authentication flows."
+        canonical="https://rosettascript.github.io/tools/jwt-encoder"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function JwtEncoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JWT Encoder
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Encode and create JSON Web Tokens (JWT) instantly with this free online JWT encoder. Generate signed tokens with HMAC algorithms (HS256, HS384, HS512) for testing authentication flows, API development, and token generation.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Encode and create JSON Web Tokens (JWT). Generate signed tokens with HMAC algorithms (HS256, HS384, HS512).
-            All processing happens in your browser.
+            Essential for developers testing authentication systems, API developers creating test tokens, and anyone working with JWT-based authentication. All token generation and signing happens securely in your browser—your secrets never leave your device, ensuring complete privacy and security.
           </p>
         </div>
 

@@ -16,8 +16,18 @@ export default function UuidGenerator() {
   return (
     <Layout>
       <SEO
-        title="UUID Generator Tool"
-        description="Generate random UUID v4 identifiers instantly. Create single or multiple UUIDs with optional hyphen formatting. Essential for database IDs and API keys."
+        title="UUID Generator - Free Online UUID v4"
+        description="Generate random UUID v4 identifiers instantly. Free online UUID generator. Create single or multiple UUIDs with optional hyphen formatting. Essential for database IDs and API keys."
+        canonical="https://rosettascript.github.io/tools/uuid-generator"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -51,11 +61,13 @@ export default function UuidGenerator() {
             Online Tools
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-            UUID Generator
+            UUID Generator Tool
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Generate random UUID v4 identifiers instantly with this free online UUID generator. Create single or multiple UUIDs at once with optional hyphen formatting. Perfect for database IDs, API keys, session tokens, and unique identifiers.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Generate random UUID v4 identifiers. Create single or multiple UUIDs 
-            at once with optional formatting options.
+            Essential for backend developers creating unique identifiers, frontend developers generating client-side IDs, and anyone working with distributed systems. All UUIDs are generated using cryptographically secure random number generation, ensuring uniqueness and security for your applications.
           </p>
         </div>
 

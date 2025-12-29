@@ -118,20 +118,46 @@ function getNewsArticles() {
 }
 
 /**
- * Extract tool metadata from Tools.tsx
+ * Extract tool metadata from individual tool page components
+ * This ensures static HTML matches what React components render
  */
 function getToolsMetadata() {
   try {
-    const content = fs.readFileSync(toolsFile, 'utf-8');
+    const toolsDir = path.join(__dirname, '..', 'src', 'pages', 'tools');
     const tools = [];
     
-    // Find the tools array
-    const toolsArrayMatch = content.match(/const tools\s*=\s*\[([\s\S]*?)\];/);
+    // Map of tool IDs to their component file names
+    const toolFileMap = {
+      'word-to-html': 'WordToHtml.tsx',
+      'json-formatter': 'JsonFormatter.tsx',
+      'base64': 'Base64.tsx',
+      'url-encoder': 'UrlEncoder.tsx',
+      'color-converter': 'ColorConverter.tsx',
+      'uuid-generator': 'UuidGenerator.tsx',
+      'regex-tester': 'RegexTester.tsx',
+      'hash-generator': 'HashGenerator.tsx',
+      'hash-decoder': 'HashDecoder.tsx',
+      'jwt-decoder': 'JwtDecoder.tsx',
+      'jwt-encoder': 'JwtEncoder.tsx',
+      'timestamp-converter': 'TimestampConverter.tsx',
+      'web-scraper': 'WebScraper.tsx',
+      'json-extractor': 'JsonExtractor.tsx',
+      'qr-code-generator': 'QrCodeGenerator.tsx',
+      'text-diff': 'TextDiff.tsx',
+      'csv-to-json': 'CsvToJson.tsx',
+      'image-tool': 'ImageTool.tsx',
+      'random-universe-cipher': 'RandomUniverseCipher.tsx'
+    };
+    
+    // Read Tools.tsx to get paths
+    const toolsContent = fs.readFileSync(toolsFile, 'utf-8');
+    const toolsArrayMatch = toolsContent.match(/const tools\s*=\s*\[([\s\S]*?)\];/);
     if (!toolsArrayMatch) return [];
     
     const toolsArrayContent = toolsArrayMatch[1];
     
-    // Find each tool object by locating id patterns and extracting the complete object
+    // Extract path mappings from Tools.tsx - match id and path in same object
+    const pathMap = new Map();
     const idPattern = /id:\s*"([^"]+)"/g;
     let idMatch;
     
@@ -139,13 +165,13 @@ function getToolsMetadata() {
       const toolId = idMatch[1];
       const idIndex = idMatch.index;
       
-      // Find the start of this object (look backwards for opening brace)
+      // Find the object boundaries for this tool
       let objectStart = idIndex;
       while (objectStart > 0 && toolsArrayContent[objectStart] !== '{') {
         objectStart--;
       }
       
-      // Find the end of this object (look forwards for closing brace, handling nested braces)
+      // Find the end of this object
       let objectEnd = idIndex;
       let braceCount = 0;
       let foundOpening = false;
@@ -166,25 +192,51 @@ function getToolsMetadata() {
       
       // Extract the tool object block
       const toolBlock = toolsArrayContent.substring(objectStart, objectEnd + 1);
-      
-      // Extract properties from this specific tool object
-      const titleMatch = toolBlock.match(/title:\s*"([^"]+)"/);
-      const descriptionMatch = toolBlock.match(/description:\s*"([^"]+)"/);
       const pathMatch = toolBlock.match(/path:\s*"([^"]+)"/);
       
-      if (titleMatch && descriptionMatch && pathMatch) {
+      if (pathMatch) {
+        pathMap.set(toolId, pathMatch[1]);
+      }
+    }
+    
+    // Read each tool component file to extract SEO metadata
+    for (const [toolId, componentFile] of Object.entries(toolFileMap)) {
+      const componentPath = path.join(toolsDir, componentFile);
+      
+      if (!fs.existsSync(componentPath)) {
+        console.warn(`Warning: Tool component not found: ${componentFile}`);
+        continue;
+      }
+      
+      const componentContent = fs.readFileSync(componentPath, 'utf-8');
+      
+      // Extract SEO props - look for <SEO component with title and description
+      const seoMatch = componentContent.match(/<SEO\s+([\s\S]*?)\/>/);
+      if (!seoMatch) {
+        console.warn(`Warning: No SEO component found in ${componentFile}`);
+        continue;
+      }
+      
+      const seoProps = seoMatch[1];
+      const titleMatch = seoProps.match(/title=["']([^"']+)["']/);
+      const descriptionMatch = seoProps.match(/description=["']([^"']+)["']/);
+      
+      if (titleMatch && descriptionMatch) {
+        const toolPath = pathMap.get(toolId) || `/tools/${toolId}`;
         tools.push({
           id: toolId,
           title: titleMatch[1],
           description: descriptionMatch[1],
-          path: pathMatch[1]
+          path: toolPath
         });
+      } else {
+        console.warn(`Warning: Could not extract title/description from ${componentFile}`);
       }
     }
     
     return tools;
   } catch (error) {
-    console.warn('Warning: Could not read Tools.tsx:', error.message);
+    console.warn('Warning: Could not read tool components:', error.message);
     return [];
   }
 }
@@ -199,6 +251,7 @@ function generateBlogPostStructuredData(post) {
     "headline": post.title,
     "description": post.excerpt,
     "datePublished": post.date,
+    "dateModified": post.date, // Use published date as modified date if not available
     "author": {
       "@type": "Organization",
       "name": post.author
@@ -226,6 +279,7 @@ function generateNewsArticleStructuredData(article) {
     "headline": article.title,
     "description": article.excerpt,
     "datePublished": article.date,
+    "dateModified": article.date, // Use published date as modified date if not available
     "articleSection": article.category,
     "author": {
       "@type": "Organization",
@@ -248,12 +302,15 @@ function generateNewsArticleStructuredData(article) {
  * Generate JSON-LD structured data for a tool page
  */
 function generateToolStructuredData(tool) {
+  const today = new Date().toISOString().split('T')[0];
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": tool.title,
     "description": tool.description,
     "url": `${baseUrl}${tool.path}`,
+    "datePublished": today,
+    "dateModified": today,
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -273,12 +330,15 @@ function generateToolStructuredData(tool) {
  * Generate JSON-LD structured data for main pages
  */
 function generatePageStructuredData(route, metadata) {
+  const today = new Date().toISOString().split('T')[0];
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": metadata.title,
     "description": metadata.description,
     "url": `${baseUrl}${route}`,
+    "datePublished": today,
+    "dateModified": today,
     "isPartOf": {
       "@type": "WebSite",
       "name": "RosettaScript",
@@ -288,13 +348,49 @@ function generatePageStructuredData(route, metadata) {
 }
 
 /**
+ * Truncate title to 60 characters (Google's recommended max)
+ */
+function truncateTitle(text, maxLength = 60) {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + "...";
+}
+
+/**
+ * Truncate description to 155 characters (Google's recommended max)
+ */
+function truncateDescription(text, maxLength = 155) {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + "...";
+}
+
+/**
  * Inject meta tags and structured data into HTML
  */
 function injectMetaTags(html, metadata, route, structuredData = null) {
   const siteName = "RosettaScript";
-  const fullTitle = metadata.title === "Home" || route === "/"
-    ? `${metadata.title} | ${siteName}`
-    : `${metadata.title} | ${siteName}`;
+  
+  // Truncate description first
+  const truncatedDescription = truncateDescription(metadata.description, 155);
+  
+  // Build title with same logic as SEO component
+  // Main pages that should NOT have brand appended (use keyword-rich titles)
+  const mainPagesWithoutBrand = [
+    "Home",
+    "Free Developer Tools - Conversion & Formatting",
+    "Free Online Developer Tools - 20+ Tools"
+  ];
+  
+  let fullTitle;
+  if (mainPagesWithoutBrand.includes(metadata.title)) {
+    fullTitle = truncateTitle(metadata.title, 60);
+  } else {
+    // Reserve space for " | RosettaScript" (16 chars), so max 44 chars for title
+    const maxTitleLength = 44;
+    const truncatedBaseTitle = truncateTitle(metadata.title, maxTitleLength);
+    fullTitle = `${truncatedBaseTitle} | ${siteName}`;
+    // Final safety check - ensure total is under 60
+    fullTitle = truncateTitle(fullTitle, 60);
+  }
   
   // Escape HTML in metadata
   const escapeHtml = (str) => str.replace(/"/g, '&quot;').replace(/&/g, '&amp;');
@@ -307,6 +403,7 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
   }
   
   // Remove any existing meta tags and canonical link to avoid duplicates
+  // Also remove title tag to ensure it gets replaced
   html = html.replace(/<link[^>]*rel=["']canonical["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+name=["']description["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '');
@@ -314,29 +411,34 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
   html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+name=["']twitter:title["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+name=["']twitter:description["'][^>]*>/gi, '');
+  html = html.replace(/<title>[^<]*<\/title>/gi, ''); // Remove title tag - will be added back
   
-  // Create meta tags HTML
+  // Create meta tags HTML (use truncated values) - include title tag
   const metaTags = `
-    <meta name="description" content="${escapeHtml(metadata.description)}" />
+    <title>${escapeHtml(fullTitle)}</title>
+    <meta name="description" content="${escapeHtml(truncatedDescription)}" />
     <link rel="canonical" href="${canonicalUrl}" />
     <meta property="og:title" content="${escapeHtml(fullTitle)}" />
-    <meta property="og:description" content="${escapeHtml(metadata.description)}" />
+    <meta property="og:description" content="${escapeHtml(truncatedDescription)}" />
     <meta property="og:url" content="${canonicalUrl}" />
     <meta name="twitter:title" content="${escapeHtml(fullTitle)}" />
-    <meta name="twitter:description" content="${escapeHtml(metadata.description)}" />
+    <meta name="twitter:description" content="${escapeHtml(truncatedDescription)}" />
   `;
   
-  // Update or add meta tags after the viewport tag
+  // Update or add meta tags after the viewport tag (includes title)
   html = html.replace(
     /(<meta name="viewport"[^>]*>)/,
     `$1${metaTags}`
   );
   
-  // Update title tag
-  html = html.replace(
-    /<title>[^<]*<\/title>/,
-    `<title>${escapeHtml(fullTitle)}</title>`
-  );
+  // Ensure title tag exists (in case viewport replacement didn't work)
+  if (!html.includes(`<title>${escapeHtml(fullTitle)}</title>`)) {
+    // Try to find charset tag and add title after it
+    html = html.replace(
+      /(<meta charset="[^"]*"[^>]*>)/i,
+      `$1\n    <title>${escapeHtml(fullTitle)}</title>`
+    );
+  }
   
   // Add JSON-LD structured data before closing head tag
   if (structuredData) {

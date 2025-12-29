@@ -16,8 +16,18 @@ export default function TextDiff() {
   return (
     <Layout>
       <SEO
-        title="Text Diff Tool"
-        description="Compare two texts and see the differences. Compare by characters, words, or lines. Free online diff tool."
+        title="Text Diff Tool - Compare Text Differences"
+        description="Compare two texts and see differences instantly. Compare by characters, words, or lines. Free online diff tool. Perfect for code reviews, document comparison, and version control."
+        canonical="https://rosettascript.github.io/tools/text-diff"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         <Breadcrumb className="mb-8">
@@ -51,8 +61,11 @@ export default function TextDiff() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Text Diff Tool
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Compare two texts and see differences instantly with this free online diff tool. Compare by characters, words, or lines to find exactly what changed between versions. Perfect for code reviews, document comparison, and version control.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Compare two texts and see the differences. Compare by characters, words, or lines.
+            Essential for developers reviewing code changes, content editors comparing document versions, and anyone working with text-based files. See additions, deletions, and modifications highlighted clearly, making it easy to spot differences and track changes. All comparison happens instantly in your browser.
           </p>
         </div>
 

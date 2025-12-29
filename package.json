@@ -5,10 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/generate-static-routes.js && node scripts/generate-sitemap.js",
+    "build": "vite build && node scripts/generate-static-routes.js && node scripts/generate-sitemap.js && node scripts/verify-seo.js",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "serve:dist": "npm run build && (python3 -m http.server 8080 --directory dist 2>/dev/null || python -m http.server 8080 --directory dist 2>/dev/null || npx serve dist -p 8080)",
+    "test:seo": "node scripts/test-seo-local.js",
+    "check:seo": "node scripts/check-all-seo.js",
     "deploy": "npm run build",
     "generate-routes": "node scripts/generate-static-routes.js",
     "generate-sitemap": "node scripts/generate-sitemap.js"

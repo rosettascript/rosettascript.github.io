@@ -16,8 +16,18 @@ export default function HashGenerator() {
   return (
     <Layout>
       <SEO
-        title="Hash Generator - SHA-1, SHA-256, SHA-512 Online"
-        description="Generate SHA-1, SHA-256, SHA-384, and SHA-512 hash values from text. Free online cryptographic hash generator tool."
+        title="Hash Generator - SHA-1, SHA-256, SHA-512"
+        description="Generate SHA-1, SHA-256, SHA-384, and SHA-512 hash values from text instantly. Free online cryptographic hash generator. Perfect for password hashing and data integrity verification."
+        canonical="https://rosettascript.github.io/tools/hash-generator"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,8 +63,11 @@ export default function HashGenerator() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Hash Generator
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Generate cryptographic hash values from text instantly using SHA-1, SHA-256, SHA-384, and SHA-512 algorithms. This free online hash generator creates secure, one-way hash values perfect for password hashing, data integrity verification, and cryptographic operations.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Generate cryptographic hash values from text using SHA-1, SHA-256, SHA-384, and SHA-512 algorithms.
+            Essential for developers implementing authentication systems, security engineers verifying data integrity, and anyone working with cryptographic hashing. All hashing happens locally in your browser—your sensitive data never leaves your device, ensuring complete privacy and security.
           </p>
         </div>
 

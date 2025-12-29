@@ -16,8 +16,18 @@ export default function TimestampConverter() {
   return (
     <Layout>
       <SEO
-        title="Timestamp Converter - Unix Epoch to Date Online"
-        description="Convert between Unix timestamps and human-readable dates. Supports seconds and milliseconds. Free online timestamp converter tool."
+        title="Timestamp Converter - Unix Epoch to Date"
+        description="Convert between Unix timestamps and human-readable dates instantly. Supports seconds and milliseconds precision. Free online timestamp converter. Perfect for working with APIs and databases."
+        canonical="https://rosettascript.github.io/tools/timestamp-converter"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function TimestampConverter() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Timestamp Converter
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Convert between Unix timestamps and human-readable dates instantly. This free online timestamp converter supports both seconds and milliseconds precision, making it perfect for working with APIs, databases, and time-based data.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Convert between Unix timestamps and human-readable dates.
-            Supports both seconds and milliseconds formats.
+            Essential for developers working with APIs that return Unix timestamps, database administrators converting epoch times, and anyone dealing with time-based data. Convert timestamps to readable dates, or generate Unix timestamps from dates—all conversions happen instantly in your browser.
           </p>
         </div>
 

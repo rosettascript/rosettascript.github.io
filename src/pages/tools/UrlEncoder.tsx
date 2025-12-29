@@ -16,8 +16,18 @@ export default function UrlEncoder() {
   return (
     <Layout>
       <SEO
-        title="URL Encoder/Decoder"
-        description="Encode special characters for URLs or decode URL-encoded strings for readable text. Handle percent encoding, query parameters, and ensure proper URL formatting."
+        title="URL Encoder/Decoder - Free Online Tool"
+        description="Encode special characters for URLs or decode URL-encoded strings instantly. Free online URL encoder and decoder. Handle percent encoding and query parameters. No signup required."
+        canonical="https://rosettascript.github.io/tools/url-encoder"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function UrlEncoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             URL Encoder/Decoder
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Encode special characters for safe URL usage or decode URL-encoded strings back to readable text instantly. This free online URL encoder handles percent encoding, query parameters, and ensures proper URL formatting for web development.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Encode special characters for safe URL usage or decode URL-encoded 
-            strings back to readable text.
+            Essential for web developers working with APIs, handling form data, and building URLs dynamically. Whether you're encoding query parameters, preparing data for GET requests, or decoding URL-encoded strings from web services, this tool processes everything securely in your browser without any data uploads.
           </p>
         </div>
 

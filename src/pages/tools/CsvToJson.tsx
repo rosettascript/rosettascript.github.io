@@ -16,8 +16,18 @@ export default function CsvToJson() {
   return (
     <Layout>
       <SEO
-        title="CSV to JSON Converter"
-        description="Convert CSV to JSON and JSON to CSV. Customizable delimiter and header options. Free online converter."
+        title="CSV to JSON Converter - Free Online"
+        description="Convert CSV to JSON and JSON to CSV instantly. Customizable delimiter and header options. Free online CSV to JSON converter. Perfect for data migration and API integration."
+        canonical="https://rosettascript.github.io/tools/csv-to-json"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         <Breadcrumb className="mb-8">
@@ -51,8 +61,11 @@ export default function CsvToJson() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             CSV to JSON Converter
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Convert CSV to JSON and JSON to CSV instantly with this free online converter. Customize delimiter and header options to match your data format. Perfect for data migration, API integration, and converting between spreadsheet and JSON formats.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Convert CSV to JSON and JSON to CSV. Customizable delimiter and header options.
+            Essential for developers importing CSV data into applications, data analysts converting spreadsheet data to JSON for APIs, and anyone working with data format conversion. Handle comma-separated, tab-separated, or custom delimiters with full control over header row handling. All conversion happens instantly in your browser.
           </p>
         </div>
 

@@ -16,8 +16,18 @@ export default function WebScraper() {
   return (
     <Layout>
       <SEO
-        title="Web Scraper"
-        description="Extract data from websites using CSS selectors. Simple, fast, and free web scraping tool."
+        title="Free Web Scraper - Extract Data Online"
+        description="Extract data from any website using CSS selectors. Free online web scraper tool. No coding required, runs entirely in your browser. Perfect for data collection and research."
+        canonical="https://rosettascript.github.io/tools/web-scraper"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -51,11 +61,13 @@ export default function WebScraper() {
             Online Tools
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-            Web Scraper
+            Free Web Scraper Tool
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Extract data from any website using CSS selectors with this free online web scraper. No coding knowledge required—simply enter a URL, specify what elements to extract using CSS selectors, and get structured data instantly.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Extract data from any website using CSS selectors. Enter a URL and specify what to scrape, 
-            then get the results instantly.
+            Perfect for researchers collecting data, developers testing web scraping logic, marketers analyzing competitor content, and anyone who needs to extract structured information from websites. All scraping happens in your browser, ensuring privacy and security. No server uploads, no data storage, completely free.
           </p>
         </div>
 

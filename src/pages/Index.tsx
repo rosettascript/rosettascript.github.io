@@ -85,8 +85,12 @@ export default function Index() {
   return (
     <Layout>
       <SEO
-        title="Developer Tools Made Simple"
-        description="RosettaScript provides powerful developer tools to convert, automate, and build. From Word to HTML converters to database visualization—we've got you covered."
+        title="Free Developer Tools - Conversion & Formatting"
+        description="Free online developer tools for Word to HTML conversion, text formatting, code cleanup, and automation. No signup, fast & privacy-friendly."
+        canonical="https://rosettascript.github.io/"
+        structuredData={{
+          type: "WebSite",
+        }}
       />
       
       {/* Hero Section */}
@@ -100,12 +104,10 @@ export default function Index() {
                 Developer Tools Made Simple
               </div>
               <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
-                Code Smarter,{" "}
-                <span className="text-gradient">Build Faster</span>
+                Free Online Developer Tools for Text, Code & Document Conversion
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg w-full">
-                RosettaScript provides a comprehensive suite of developer tools. 
-                From code formatters and converters to hash generators, image tools, and downloadable utilities—everything you need to boost your productivity.
+                RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <Link to="/tools/word-to-html" className="text-primary hover:underline">Word to HTML converter</Link>, <Link to="/tools/json-formatter" className="text-primary hover:underline">JSON formatter</Link>, <Link to="/tools/base64" className="text-primary hover:underline">Base64 encoder</Link>, or more, our tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
               </p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <Button asChild size="lg" className="glow-primary w-full sm:w-auto">
@@ -149,6 +151,116 @@ export default function Index() {
                   ))}
                 </code>
               </pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - Popular Tools */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center">Popular Online Developer Tools</h2>
+          <p className="text-muted-foreground max-w-3xl mx-auto mb-8 text-center">
+            Our collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Link to="/tools/word-to-html" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Word to HTML Converter</h3>
+              <p className="text-sm text-muted-foreground">Clean up Word-generated HTML and convert documents to semantic, SEO-friendly HTML code.</p>
+            </Link>
+            <Link to="/tools/json-formatter" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">JSON Formatter & Validator</h3>
+              <p className="text-sm text-muted-foreground">Format, validate, and beautify JSON data with syntax highlighting and error detection.</p>
+            </Link>
+            <Link to="/tools/base64" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Base64 Encode/Decode</h3>
+              <p className="text-sm text-muted-foreground">Encode images or text to Base64, or decode Base64 strings back to readable format.</p>
+            </Link>
+            <Link to="/tools/text-diff" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Text Cleanup & Case Converter</h3>
+              <p className="text-sm text-muted-foreground">Normalize text, convert cases, and clean up formatting issues in your content.</p>
+            </Link>
+            <Link to="/tools/hash-generator" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Hash Generator</h3>
+              <p className="text-sm text-muted-foreground">Generate SHA-1, SHA-256, SHA-384, and SHA-512 hashes for passwords and data integrity.</p>
+            </Link>
+            <Link to="/tools/regex-tester" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Regex Tester</h3>
+              <p className="text-sm text-muted-foreground">Test and debug regular expressions with live matching and capture group extraction.</p>
+            </Link>
+            <Link to="/tools/web-scraper" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Web Scraper</h3>
+              <p className="text-sm text-muted-foreground">Extract data from websites using CSS selectors. Free, fast, and runs in your browser.</p>
+            </Link>
+            <Link to="/tools/json-extractor" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">JSON Data Extractor</h3>
+              <p className="text-sm text-muted-foreground">Extract specific fields from JSON structures using path syntax or field names.</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - Why Use */}
+      <section className="py-12 bg-card/30">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center">Why Use RosettaScript Developer Tools</h2>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div>
+              <h3 className="text-xl font-semibold mb-3">No Signup Required</h3>
+              <p className="text-muted-foreground mb-6">
+                All our developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Runs Locally in Browser</h3>
+              <p className="text-muted-foreground mb-6">
+                Every tool processes data entirely in your browser. Your content never leaves your device, ensuring complete privacy and security for sensitive documents and code.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Privacy-Focused</h3>
+              <p className="text-muted-foreground mb-6">
+                We don't store, track, or analyze your data. All processing happens client-side, making our tools perfect for handling confidential information and proprietary code.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold mb-3">Open Source</h3>
+              <p className="text-muted-foreground mb-6">
+                RosettaScript is an open-source project built by developers, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - Who It's For */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center">Who These Tools Are For</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-2">Web Developers</h3>
+              <p className="text-sm text-muted-foreground">
+                Format JSON, encode data, generate UUIDs, test regex patterns, and convert between formats quickly.
+              </p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-2">Content Editors</h3>
+              <p className="text-sm text-muted-foreground">
+                Convert Word documents to clean HTML, format text, and prepare content for web publishing.
+              </p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-2">Technical Writers</h3>
+              <p className="text-sm text-muted-foreground">
+                Clean up HTML from documentation tools, format code snippets, and ensure consistent formatting.
+              </p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-2">SEO Specialists</h3>
+              <p className="text-sm text-muted-foreground">
+                Convert documents to SEO-friendly HTML, clean up messy markup, and optimize content structure.
+              </p>
             </div>
           </div>
         </div>
@@ -355,6 +467,24 @@ export default function Index() {
                 <p className="text-muted-foreground text-sm mt-1">{highlight.description}</p>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SEO Content Section - Explore All Tools */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-4 text-center">Explore All Free Developer Tools</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-center">
+            Browse our complete collection of 20+ free online developer tools. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your workflow.
+          </p>
+          <div className="text-center">
+            <Button asChild size="lg" className="w-full sm:w-auto">
+              <Link to="/tools">
+                View All Developer Tools
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

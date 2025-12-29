@@ -122,8 +122,8 @@ const toolsMap = new Map(toolsMetadata.map(tool => [tool.path, tool]));
 // Route metadata for better SEO and bot accessibility
 const routeMetadata = {
   '/tools': {
-    title: 'Developer Tools',
-    description: '20+ free developer tools: formatters, converters, encoders, generators. JSON formatter, Base64 encoder, hash generator, QR code generator, and more.'
+    title: 'Free Online Developer Tools - 20+ Tools',
+    description: 'Browse 20+ free online developer tools. Word to HTML converter, JSON formatter, Base64 encoder, hash generator, web scraper, and more. No signup required.'
   },
   '/downloads': {
     title: 'Free Downloads & Scripts',
@@ -146,8 +146,8 @@ const routeMetadata = {
     description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven.'
   },
   '/': {
-    title: 'Developer Tools Made Simple',
-    description: 'RosettaScript provides powerful developer tools to convert, automate, and build. From Word to HTML converters to database visualization—we\'ve got you covered.'
+    title: 'Free Developer Tools - Conversion & Formatting',
+    description: 'Free online developer tools for Word to HTML conversion, text formatting, code cleanup, and automation. No signup, fast & privacy-friendly.'
   },
   '/issues': {
     title: 'Report Issues & Share Feedback',
@@ -167,6 +167,9 @@ function enhanceHtmlForRoute(html, route) {
     const post = blogPostsMap.get(postId);
     
     if (post) {
+      // Remove existing noscript blocks from base template
+      enhancedHtml = enhancedHtml.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
+      
       // Inject meta tags and structured data
       const structuredData = generateBlogPostStructuredData(post);
       enhancedHtml = injectMetaTags(enhancedHtml, {
@@ -188,6 +191,9 @@ function enhanceHtmlForRoute(html, route) {
     const article = newsArticlesMap.get(articleSlug);
     
     if (article) {
+      // Remove existing noscript blocks from base template
+      enhancedHtml = enhancedHtml.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
+      
       // Inject meta tags and structured data
       const structuredData = generateNewsArticleStructuredData(article);
       enhancedHtml = injectMetaTags(enhancedHtml, {
@@ -206,6 +212,9 @@ function enhanceHtmlForRoute(html, route) {
   // Check if this is a tool route
   const tool = toolsMap.get(route);
   if (tool) {
+    // Remove existing noscript blocks from base template
+    enhancedHtml = enhancedHtml.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
+    
     // Inject meta tags and structured data
     const structuredData = generateToolStructuredData(tool);
     enhancedHtml = injectMetaTags(enhancedHtml, {
@@ -223,11 +232,36 @@ function enhanceHtmlForRoute(html, route) {
   // Handle main pages
   const metadata = routeMetadata[route];
   if (metadata) {
-    // Inject meta tags and structured data
-    const structuredData = generatePageStructuredData(route, metadata);
+    // For homepage, use WebSite schema; for other pages, use WebPage schema
+    let structuredData;
+    if (route === '/') {
+      const today = new Date().toISOString().split('T')[0];
+      structuredData = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "RosettaScript",
+        "description": metadata.description,
+        "url": baseUrl,
+        "datePublished": today,
+        "dateModified": today,
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `${baseUrl}/tools?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        }
+      };
+    } else {
+      structuredData = generatePageStructuredData(route, metadata);
+    }
     enhancedHtml = injectMetaTags(enhancedHtml, metadata, route, structuredData);
     
-    // Add noscript fallback content
+    // Remove existing noscript blocks from base template
+    enhancedHtml = enhancedHtml.replace(/<noscript>[\s\S]*?<\/noscript>/gi, '');
+    
+    // Add noscript fallback content with route-specific metadata
     const noscriptContent = `
     <noscript>
       <div style="padding: 2rem; max-width: 800px; margin: 0 auto; font-family: system-ui, -apple-system, sans-serif; line-height: 1.8;">

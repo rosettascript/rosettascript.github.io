@@ -16,8 +16,18 @@ export default function RegexTester() {
   return (
     <Layout>
       <SEO
-        title="Regex Tester - Test Regular Expressions Online"
-        description="Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. Free online regex tester tool."
+        title="Regex Tester - Test Regular Expressions"
+        description="Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. Free online regex tester. Perfect for developers validating patterns and testing regex."
+        canonical="https://rosettascript.github.io/tools/regex-tester"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function RegexTester() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Regex Tester
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. This free online regex tester helps you validate patterns, test complex expressions, and debug regex issues instantly.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Test and debug regular expressions with live matching and syntax highlighting.
-            View capture groups and match positions.
+            Perfect for developers validating input patterns, data scientists extracting information from text, and anyone working with text processing. View capture groups, match positions, and see exactly how your regex pattern matches against test strings—all in real-time as you type.
           </p>
         </div>
 

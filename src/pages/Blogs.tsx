@@ -18,7 +18,11 @@ export default function Blogs() {
     <Layout>
       <SEO
         title="Developer Blog & Tutorials"
-        description="Tutorials, tips, and developer resources. Learn about HTML conversion, database management, Windows automation, and more."
+        description="Tutorials, tips, and developer resources. Learn about web scraping, cryptography, post-quantum security, and more developer topics."
+        canonical="https://rosettascript.github.io/blogs"
+        structuredData={{
+          type: "WebPage",
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

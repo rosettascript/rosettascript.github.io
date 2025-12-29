@@ -16,8 +16,18 @@ export default function JwtDecoder() {
   return (
     <Layout>
       <SEO
-        title="JWT Decoder - Decode JSON Web Tokens Online"
-        description="Decode and inspect JWT tokens. View header, payload, and signature. Check expiration times. Free online JWT decoder tool."
+        title="JWT Decoder - Decode JSON Web Tokens"
+        description="Decode and inspect JWT tokens instantly. View header, payload, and signature. Check expiration times and token claims. Free online JWT decoder. Perfect for debugging authentication tokens."
+        canonical="https://rosettascript.github.io/tools/jwt-decoder"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function JwtDecoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JWT Decoder
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Decode and inspect JSON Web Tokens (JWT) instantly with this free online JWT decoder. View the header, payload, and signature in a readable format. Timestamps are automatically converted to human-readable dates, making it easy to check token expiration and claims.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Decode and inspect JSON Web Tokens (JWT). View the header, payload, and signature.
-            Timestamps are automatically converted to readable dates.
+            Essential for developers debugging authentication flows, API developers inspecting token contents, and security engineers analyzing JWT structure. Perfect for understanding token claims, verifying expiration times, and troubleshooting authentication issues. All decoding happens in your browser—your tokens never leave your device.
           </p>
         </div>
 

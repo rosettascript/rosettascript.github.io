@@ -26,8 +26,18 @@ export default function WordToHtml() {
   return (
     <Layout>
       <SEO
-        title="Word to HTML Converter"
-        description="Convert text content to clean HTML code with multiple output formats including regular, blog, and shoppable options. Perfect for content creators."
+        title="Word to HTML Converter - Clean HTML Online"
+        description="Convert Word documents to clean, semantic HTML code. Free online Word to HTML converter with blog and shoppable modes. No signup required."
+        canonical="https://rosettascript.github.io/tools/word-to-html"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Update Notification */}
@@ -66,9 +76,11 @@ export default function WordToHtml() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Word to HTML Converter
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Convert Word documents to clean, semantic HTML code instantly. This free online Word to HTML converter transforms messy Word-generated markup into SEO-friendly, well-structured HTML that works perfectly for web content, blogs, and e-commerce sites.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Convert Word document content to clean, semantic HTML. Simply paste from Word and get 
-            properly formatted HTML with advanced features for blogs and shoppables modes.
+            Whether you're a content editor preparing articles for publication, an SEO specialist optimizing web content, or a web developer cleaning up client documents, this tool helps you convert Word content to professional HTML without the bloat. Simply paste from Microsoft Word and get properly formatted HTML with advanced features for regular content, blog posts, and shoppable product descriptions.
           </p>
         </div>
       </div>

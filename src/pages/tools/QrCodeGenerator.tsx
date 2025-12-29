@@ -16,8 +16,18 @@ export default function QrCodeGenerator() {
   return (
     <Layout>
       <SEO
-        title="QR Code Generator"
-        description="Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more. Customizable size, downloadable PNG format. Free online QR code generator."
+        title="QR Code Generator - Free Online Creator"
+        description="Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more instantly. Customizable size, downloadable PNG format. Free online QR code generator. Perfect for marketing and events."
+        canonical="https://rosettascript.github.io/tools/qr-code-generator"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         <Breadcrumb className="mb-8">
@@ -51,8 +61,11 @@ export default function QrCodeGenerator() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             QR Code Generator
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more instantly with this free online QR code generator. Customize the size, choose from multiple QR code types, and download as PNG for use in marketing materials, websites, or print.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more. Customize the size and download as PNG.
+            Perfect for marketers creating QR codes for campaigns, event organizers sharing WiFi credentials, businesses adding contact information to materials, and developers embedding QR codes in applications. All QR code generation happens instantly in your browser—no server uploads required.
           </p>
         </div>
 

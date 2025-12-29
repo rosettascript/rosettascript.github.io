@@ -11,6 +11,15 @@ interface SEOProps {
     author?: string;
     tags?: string[];
   };
+  structuredData?: {
+    type?: "WebSite" | "SoftwareApplication" | "Article" | "WebPage";
+    applicationCategory?: string;
+    operatingSystem?: string;
+    offers?: {
+      price: string;
+      priceCurrency: string;
+    };
+  };
 }
 
 export function SEO({
@@ -20,36 +29,84 @@ export function SEO({
   ogImage = "/og-image.png",
   ogType = "website",
   article,
+  structuredData,
 }: SEOProps) {
   const siteName = "RosettaScript";
-  const fullTitle = title === "Home" ? siteName : `${title} | ${siteName}`;
+  
+  // Truncate title to 60 characters (Google's recommended max)
+  const truncateTitle = (text: string, maxLength: number = 60): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength - 3) + "...";
+  };
+  
+  // Truncate description to 155 characters (Google's recommended max)
+  const truncateDescription = (text: string, maxLength: number = 155): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength - 3) + "...";
+  };
+  
+  // For homepage and main pages (like /tools), use keyword-rich title without brand
+  // For other pages, append brand
+  // Truncate base title first to leave room for brand (max 60 chars total)
+  let fullTitle: string;
+  // Main pages that should NOT have brand appended (use keyword-rich titles)
+  const mainPagesWithoutBrand = [
+    "Home",
+    "Free Developer Tools - Conversion & Formatting",
+    "Free Online Developer Tools - 20+ Tools"
+  ];
+  
+  if (mainPagesWithoutBrand.includes(title)) {
+    fullTitle = truncateTitle(title, 60);
+  } else {
+    // Reserve space for " | RosettaScript" (16 chars), so max 44 chars for title
+    const maxTitleLength = 44;
+    const truncatedBaseTitle = truncateTitle(title, maxTitleLength);
+    fullTitle = `${truncatedBaseTitle} | ${siteName}`;
+    // Final safety check - ensure total is under 60
+    fullTitle = truncateTitle(fullTitle, 60);
+  }
+  
+  // Truncate description
+  const truncatedDescription = truncateDescription(description, 155);
 
   useEffect(() => {
-    // Update document title
-    document.title = fullTitle;
+    // Update document title only if different (prevents unnecessary DOM changes)
+    if (document.title !== fullTitle) {
+      document.title = fullTitle;
+    }
 
     // Helper to update or create meta tag
+    // Only update if content differs - this prevents unnecessary DOM updates
+    // that cause Ahrefs to show both HTML and Rendered columns
+    // Static HTML should match React exactly, so no updates needed
     const setMetaTag = (
       attribute: "name" | "property",
       key: string,
       content: string
     ) => {
-      let element = document.querySelector(`meta[${attribute}="${key}"]`);
+      let element = document.querySelector(`meta[${attribute}="${key}"]`) as HTMLMetaElement;
       if (!element) {
         element = document.createElement("meta");
         element.setAttribute(attribute, key);
         document.head.appendChild(element);
+        element.setAttribute("content", content);
+      } else {
+        // Only update if content is different (prevents unnecessary DOM changes)
+        const currentContent = element.getAttribute("content");
+        if (currentContent !== content) {
+          element.setAttribute("content", content);
+        }
       }
-      element.setAttribute("content", content);
     };
 
     // Basic meta tags
-    setMetaTag("name", "description", description);
+    setMetaTag("name", "description", truncatedDescription);
     setMetaTag("name", "robots", "index, follow");
 
     // Open Graph tags
     setMetaTag("property", "og:title", fullTitle);
-    setMetaTag("property", "og:description", description);
+    setMetaTag("property", "og:description", truncatedDescription);
     setMetaTag("property", "og:type", ogType);
     setMetaTag("property", "og:site_name", siteName);
     if (ogImage) setMetaTag("property", "og:image", ogImage);
@@ -58,7 +115,7 @@ export function SEO({
     // Twitter Card tags
     setMetaTag("name", "twitter:card", "summary_large_image");
     setMetaTag("name", "twitter:title", fullTitle);
-    setMetaTag("name", "twitter:description", description);
+    setMetaTag("name", "twitter:description", truncatedDescription);
     if (ogImage) setMetaTag("name", "twitter:image", ogImage);
 
     // Article-specific meta tags
@@ -71,7 +128,7 @@ export function SEO({
       }
     }
 
-    // Canonical link
+    // Canonical link - only update if different
     let canonicalLink = document.querySelector(
       'link[rel="canonical"]'
     ) as HTMLLinkElement;
@@ -80,15 +137,127 @@ export function SEO({
         canonicalLink = document.createElement("link");
         canonicalLink.rel = "canonical";
         document.head.appendChild(canonicalLink);
+        canonicalLink.href = canonical;
+      } else if (canonicalLink.href !== canonical) {
+        // Only update if href is different (prevents unnecessary DOM changes)
+        canonicalLink.href = canonical;
       }
-      canonicalLink.href = canonical;
+    }
+
+    // Structured Data (JSON-LD)
+    const baseUrl = "https://rosettascript.github.io";
+    let structuredDataScript = document.querySelector(
+      'script[type="application/ld+json"]'
+    ) as HTMLScriptElement;
+
+    if (structuredData) {
+      let jsonLd: any = {
+        "@context": "https://schema.org",
+      };
+
+      if (structuredData.type === "WebSite") {
+        const today = new Date().toISOString().split('T')[0];
+        jsonLd["@type"] = "WebSite";
+        jsonLd.name = siteName;
+        jsonLd.description = truncatedDescription;
+        jsonLd.url = baseUrl;
+        jsonLd.datePublished = today;
+        jsonLd.dateModified = today;
+        jsonLd.potentialAction = {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${baseUrl}/tools?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        };
+      } else if (structuredData.type === "SoftwareApplication") {
+        jsonLd["@type"] = "SoftwareApplication";
+        jsonLd.name = title.replace(` | ${siteName}`, "");
+        jsonLd.description = truncatedDescription;
+        jsonLd.url = canonical || baseUrl;
+        jsonLd.datePublished = new Date().toISOString().split('T')[0];
+        jsonLd.dateModified = new Date().toISOString().split('T')[0];
+        jsonLd.applicationCategory = structuredData.applicationCategory || "DeveloperApplication";
+        jsonLd.operatingSystem = structuredData.operatingSystem || "Web Browser";
+        jsonLd.offers = structuredData.offers || {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        };
+        jsonLd.softwareVersion = "1.0";
+      } else if (structuredData.type === "Article" && article) {
+        jsonLd["@type"] = "Article";
+        jsonLd.headline = truncateTitle(title, 110); // Article headlines can be longer
+        jsonLd.description = truncatedDescription;
+        jsonLd.url = canonical || baseUrl;
+        if (article.publishedTime) {
+          jsonLd.datePublished = article.publishedTime;
+          jsonLd.dateModified = article.publishedTime;
+        } else {
+          jsonLd.datePublished = new Date().toISOString().split('T')[0];
+          jsonLd.dateModified = new Date().toISOString().split('T')[0];
+        }
+        if (article.author) {
+          jsonLd.author = {
+            "@type": "Person",
+            name: article.author,
+          };
+        }
+        if (article.tags) {
+          jsonLd.keywords = article.tags.join(", ");
+        }
+      } else {
+        const today = new Date().toISOString().split('T')[0];
+        jsonLd["@type"] = "WebPage";
+        jsonLd.name = truncateTitle(title, 60);
+        jsonLd.description = truncatedDescription;
+        jsonLd.url = canonical || baseUrl;
+        jsonLd.datePublished = today;
+        jsonLd.dateModified = today;
+      }
+
+      if (!structuredDataScript) {
+        structuredDataScript = document.createElement("script");
+        structuredDataScript.type = "application/ld+json";
+        document.head.appendChild(structuredDataScript);
+      }
+      structuredDataScript.textContent = JSON.stringify(jsonLd);
+    } else {
+      // Default WebSite schema for homepage
+      if (!canonical || canonical === baseUrl || canonical === `${baseUrl}/`) {
+        if (!structuredDataScript) {
+          structuredDataScript = document.createElement("script");
+          structuredDataScript.type = "application/ld+json";
+          document.head.appendChild(structuredDataScript);
+        }
+        const today = new Date().toISOString().split('T')[0];
+        const defaultSchema = {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: siteName,
+          description: truncatedDescription,
+          url: baseUrl,
+          datePublished: today,
+          dateModified: today,
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: `${baseUrl}/tools?q={search_term_string}`,
+            },
+            "query-input": "required name=search_term_string",
+          },
+        };
+        structuredDataScript.textContent = JSON.stringify(defaultSchema);
+      }
     }
 
     // Cleanup function
     return () => {
       document.title = siteName;
     };
-  }, [fullTitle, description, canonical, ogImage, ogType, article]);
+  }, [fullTitle, truncatedDescription, canonical, ogImage, ogType, article, structuredData]);
 
   return null;
 }

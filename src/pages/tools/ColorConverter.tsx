@@ -16,8 +16,18 @@ export default function ColorConverter() {
   return (
     <Layout>
       <SEO
-        title="Color Converter Tool"
-        description="Convert colors between HEX, RGB, and HSL formats with a live color preview. Perfect for web developers and designers working with color palettes and CSS."
+        title="Color Converter - HEX, RGB, HSL Online"
+        description="Convert colors between HEX, RGB, and HSL formats instantly with live color preview. Free online color converter. Perfect for web developers and designers working with CSS."
+        canonical="https://rosettascript.github.io/tools/color-converter"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -51,11 +61,13 @@ export default function ColorConverter() {
             Online Tools
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-            Color Converter
+            Color Converter Tool
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Convert colors between HEX, RGB, and HSL formats instantly with live color preview. Use the color picker or enter values manually to see real-time conversions. Perfect for web developers and designers working with CSS, color palettes, and design systems.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Convert colors between HEX, RGB, and HSL formats. Use the color picker 
-            or enter values manually to see instant conversions.
+            Essential for frontend developers converting design specs to CSS, designers creating consistent color systems, and anyone working with web colors. All conversions happen instantly in your browser with visual feedback, making it easy to find the perfect color format for your project.
           </p>
         </div>
 

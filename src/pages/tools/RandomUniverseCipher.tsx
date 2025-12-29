@@ -17,8 +17,18 @@ export default function RandomUniverseCipher() {
   return (
     <Layout>
       <SEO
-        title="Random Universe Cipher - Quantum-Resistant Encryption"
-        description="256-bit quantum-resistant symmetric encryption cipher. Encrypt and decrypt text and files with password-based authentication. Features AEAD, Argon2 KDF, and SHAKE256."
+        title="Random Universe Cipher - Encryption Tool"
+        description="256-bit quantum-resistant symmetric encryption cipher. Encrypt and decrypt text and files with password-based authentication. Features AEAD, Argon2 KDF, and SHAKE256. Free online encryption tool."
+        canonical="https://rosettascript.github.io/tools/random-universe-cipher"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -54,9 +64,11 @@ export default function RandomUniverseCipher() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Random Universe Cipher
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Encrypt and decrypt text and files with this 256-bit quantum-resistant symmetric encryption cipher. Features password-based authentication, AEAD (Authenticated Encryption with Associated Data), Argon2 key derivation function, and SHAKE256 for post-quantum security.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            256-bit quantum-resistant symmetric encryption cipher. Encrypt and decrypt text and files 
-            with password-based authentication. Features AEAD, Argon2 KDF, and SHAKE256.
+            Designed for security-conscious users who need post-quantum encryption. The Random Universe Cipher provides strong protection against both classical and quantum computing attacks. All encryption and decryption happens entirely in your browser using WebAssembly—your data never leaves your device, ensuring maximum privacy and security.
           </p>
         </div>
 

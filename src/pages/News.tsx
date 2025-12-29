@@ -77,7 +77,11 @@ export default function News() {
     <Layout>
       <SEO
         title="Latest News & Updates"
-        description="Stay updated with the latest news, announcements, and feature highlights from RosettaScript. Get notified about new tools, updates, and improvements."
+        description="Latest updates, announcements, and feature highlights from RosettaScript. Stay informed about new tools, bug fixes, and improvements."
+        canonical="https://rosettascript.github.io/news"
+        structuredData={{
+          type: "WebPage",
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

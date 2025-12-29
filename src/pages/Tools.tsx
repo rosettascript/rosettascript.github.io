@@ -163,8 +163,12 @@ export default function Tools() {
   return (
     <Layout>
       <SEO
-        title="Developer Tools"
-        description="A collection of free online developer tools. Word to HTML converter, JSON formatter, Base64 encoder, URL encoder, color converter, and UUID generator."
+        title="Free Online Developer Tools - 20+ Tools"
+        description="Browse 20+ free online developer tools. Word to HTML converter, JSON formatter, Base64 encoder, hash generator, web scraper, and more. No signup required."
+        canonical="https://rosettascript.github.io/tools"
+        structuredData={{
+          type: "WebPage",
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
@@ -174,11 +178,13 @@ export default function Tools() {
             Online Tools
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-            Developer Tools
+            Free Online Developer Tools
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Browse our complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A collection of useful online tools to help you with your development workflow. 
-            Select a tool below to get started.
+            All tools run entirely in your browser with no signup required. Your data stays private, processing happens locally, and everything is completely free. Perfect for web developers, content editors, technical writers, and SEO specialists.
           </p>
         </div>
 

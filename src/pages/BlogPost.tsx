@@ -46,10 +46,14 @@ export default function BlogPost() {
         description={post.excerpt}
         canonical={canonicalUrl}
         ogType="article"
+        ogImage={post.image}
         article={{
           publishedTime: post.date,
           author: post.author,
           tags: post.tags,
+        }}
+        structuredData={{
+          type: "Article",
         }}
       />
       

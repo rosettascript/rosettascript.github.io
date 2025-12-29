@@ -50,6 +50,10 @@ export default function About() {
       <SEO
         title="About RosettaScript"
         description="Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven."
+        canonical="https://rosettascript.github.io/about"
+        structuredData={{
+          type: "WebPage",
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

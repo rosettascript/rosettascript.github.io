@@ -16,8 +16,18 @@ export default function JsonFormatter() {
   return (
     <Layout>
       <SEO
-        title="JSON Formatter & Validator"
-        description="Format, minify, and validate JSON data with customizable indentation and syntax highlighting. Beautify messy JSON, detect errors, and optimize data structures."
+        title="JSON Formatter & Validator - Free Online"
+        description="Format, minify, and validate JSON data with customizable indentation and syntax highlighting. Free online JSON formatter. Detect errors and make JSON readable instantly."
+        canonical="https://rosettascript.github.io/tools/json-formatter"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -51,11 +61,13 @@ export default function JsonFormatter() {
             Online Tools
           </div>
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
-            JSON Formatter
+            JSON Formatter & Validator
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Format, minify, and validate JSON data instantly with this free online JSON formatter. Transform messy, unformatted JSON into beautifully indented, readable code with customizable spacing and syntax highlighting.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Format, minify, and validate your JSON data. Supports customizable indentation 
-            and provides clear error messages for invalid JSON.
+            Perfect for web developers working with APIs, frontend developers debugging JSON responses, and backend engineers validating data structures. This tool detects syntax errors, validates JSON structure, and provides clear error messages to help you fix issues quickly. All processing happens in your browser—your data never leaves your device.
           </p>
         </div>
 

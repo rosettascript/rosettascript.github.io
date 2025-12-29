@@ -16,8 +16,18 @@ export default function ImageToolPage() {
   return (
     <Layout>
       <SEO
-        title="Image Tool - Compress, Convert, Resize & Generate Favicons"
-        description="Free online image tool. Compress images, convert formats (PNG, JPEG, WebP), resize images, and generate favicons. All processing happens in your browser - no server uploads."
+        title="Image Tool - Compress, Convert, Resize"
+        description="Free online image tool. Compress images, convert formats (PNG, JPEG, WebP), resize images, and generate favicons instantly. All processing happens in your browser - complete privacy."
+        canonical="https://rosettascript.github.io/tools/image-tool"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,8 +63,11 @@ export default function ImageToolPage() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Image Tool
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Compress, convert, resize images, and generate favicons instantly with this free online image tool. All processing happens entirely in your browser—your images never leave your device, ensuring complete privacy and security.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Compress, convert, resize images and generate favicons. All processing happens in your browser - your images never leave your device.
+            Perfect for web developers optimizing images for faster load times, designers converting between formats, and anyone working with image files. Compress images to reduce file size, convert between PNG, JPEG, and WebP formats, resize images to specific dimensions, and generate favicons for websites. All without uploading to any server.
           </p>
         </div>
 

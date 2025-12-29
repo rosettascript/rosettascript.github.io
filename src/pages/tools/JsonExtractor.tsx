@@ -16,8 +16,18 @@ export default function JsonExtractor() {
   return (
     <Layout>
       <SEO
-        title="JSON Data Extractor"
-        description="Extract specific data from JSON. Get field values, use path syntax, or extract array values. Simple and powerful JSON data extraction tool."
+        title="JSON Data Extractor - Extract from JSON"
+        description="Extract specific data from JSON structures instantly. Get field values, use path syntax, or extract array values. Free online JSON data extractor. Perfect for parsing API responses."
+        canonical="https://rosettascript.github.io/tools/json-extractor"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function JsonExtractor() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JSON Data Extractor
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Extract specific data from JSON structures instantly with this free online JSON data extractor. Get field values, use path syntax, or extract all values from arrays. Perfect for parsing API responses, processing nested JSON data, and data analysis.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Extract specific data from JSON structures. Get field values, use path syntax, 
-            or extract all values from arrays. Perfect for data processing and analysis.
+            Essential for developers working with APIs, data analysts extracting specific fields from large JSON datasets, and anyone processing structured data. Use simple field names or advanced path syntax to extract exactly what you need from complex JSON structures—all processing happens instantly in your browser.
           </p>
         </div>
 

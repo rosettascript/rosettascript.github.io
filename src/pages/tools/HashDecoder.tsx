@@ -16,8 +16,18 @@ export default function HashDecoder() {
   return (
     <Layout>
       <SEO
-        title="Hash Decoder/Verifier - Verify SHA Hash Values Online"
-        description="Verify if text matches a hash value. Check SHA-1, SHA-256, SHA-384, and SHA-512 hashes. Free online hash verification tool."
+        title="Hash Decoder/Verifier - Verify SHA Hashes"
+        description="Verify if text matches a hash value instantly. Check SHA-1, SHA-256, SHA-384, and SHA-512 hashes. Free online hash verification tool. Perfect for password verification and data integrity checks."
+        canonical="https://rosettascript.github.io/tools/hash-decoder"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,8 +63,11 @@ export default function HashDecoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Hash Decoder/Verifier
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Verify if your text produces the given hash value instantly. This free online hash verifier supports SHA-1, SHA-256, SHA-384, and SHA-512 algorithms, making it perfect for password verification, data integrity checks, and cryptographic validation.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Verify if your text produces the given hash value. Supports SHA-1, SHA-256, SHA-384, and SHA-512 algorithms.
+            Essential for developers implementing authentication systems, security engineers verifying data integrity, and anyone working with cryptographic hashing. All verification happens locally in your browser—your sensitive data never leaves your device, ensuring complete privacy and security.
           </p>
         </div>
 

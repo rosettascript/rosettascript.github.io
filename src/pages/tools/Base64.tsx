@@ -16,8 +16,18 @@ export default function Base64() {
   return (
     <Layout>
       <SEO
-        title="Base64 Encoder/Decoder"
-        description="Encode text to Base64 or decode Base64 strings back to plain text with UTF-8 support. Essential for data encoding, API development, and secure transmission."
+        title="Base64 Encoder/Decoder - Free Online"
+        description="Encode text to Base64 or decode Base64 strings back to plain text with UTF-8 support. Free online Base64 encoder and decoder. Essential for data encoding and API development."
+        canonical="https://rosettascript.github.io/tools/base64"
+        structuredData={{
+          type: "SoftwareApplication",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web Browser",
+          offers: {
+            price: "0",
+            priceCurrency: "USD",
+          },
+        }}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Breadcrumb */}
@@ -53,9 +63,11 @@ export default function Base64() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Base64 Encoder/Decoder
           </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
+            Encode text to Base64 or decode Base64 strings back to plain text instantly. This free online Base64 converter supports full UTF-8 character encoding, making it perfect for encoding images, API data, and text content.
+          </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Encode text to Base64 or decode Base64 strings back to plain text. 
-            Supports full UTF-8 character encoding.
+            Essential for web developers working with APIs, data transmission, and embedding binary data in JSON or XML. Whether you're encoding images for data URIs, preparing data for API requests, or decoding Base64 strings from web services, this tool handles it all securely in your browser without any data uploads.
           </p>
         </div>
 
