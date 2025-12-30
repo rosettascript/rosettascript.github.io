@@ -35,7 +35,7 @@ export default function Blogs() {
             Tutorials, Tips & Resources
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Learn how to use our tools effectively and discover best practices for 
+            Learn how to use my tools effectively and discover best practices for 
             development, automation, and more.
           </p>
         </div>

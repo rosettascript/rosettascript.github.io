@@ -8,14 +8,14 @@ const issueTypes = [
   {
     icon: Bug,
     title: "Report a Bug",
-    description: "Found something that's not working as expected? Let us know so we can fix it.",
+    description: "Found something that's not working as expected? Let me know so I can fix it.",
     color: "text-destructive",
     action: "Report Bug",
   },
   {
     icon: Lightbulb,
     title: "Feature Request",
-    description: "Have an idea for a new tool or feature? We'd love to hear your suggestions.",
+    description: "Have an idea for a new tool or feature? I'd love to hear your suggestions.",
     color: "text-primary",
     action: "Request Feature",
   },
@@ -35,7 +35,7 @@ export default function Issues() {
     <Layout>
       <SEO
         title="Report Issues & Share Feedback"
-        description="Report bugs, request features, and share feedback for RosettaScript. Help us improve our developer tools through GitHub Issues."
+        description="Report bugs, request features, and share feedback for RosettaScript. Help me improve my developer tools through GitHub Issues."
         canonical="https://rosettascript.github.io/issues"
         structuredData={{
           type: "WebPage",
@@ -52,8 +52,8 @@ export default function Issues() {
             Report Issues & Share Feedback
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-            Your feedback helps us improve RosettaScript. Whether you've found a bug, have a feature request, 
-            or just want to share your thoughts, we're here to listen.
+            Your feedback helps me improve RosettaScript. Whether you've found a bug, have a feature request, 
+            or just want to share your thoughts, I'm here to listen.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function Issues() {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold">GitHub Issues</h2>
             <p className="text-muted-foreground">
-              We use GitHub Issues to track bugs, feature requests, and other discussions. This helps us 
+              I use GitHub Issues to track bugs, feature requests, and other discussions. This helps me 
               organize feedback and collaborate with the community effectively.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
@@ -143,7 +143,7 @@ export default function Issues() {
         <Card className="bg-card/50 border-border">
           <CardHeader>
             <CardTitle>Before You Submit</CardTitle>
-            <CardDescription>Help us help you by following these guidelines</CardDescription>
+            <CardDescription>Help me help you by following these guidelines</CardDescription>
           </CardHeader>
           <CardContent>
             <ul className="space-y-3 text-sm text-muted-foreground">

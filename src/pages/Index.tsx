@@ -66,7 +66,7 @@ const highlights = [
   {
     icon: Sparkles,
     title: "Developer Focused",
-    description: "Built by developers, for developers",
+    description: "Built by a developer, for developers",
   },
 ];
 
@@ -107,7 +107,7 @@ export default function Index() {
                 Free Online Developer Tools for Text, Code & Document Conversion
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg w-full">
-                RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <Link to="/tools/word-to-html" className="text-primary hover:underline">Word to HTML converter</Link>, <Link to="/tools/json-formatter" className="text-primary hover:underline">JSON formatter</Link>, <Link to="/tools/base64" className="text-primary hover:underline">Base64 encoder</Link>, or more, our tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
+                RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <Link to="/tools/word-to-html" className="text-primary hover:underline">Word to HTML converter</Link>, <Link to="/tools/json-formatter" className="text-primary hover:underline">JSON formatter</Link>, <Link to="/tools/base64" className="text-primary hover:underline">Base64 encoder</Link>, or more, these tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
               </p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <Button asChild size="lg" className="glow-primary w-full sm:w-auto">
@@ -161,7 +161,7 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-6 text-center">Popular Online Developer Tools</h2>
           <p className="text-muted-foreground max-w-3xl mx-auto mb-8 text-center">
-            Our collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
+            My collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <Link to="/tools/word-to-html" className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
@@ -208,7 +208,7 @@ export default function Index() {
             <div>
               <h3 className="text-xl font-semibold mb-3">No Signup Required</h3>
               <p className="text-muted-foreground mb-6">
-                All our developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.
+                All my developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.
               </p>
             </div>
             <div>
@@ -220,13 +220,13 @@ export default function Index() {
             <div>
               <h3 className="text-xl font-semibold mb-3">Privacy-Focused</h3>
               <p className="text-muted-foreground mb-6">
-                We don't store, track, or analyze your data. All processing happens client-side, making our tools perfect for handling confidential information and proprietary code.
+                I don't store, track, or analyze your data. All processing happens client-side, making these tools perfect for handling confidential information and proprietary code.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-3">Open Source</h3>
               <p className="text-muted-foreground mb-6">
-                RosettaScript is an open-source project built by developers, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.
+                RosettaScript is an open-source project built by a developer, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.
               </p>
             </div>
           </div>
@@ -421,7 +421,7 @@ export default function Index() {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-3">Everything You Need</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore our collection of online tools, downloadable utilities, educational resources, and developer guides
+              Explore my collection of online tools, downloadable utilities, educational resources, and developer guides
             </p>
           </div>
 
@@ -476,7 +476,7 @@ export default function Index() {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-4 text-center">Explore All Free Developer Tools</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-center">
-            Browse our complete collection of 20+ free online developer tools. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your workflow.
+            Browse my complete collection of 20+ free online developer tools. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your workflow.
           </p>
           <div className="text-center">
             <Button asChild size="lg" className="w-full sm:w-auto">
@@ -494,7 +494,7 @@ export default function Index() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl font-bold mb-3">Ready to Get Started?</h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Explore our 20+ online tools, download utilities, read our blog, or check out school project templates.
+            Explore my 20+ online tools, download utilities, read my blog, or check out school project templates.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
             <Button asChild size="lg" className="w-full sm:w-auto">

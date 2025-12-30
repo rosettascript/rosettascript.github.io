@@ -16,19 +16,19 @@ export const newsArticles: NewsArticle[] = [
     id: "issues-page-launch",
     slug: "issues-page-launch",
     title: "New Issues Page: Submit Feedback & Bugs",
-    excerpt: "We've launched a new Issues page to make it easier for users to report bugs, request features, and share feedback. Direct links to GitHub Issues included.",
+    excerpt: "I've launched a new Issues page to make it easier for users to report bugs, request features, and share feedback. Direct links to GitHub Issues included.",
     date: "2025-12-28",
     category: "Features",
     image: "/blog-images/issues.png",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["Features", "Community", "Feedback"],
     content: `## New Issues Page: Submit Feedback & Report Bugs
 
-We're excited to announce the launch of our new **Issues** page! This dedicated page makes it easier than ever for users to report bugs, request features, and share feedback with the RosettaScript team.
+I'm excited to announce the launch of my new **Issues** page! This dedicated page makes it easier than ever for users to report bugs, request features, and share feedback.
 
 ### What's New
 
-The Issues page provides a streamlined way to interact with our GitHub Issues system. Whether you've found a bug, have a feature idea, or want to share general feedback, the new page guides you through the process.
+The Issues page provides a streamlined way to interact with my GitHub Issues system. Whether you've found a bug, have a feature idea, or want to share general feedback, the new page guides you through the process.
 
 ### Key Features
 
@@ -57,7 +57,7 @@ You can access the Issues page in several ways:
 
 ### Why This Matters
 
-Your feedback is invaluable in helping us improve RosettaScript. By making it easier to submit issues and feedback, we hope to:
+Your feedback is invaluable in helping me improve RosettaScript. By making it easier to submit issues and feedback, I hope to:
 
 - **Respond faster** to bug reports and feature requests
 - **Build better tools** based on your needs
@@ -65,7 +65,7 @@ Your feedback is invaluable in helping us improve RosettaScript. By making it ea
 
 ### Get Started
 
-Ready to share your feedback? Visit the [Issues page](/issues) and let us know what you think!
+Ready to share your feedback? Visit the [Issues page](/issues) and let me know what you think!
 
 ---
 
@@ -75,15 +75,15 @@ Ready to share your feedback? Visit the [Issues page](/issues) and let us know w
     id: "patch-1-0-2",
     slug: "patch-1-0-2",
     title: "Patch 1.0.2: Enhanced Shoppables & Cleanup",
-    excerpt: "We've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and cleanup enhancements.",
+    excerpt: "I've released Patch 1.0.2 with major improvements to the Word to HTML converter, including new spacing options for Shoppables mode and cleanup enhancements.",
     date: "2025-12-28",
     category: "Updates",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["Updates", "Word to HTML", "Shoppables"],
     content: `## Patch 1.0.2 - Enhanced Shoppables Mode & HTML Cleanup
 
-We're excited to announce Patch 1.0.2, which brings significant improvements to the Word to HTML converter, particularly for Shoppables mode users.
+I'm excited to announce Patch 1.0.2, which brings significant improvements to the Word to HTML converter, particularly for Shoppables mode users.
 
 ### Bug Fixes
 
@@ -116,7 +116,7 @@ We're excited to announce Patch 1.0.2, which brings significant improvements to 
 
 ### Feedback
 
-We'd love to hear your feedback on these improvements! If you encounter any issues or have suggestions, please let us know.
+I'd love to hear your feedback on these improvements! If you encounter any issues or have suggestions, please let me know.
 
 ---
 

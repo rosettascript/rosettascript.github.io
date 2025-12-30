@@ -68,7 +68,7 @@ function getBlogPosts() {
           title: titleMatch[1],
           excerpt: excerptMatch[1],
           date: dateMatch[1],
-          author: authorMatch ? authorMatch[1] : 'RosettaScript Team',
+          author: authorMatch ? authorMatch[1] : 'RosettaScript',
           tags: tags,
           firstParagraph: firstParagraph || excerptMatch[1]
         });
@@ -123,7 +123,7 @@ function getNewsArticles() {
           excerpt: excerptMatch[1],
           date: dateMatch[1],
           category: categoryMatch ? categoryMatch[1] : 'Updates',
-          author: authorMatch ? authorMatch[1] : 'RosettaScript Team',
+          author: authorMatch ? authorMatch[1] : 'RosettaScript',
           tags: tags
         });
       }
@@ -486,7 +486,7 @@ function preRenderBlogPostContent(post) {
         <header style="margin-bottom: 2rem; border-bottom: 2px solid #e5e7eb; padding-bottom: 1rem;">
           <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">${escapeHtml(post.title)}</h1>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap; color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
-            <span>Author: ${escapeHtml(post.author || 'RosettaScript Team')}</span>
+            <span>Author: ${escapeHtml(post.author || 'RosettaScript')}</span>
             <span>Published: ${new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
             ${post.tags && post.tags.length > 0 ? `<span>Tags: ${post.tags.join(', ')}</span>` : ''}
           </div>
@@ -642,14 +642,14 @@ function preRenderHomepageContent(metadata) {
         <header style="margin-bottom: 3rem; text-align: center;">
           <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #111827;">Free Online Developer Tools for Text, Code & Document Conversion</h1>
           <p style="font-size: 1.125rem; color: #374151; margin-bottom: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-            RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <a href="/tools/word-to-html" style="color: #22c55e; text-decoration: none;">Word to HTML converter</a>, <a href="/tools/json-formatter" style="color: #22c55e; text-decoration: none;">JSON formatter</a>, <a href="/tools/base64" style="color: #22c55e; text-decoration: none;">Base64 encoder</a>, or more, our tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
+            RosettaScript offers 20+ free online developer tools for converting, cleaning, formatting, and automating text and code. Whether you need a <a href="/tools/word-to-html" style="color: #22c55e; text-decoration: none;">Word to HTML converter</a>, <a href="/tools/json-formatter" style="color: #22c55e; text-decoration: none;">JSON formatter</a>, <a href="/tools/base64" style="color: #22c55e; text-decoration: none;">Base64 encoder</a>, or more, these tools run entirely in your browser without signup or cost. These tools help developers, content editors, and technical writers save time while maintaining quality.
           </p>
         </header>
 
         <section style="margin-bottom: 3rem;">
           <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: #111827; text-align: center;">Popular Online Developer Tools</h2>
           <p style="color: #6b7280; margin-bottom: 2rem; text-align: center; max-width: 700px; margin-left: auto; margin-right: auto;">
-            Our collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
+            My collection of free developer tools covers everything from document conversion to code formatting. Each tool runs entirely in your browser—no server uploads, no data storage, complete privacy.
           </p>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
             <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
@@ -695,7 +695,7 @@ function preRenderHomepageContent(metadata) {
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
             <div>
               <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">No Signup Required</h3>
-              <p style="color: #6b7280; margin: 0;">All our developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.</p>
+              <p style="color: #6b7280; margin: 0;">All my developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.</p>
             </div>
             <div>
               <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Runs Locally in Browser</h3>
@@ -703,11 +703,11 @@ function preRenderHomepageContent(metadata) {
             </div>
             <div>
               <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Privacy-Focused</h3>
-              <p style="color: #6b7280; margin: 0;">We don't store, track, or analyze your data. All processing happens client-side, making our tools perfect for handling confidential information and proprietary code.</p>
+              <p style="color: #6b7280; margin: 0;">I don't store, track, or analyze your data. All processing happens client-side, making these tools perfect for handling confidential information and proprietary code.</p>
             </div>
             <div>
               <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; color: #111827;">Open Source</h3>
-              <p style="color: #6b7280; margin: 0;">RosettaScript is an open-source project built by developers, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.</p>
+              <p style="color: #6b7280; margin: 0;">RosettaScript is an open-source project built by a developer, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.</p>
             </div>
           </div>
         </section>
@@ -759,9 +759,9 @@ function preRenderMainPageContent(route, metadata) {
   if (route === '/tools') {
     content = `
       <section style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Browse Our Complete Collection</h2>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Browse My Complete Collection</h2>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Browse our complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
+          Browse my complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
         </p>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
           All tools run entirely in your browser with no signup required. Your data stays private, processing happens locally, and everything is completely free. Perfect for web developers, content editors, technical writers, and SEO specialists.
@@ -776,10 +776,10 @@ function preRenderMainPageContent(route, metadata) {
       <section style="margin-bottom: 2rem;">
         <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Tutorials, Tips & Resources</h2>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Learn how to use our tools effectively and discover best practices for development, automation, and more. Our blog covers topics like web scraping, HTML conversion, database management, and Windows automation.
-        </p>
-        <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Explore our collection of tutorials, tips, and developer resources. Whether you're learning about web scraping techniques, understanding HTML conversion best practices, or exploring cryptography and post-quantum security, our blog has something for every developer.
+          Learn how to use these tools effectively and discover best practices for development, automation, and more. My blog covers topics like web scraping, HTML conversion, database management, and Windows automation.
+          </p>
+          <p style="color: #6b7280; margin-bottom: 1.5rem;">
+          Explore my collection of tutorials, tips, and developer resources. Whether you're learning about web scraping techniques, understanding HTML conversion best practices, or exploring cryptography and post-quantum security, my blog has something for every developer.
         </p>
         <div style="text-align: center; margin-top: 2rem;">
           <a href="/blogs" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">Read Blog Posts →</a>
@@ -791,10 +791,10 @@ function preRenderMainPageContent(route, metadata) {
       <section style="margin-bottom: 2rem;">
         <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Latest Updates & Announcements</h2>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Stay informed about new tools, bug fixes, improvements, and feature highlights from RosettaScript. Get notified about updates and enhancements to our developer tools.
+          Stay informed about new tools, bug fixes, improvements, and feature highlights from RosettaScript. Get notified about updates and enhancements to my developer tools.
         </p>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Our news section keeps you up-to-date with the latest developments, new tool releases, performance improvements, and important announcements. Follow along to see how RosettaScript evolves to better serve the developer community.
+          My news section keeps you up-to-date with the latest developments, new tool releases, performance improvements, and important announcements. Follow along to see how RosettaScript evolves to better serve the developer community.
         </p>
         <div style="text-align: center; margin-top: 2rem;">
           <a href="/news" style="display: inline-block; padding: 0.75rem 1.5rem; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 500;">View All News →</a>
@@ -809,7 +809,7 @@ function preRenderMainPageContent(route, metadata) {
           Download powerful automation scripts and utilities for Windows, PERN stack setup, and more. All scripts are free, open-source, and ready to use.
         </p>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Our downloadable tools include Microsoft Script for Windows automation, PostgreSQL Manager for database management, and other developer utilities. Each script comes with documentation and examples to help you get started quickly.
+          My downloadable tools include Microsoft Script for Windows automation, PostgreSQL Manager for database management, and other developer utilities. Each script comes with documentation and examples to help you get started quickly.
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
           <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
@@ -831,7 +831,7 @@ function preRenderMainPageContent(route, metadata) {
       <section style="margin-bottom: 2rem;">
         <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Developer Tools Made Simple</h2>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          RosettaScript was born from a simple idea: developers shouldn't waste time on repetitive tasks. We build tools that let you focus on what matters—creating amazing software.
+          RosettaScript was born from a simple idea: developers shouldn't waste time on repetitive tasks. I build tools that let you focus on what matters—creating amazing software.
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem; margin-bottom: 2rem;">
           <div style="text-align: center; padding: 1.5rem; background: #f9fafb; border-radius: 8px;">
@@ -852,7 +852,7 @@ function preRenderMainPageContent(route, metadata) {
           </div>
         </div>
         <div style="background: #f9fafb; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
-          <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: #111827;">Our Values</h3>
+          <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: #111827;">My Values</h3>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
             <div>
               <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Simplicity</h4>
@@ -864,7 +864,7 @@ function preRenderMainPageContent(route, metadata) {
             </div>
             <div>
               <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Community</h4>
-              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Built by developers, for developers. All tools are free to use and many are open source.</p>
+              <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Built by a developer, for developers. All tools are free to use and many are open source.</p>
             </div>
           </div>
         </div>
@@ -902,19 +902,19 @@ function preRenderMainPageContent(route, metadata) {
   } else if (route === '/issues') {
     content = `
       <section style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Help Us Improve RosettaScript</h2>
+        <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: #111827;">Help Me Improve RosettaScript</h2>
         <p style="color: #6b7280; margin-bottom: 1.5rem;">
-          Your feedback helps us improve RosettaScript. Whether you've found a bug, have a feature request, or just want to share your thoughts, we're here to listen.
+          Your feedback helps me improve RosettaScript. Whether you've found a bug, have a feature request, or just want to share your thoughts, I'm here to listen.
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
           <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
             <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Report a Bug</h3>
-            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Found something that's not working as expected? Let us know so we can fix it.</p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Found something that's not working as expected? Let me know so I can fix it.</p>
             <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none; font-size: 0.9rem;">Report Bug →</a>
           </div>
           <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
             <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #111827;">Feature Request</h3>
-            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Have an idea for a new tool or feature? We'd love to hear your suggestions.</p>
+            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">Have an idea for a new tool or feature? I'd love to hear your suggestions.</p>
             <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none; font-size: 0.9rem;">Request Feature →</a>
           </div>
           <div style="padding: 1.5rem; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e7eb;">
@@ -924,7 +924,7 @@ function preRenderMainPageContent(route, metadata) {
           </div>
         </div>
         <p style="color: #6b7280; margin-top: 2rem; text-align: center;">
-          All issues are tracked on <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none;">GitHub Issues</a>. We review every submission and respond as quickly as possible.
+          All issues are tracked on <a href="https://github.com/rosettascript/rosettascript.github.io/issues" style="color: #22c55e; text-decoration: none;">GitHub Issues</a>. I review every submission and respond as quickly as possible.
         </p>
       </section>
     `;

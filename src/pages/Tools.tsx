@@ -181,7 +181,7 @@ export default function Tools() {
             Free Online Developer Tools
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
-            Browse our complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
+            Browse my complete collection of 20+ free online developer tools designed to streamline your workflow. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your needs.
           </p>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             All tools run entirely in your browser with no signup required. Your data stays private, processing happens locally, and everything is completely free. Perfect for web developers, content editors, technical writers, and SEO specialists.
@@ -214,7 +214,7 @@ export default function Tools() {
         {/* Info */}
         <div className="mt-12 text-center">
           <p className="text-muted-foreground text-sm">
-            Have a tool suggestion? Let us know!
+            Have a tool suggestion? Let me know!
           </p>
         </div>
       </div>

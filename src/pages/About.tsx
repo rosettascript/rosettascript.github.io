@@ -49,7 +49,7 @@ export default function About() {
     <Layout>
       <SEO
         title="About RosettaScript"
-        description="Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven."
+        description="Learn more about RosettaScript and my mission. Developer tools made simple, built by a developer for developers. Free, open-source, and community-driven."
         canonical="https://rosettascript.github.io/about"
         structuredData={{
           type: "WebPage",

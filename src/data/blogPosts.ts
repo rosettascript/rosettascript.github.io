@@ -20,7 +20,7 @@ export const blogPosts: BlogPost[] = [
     readTime: "8 min read",
     category: "Tutorial",
     image: "/blog-images/word-to-html-converter.png",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["Word to HTML", "SEO", "HTML Cleanup", "Content Management", "Web Development"],
     content: `Copy-pasting content from Microsoft Word into a website seems convenient — until you look at the HTML. Bloated inline styles, mso- attributes, unnecessary <span> tags, and broken spacing are common side effects that negatively impact SEO, accessibility, and maintainability.
 
@@ -207,7 +207,7 @@ The RosettaScript Word-to-HTML Converter focuses on correctness, predictability,
     readTime: "5 min read",
     category: "Tutorial",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["Web Scraping", "Automation", "Data Collection"],
     content: `## Introduction
 
@@ -294,13 +294,13 @@ Extract contact information, business details, or other lead data from directori
 ## Tips for Better Results
 
 - **Target Specific Elements**: Be precise about what data you need
-- **Handle Dynamic Content**: Some websites load content dynamically—our tool handles this
+- **Handle Dynamic Content**: Some websites load content dynamically—my tool handles this
 - **Clean Your Data**: Use the export features to get clean, structured data
 - **Test First**: Try scraping a small amount of data first to verify results
 
 ## Conclusion
 
-Web scraping doesn't have to be complicated. With the free Web Scraper tool from Rosetta Script, anyone can collect website data quickly and efficiently—no coding skills required. Whether you're doing research, monitoring competitors, or automating data collection, our tool makes it simple and accessible.
+Web scraping doesn't have to be complicated. With the free Web Scraper tool from RosettaScript, anyone can collect website data quickly and efficiently—no coding skills required. Whether you're doing research, monitoring competitors, or automating data collection, my tool makes it simple and accessible.
 
 Get started today at [rosettascript.github.io/tools/web-scraper](https://rosettascript.github.io/tools/web-scraper) and unlock the power of web scraping for your projects.`,
   },
@@ -312,7 +312,7 @@ Get started today at [rosettascript.github.io/tools/web-scraper](https://rosetta
     readTime: "15 min read",
     category: "Tools",
     image: "/blog-images/ruc-encryption.webp",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["Cryptography", "Security", "Post-Quantum", "Encryption", "RUC"],
     content: `## Introduction
 
@@ -772,7 +772,7 @@ Whether you're protecting sensitive data for decades, preparing for quantum comp
     readTime: "20 min read",
     category: "Tools",
     image: "/blog-images/db-manager-thumbnail.png",
-    author: "RosettaScript Team",
+    author: "RosettaScript",
     tags: ["PostgreSQL", "Database Management", "Full-Stack", "React", "NestJS", "Electron", "TypeScript"],
     content: `## Building a Modern PostgreSQL Database Manager: A Full-Stack Journey
 
@@ -1097,7 +1097,7 @@ Built with amazing open-source technologies:
 
 ## 💬 Final Thoughts
 
-DB Manager represents a modern approach to database management tools. By combining the power of React, NestJS, and Electron, we've created a tool that's both beautiful and functional.
+DB Manager represents a modern approach to database management tools. By combining the power of React, NestJS, and Electron, I've created a tool that's both beautiful and functional.
 
 Whether you're managing a single database or juggling multiple projects, DB Manager provides the features and interface you need to work efficiently.
 

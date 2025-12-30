@@ -166,7 +166,7 @@ const routeMetadata = {
   },
   '/about': {
     title: 'About RosettaScript',
-    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven platform.'
+    description: 'Learn more about RosettaScript and my mission. Developer tools made simple, built by a developer for developers. Free, open-source, and community-driven platform.'
   }
 };
 

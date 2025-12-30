@@ -205,7 +205,7 @@ export default function Downloads() {
             Developer Tools & Scripts
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Download our collection of productivity tools. Each tool is designed to help 
+            Download my collection of productivity tools. Each tool is designed to help 
             you work more efficiently and focus on what matters.
           </p>
         </div>

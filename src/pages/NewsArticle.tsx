@@ -26,7 +26,7 @@ export default function NewsArticle() {
         "dateModified": article.date,
         "author": {
           "@type": "Organization",
-          "name": article.author || "RosettaScript Team"
+          "name": article.author || "RosettaScript"
         },
         "publisher": {
           "@type": "Organization",

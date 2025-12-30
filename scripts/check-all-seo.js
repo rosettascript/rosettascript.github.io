@@ -34,7 +34,7 @@ const routeMetadata = {
   },
   '/about': {
     title: 'About RosettaScript',
-    description: 'Learn more about RosettaScript and our mission. Developer tools made simple, built by developers for developers. Free, open-source, and community-driven.'
+    description: 'Learn more about RosettaScript and my mission. Developer tools made simple, built by a developer for developers. Free, open-source, and community-driven.'
   },
   '/school-projects': {
     title: 'School Projects',
@@ -42,7 +42,7 @@ const routeMetadata = {
   },
   '/issues': {
     title: 'Report Issues & Share Feedback',
-    description: 'Report bugs, request features, and share feedback for RosettaScript. Help us improve our developer tools through GitHub Issues.'
+    description: 'Report bugs, request features, and share feedback for RosettaScript. Help me improve my developer tools through GitHub Issues.'
   }
 };
 
