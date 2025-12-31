@@ -5,11 +5,105 @@
 
 import type { OutputMode, FeatureFlags } from './converter';
 
+/**
+ * Rule Metadata Registry
+ * Enables documentation, UI toggles, and SEO content generation
+ */
+export const RULE_META: Record<string, {
+  severity: 'error' | 'warning' | 'info';
+  appliesTo: OutputMode[];
+  docs?: string;
+  description: string;
+}> = {
+  'heading-strong': {
+    severity: 'error',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/heading-strong',
+    description: 'Validates that headings are wrapped in <strong> tags for SEO and styling consistency',
+  },
+  'link-attributes': {
+    severity: 'error',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/link-attributes',
+    description: 'Ensures external links have target="_blank" and rel="noopener noreferrer" for security and UX',
+  },
+  'spacing-rules': {
+    severity: 'warning',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/spacing-rules',
+    description: 'Validates proper spacing elements before headings and special sections for readability',
+  },
+  'key-takeaways': {
+    severity: 'error',
+    appliesTo: ['blogs'],
+    docs: '/docs/key-takeaways',
+    description: 'Removes <em> tags from Key Takeaways section for consistent formatting',
+  },
+  'h1-after-key-takeaways': {
+    severity: 'error',
+    appliesTo: ['blogs'],
+    docs: '/docs/h1-removal',
+    description: 'Removes H1 headings after Key Takeaways section to maintain proper heading hierarchy',
+  },
+  'ol-header-conversion': {
+    severity: 'warning',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/ol-header-conversion',
+    description: 'Converts ordered lists containing headers into manually numbered headings',
+  },
+  'sources-normalization': {
+    severity: 'error',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/sources-normalization',
+    description: 'Normalizes Sources section formatting with proper <strong><em> structure',
+  },
+  'relative-paths': {
+    severity: 'warning',
+    appliesTo: ['blogs', 'shoppables'],
+    docs: '/docs/relative-paths',
+    description: 'Converts absolute URLs to relative paths for better portability',
+  },
+  'list-normalization': {
+    severity: 'warning',
+    appliesTo: ['regular', 'blogs', 'shoppables'],
+    docs: '/docs/list-normalization',
+    description: 'Normalizes spacing after <strong> tags ending with colons in list items',
+  },
+  'basic-structure': {
+    severity: 'error',
+    appliesTo: ['regular'],
+    docs: '/docs/basic-structure',
+    description: 'Validates basic HTML structure and content presence',
+  },
+};
+
+/**
+ * Centralized feature flag check with explicit defaults
+ * Prevents logic drift and makes behavior explicit
+ */
+function isFeatureEnabled(
+  features: FeatureFlags | undefined,
+  key: keyof FeatureFlags,
+  defaultValue: boolean
+): boolean {
+  const value = features?.[key];
+  return value === undefined ? defaultValue : value;
+}
+
 export interface TestResult {
+  /** Stable rule identifier for programmatic access (e.g., 'heading-strong', 'spacing-rules') */
+  ruleId: string;
+  /** Human-readable feature name for display */
   feature: string;
   mode: OutputMode;
   passed: boolean;
   message: string;
+  /** Severity level: error (must fix), warning (should fix), info (informational) */
+  severity?: 'error' | 'warning' | 'info';
+  /** Expected state (what should be true) - enables better UI explanations */
+  expected?: string;
+  /** Actual state (what was found) - enables better UI explanations */
+  actual?: string;
   details?: string[] | null;
 }
 
@@ -24,6 +118,8 @@ export interface ValidationResults {
       blogs: { total: number; passed: number; failed: number };
       shoppables: { total: number; passed: number; failed: number };
     };
+    /** Grouped by feature/rule for easier analysis */
+    byFeature: Record<string, { passed: number; failed: number }>;
   };
 }
 
@@ -38,6 +134,7 @@ class ValidationResultsImpl implements ValidationResults {
       blogs: { total: 0, passed: 0, failed: 0 },
       shoppables: { total: 0, passed: 0, failed: 0 },
     },
+    byFeature: {} as Record<string, { passed: number; failed: number }>,
   };
 
   addResult(result: TestResult) {
@@ -45,65 +142,111 @@ class ValidationResultsImpl implements ValidationResults {
     this.summary.total++;
     this.summary.byMode[result.mode].total++;
 
+    // Track by feature/rule
+    if (!this.summary.byFeature[result.ruleId]) {
+      this.summary.byFeature[result.ruleId] = { passed: 0, failed: 0 };
+    }
+
     if (result.passed) {
       this.summary.passed++;
       this.summary.byMode[result.mode].passed++;
+      this.summary.byFeature[result.ruleId].passed++;
     } else {
       this.summary.failed++;
       this.summary.byMode[result.mode].failed++;
+      this.summary.byFeature[result.ruleId].failed++;
     }
   }
 }
 
-function validateHeadingStrong(html: string, mode: OutputMode): TestResult {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+function validateHeadingStrong(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
 
-  if (mode === 'regular') {
-    const hasStrongWrapped = Array.from(headings).some((h) => {
-      const children = Array.from(h.children);
-      return children.length === 1 && children[0].tagName.toLowerCase() === 'strong';
-    });
+  if (headings.length === 0) {
     return {
+      ruleId: 'heading-strong',
+      feature: 'Heading Strong Tags',
+      mode,
+      passed: true,
+      message: 'No headings found (skipped)',
+      severity: 'info',
+    };
+  }
+
+  // Helper: Check if heading has ONLY a <strong> child (no partial wrapping)
+  // Uses .children to ignore text nodes (whitespace, newlines)
+  function hasOnlyStrongChild(h: Element): boolean {
+    const elementChildren = Array.from(h.children);
+    return (
+      elementChildren.length === 1 &&
+      elementChildren[0].tagName.toLowerCase() === 'strong'
+    );
+  }
+
+  if (mode === 'regular') {
+    const hasStrongWrapped = Array.from(headings).some(hasOnlyStrongChild);
+    return {
+      ruleId: 'heading-strong',
       feature: 'Heading Strong Tags',
       mode,
       passed: !hasStrongWrapped,
       message: hasStrongWrapped
         ? 'Headings should not be wrapped in <strong> in regular mode'
         : 'Headings correctly not wrapped in <strong>',
-    };
-  } else {
-    const allWrapped = Array.from(headings).every((h) => {
-      const children = Array.from(h.children);
-      return children.length === 1 && children[0].tagName.toLowerCase() === 'strong';
-    });
-    const wrappedCount = Array.from(headings).filter((h) => {
-      const children = Array.from(h.children);
-      return children.length === 1 && children[0].tagName.toLowerCase() === 'strong';
-    }).length;
-    return {
-      feature: 'Heading Strong Tags',
-      mode,
-      passed: allWrapped,
-      message: allWrapped
-        ? 'All headings wrapped in <strong>'
-        : `Found ${headings.length - wrappedCount} headings without <strong> wrapper`,
+      severity: hasStrongWrapped ? 'error' : 'info',
     };
   }
+
+  // For blogs and shoppables modes, check feature flag
+  const isEnabled = isFeatureEnabled(features, 'headingStrong', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that headings are NOT wrapped
+    const wrappedHeadings = Array.from(headings).filter(hasOnlyStrongChild);
+    
+    return {
+      ruleId: 'heading-strong',
+      feature: 'Heading Strong Tags',
+      mode,
+      passed: wrappedHeadings.length === 0,
+      message:
+        wrappedHeadings.length === 0
+          ? 'Headings correctly not wrapped in <strong> (feature disabled)'
+          : `Found ${wrappedHeadings.length} heading(s) wrapped in <strong> (should not be wrapped)`,
+      severity: wrappedHeadings.length === 0 ? 'info' : 'error',
+    };
+  }
+
+  // Feature is enabled, validate that all headings ARE wrapped
+  const allWrapped = Array.from(headings).every(hasOnlyStrongChild);
+  const wrappedCount = Array.from(headings).filter(hasOnlyStrongChild).length;
+  const unwrappedCount = headings.length - wrappedCount;
+  
+  return {
+    ruleId: 'heading-strong',
+    feature: 'Heading Strong Tags',
+    mode,
+    passed: allWrapped,
+    message: allWrapped
+      ? 'All headings wrapped in <strong>'
+      : `Found ${unwrappedCount} heading(s) without <strong> wrapper`,
+    severity: allWrapped ? 'info' : 'error',
+    expected: 'All headings wrapped in <strong>',
+    actual: allWrapped ? 'All headings wrapped correctly' : `${unwrappedCount} of ${headings.length} headings missing wrapper`,
+  };
 }
 
-function validateLinkAttributes(html: string, mode: OutputMode): TestResult {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+function validateLinkAttributes(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   const links = doc.querySelectorAll('a[href]');
 
   if (links.length === 0) {
     return {
+      ruleId: 'link-attributes',
       feature: 'Link Attributes',
       mode,
       passed: true,
       message: 'No links found (skipped)',
+      severity: 'info',
     };
   }
 
@@ -112,50 +255,81 @@ function validateLinkAttributes(html: string, mode: OutputMode): TestResult {
       (link) => link.hasAttribute('target') || link.hasAttribute('rel')
     );
     return {
+      ruleId: 'link-attributes',
       feature: 'Link Attributes',
       mode,
       passed: !hasAttributes,
       message: hasAttributes
         ? 'Links should not have target/rel attributes in regular mode'
         : 'Links correctly without target/rel attributes',
-    };
-  } else {
-    const allHaveAttributes = Array.from(links).every((link) => {
-      const hasTarget = link.getAttribute('target') === '_blank';
-      const rel = link.getAttribute('rel') || '';
-      const hasRel = rel.includes('noopener') && rel.includes('noreferrer');
-      return hasTarget && hasRel;
-    });
-
-    const missingCount = Array.from(links).filter((link) => {
-      const hasTarget = link.getAttribute('target') === '_blank';
-      const rel = link.getAttribute('rel') || '';
-      const hasRel = rel.includes('noopener') && rel.includes('noreferrer');
-      return !hasTarget || !hasRel;
-    }).length;
-
-    return {
-      feature: 'Link Attributes',
-      mode,
-      passed: allHaveAttributes,
-      message: allHaveAttributes
-        ? `All ${links.length} links have target="_blank" rel="noopener noreferrer"`
-        : `${missingCount} of ${links.length} links missing required attributes`,
+      severity: hasAttributes ? 'error' : 'info',
     };
   }
+
+  // For blogs and shoppables modes, check feature flag
+  const isEnabled = isFeatureEnabled(features, 'linkAttributes', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that links do NOT have attributes
+    const linksWithAttributes = Array.from(links).filter((link) => {
+      return link.hasAttribute('target') || link.hasAttribute('rel');
+    });
+
+    return {
+      ruleId: 'link-attributes',
+      feature: 'Link Attributes',
+      mode,
+      passed: linksWithAttributes.length === 0,
+      message:
+        linksWithAttributes.length === 0
+          ? 'Links correctly without target/rel attributes (feature disabled)'
+          : `Found ${linksWithAttributes.length} link(s) with target/rel attributes (should not have attributes)`,
+      severity: linksWithAttributes.length === 0 ? 'info' : 'error',
+    };
+  }
+
+  // Feature is enabled, validate that all links HAVE attributes
+  const allHaveAttributes = Array.from(links).every((link) => {
+    const hasTarget = link.getAttribute('target') === '_blank';
+    const rel = link.getAttribute('rel') || '';
+    const hasRel = rel.includes('noopener') && rel.includes('noreferrer');
+    return hasTarget && hasRel;
+  });
+
+  const missingCount = Array.from(links).filter((link) => {
+    const hasTarget = link.getAttribute('target') === '_blank';
+    const rel = link.getAttribute('rel') || '';
+    const hasRel = rel.includes('noopener') && rel.includes('noreferrer');
+    return !hasTarget || !hasRel;
+  }).length;
+
+  return {
+    ruleId: 'link-attributes',
+    feature: 'Link Attributes',
+    mode,
+    passed: allHaveAttributes,
+    message: allHaveAttributes
+      ? `All ${links.length} links have target="_blank" rel="noopener noreferrer"`
+      : `${missingCount} of ${links.length} links missing required attributes`,
+    severity: allHaveAttributes ? 'info' : 'error',
+    expected: `All ${links.length} links have target="_blank" rel="noopener noreferrer"`,
+    actual: allHaveAttributes 
+      ? `All ${links.length} links have required attributes`
+      : `${missingCount} of ${links.length} links missing required attributes`,
+  };
 }
 
-function validateListNormalize(html: string, mode: OutputMode): TestResult {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+function validateListNormalize(doc: Document, mode: OutputMode): TestResult {
   const listItems = doc.querySelectorAll('li');
 
   if (listItems.length === 0) {
     return {
+      ruleId: 'list-normalization',
       feature: 'List Normalization',
       mode,
       passed: true,
       message: 'No list items found (skipped)',
+      severity: 'info',
     };
   }
 
@@ -199,6 +373,7 @@ function validateListNormalize(html: string, mode: OutputMode): TestResult {
   });
 
   return {
+    ruleId: 'list-normalization',
     feature: 'List Normalization',
     mode,
     passed: issues.length === 0,
@@ -206,22 +381,22 @@ function validateListNormalize(html: string, mode: OutputMode): TestResult {
       issues.length === 0
         ? 'All list items with colons are properly normalized'
         : `${issues.length} list normalization issue(s) found`,
+    severity: issues.length === 0 ? 'info' : 'warning',
     details: issues.length > 0 ? issues : null,
   };
 }
 
-function validateKeyTakeaways(html: string, mode: OutputMode): TestResult {
+function validateKeyTakeaways(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   if (mode !== 'blogs') {
     return {
+      ruleId: 'key-takeaways',
       feature: 'Key Takeaways Formatting',
       mode,
       passed: true,
       message: 'Key Takeaways formatting not required for this mode',
+      severity: 'info',
     };
   }
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
 
   const headings = doc.querySelectorAll('h2');
   let keyTakeawaysHeading: Element | null = null;
@@ -236,10 +411,12 @@ function validateKeyTakeaways(html: string, mode: OutputMode): TestResult {
 
   if (!keyTakeawaysHeading) {
     return {
+      ruleId: 'key-takeaways',
       feature: 'Key Takeaways Formatting',
       mode,
       passed: true,
       message: 'No Key Takeaways section found (skipped)',
+      severity: 'info',
     };
   }
 
@@ -250,38 +427,69 @@ function validateKeyTakeaways(html: string, mode: OutputMode): TestResult {
 
   if (!nextSibling || nextSibling.tagName.toLowerCase() !== 'ul') {
     return {
+      ruleId: 'key-takeaways',
       feature: 'Key Takeaways Formatting',
       mode,
       passed: true,
       message: 'Key Takeaways heading found but no list found (skipped)',
+      severity: 'info',
     };
   }
 
   const listItems = nextSibling.querySelectorAll('li');
   const hasEmTags = Array.from(listItems).some((li) => li.querySelector('em'));
 
+  // Check if feature is enabled (enabled by default)
+  const isEnabled = isFeatureEnabled(features, 'keyTakeaways', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that <em> tags are still present
+    const emCount = Array.from(listItems).filter((li) => li.querySelector('em')).length;
+    return {
+      ruleId: 'key-takeaways',
+      feature: 'Key Takeaways Formatting',
+      mode,
+      passed: hasEmTags,
+      message: hasEmTags
+        ? '<em> tags correctly preserved in Key Takeaways (feature disabled)'
+        : 'No <em> tags found in Key Takeaways (should be present when feature is disabled)',
+      severity: hasEmTags ? 'info' : 'error',
+      expected: '<em> tags preserved in Key Takeaways (feature disabled)',
+      actual: hasEmTags 
+        ? `${emCount} list item(s) contain <em> tags`
+        : 'No <em> tags found',
+    };
+  }
+
+  // Feature is enabled, validate that <em> tags are removed
+  const emCount = Array.from(listItems).filter((li) => li.querySelector('em')).length;
   return {
+    ruleId: 'key-takeaways',
     feature: 'Key Takeaways Formatting',
     mode,
     passed: !hasEmTags,
     message: hasEmTags
       ? 'Found <em> tags in Key Takeaways (should be removed)'
       : 'No <em> tags in Key Takeaways (correct)',
+    severity: !hasEmTags ? 'info' : 'error',
+    expected: 'No <em> tags in Key Takeaways',
+    actual: hasEmTags 
+      ? `${emCount} list item(s) contain <em> tags`
+      : 'No <em> tags found',
   };
 }
 
-function validateH1Removal(html: string, mode: OutputMode): TestResult {
+function validateH1AfterKeyTakeaways(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   if (mode !== 'blogs') {
     return {
+      ruleId: 'h1-after-key-takeaways',
       feature: 'H1 Removal',
       mode,
       passed: true,
       message: 'H1 removal not required for this mode',
+      severity: 'info',
     };
   }
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
 
   const headings = doc.querySelectorAll('h2');
   let keyTakeawaysHeading: Element | null = null;
@@ -296,10 +504,12 @@ function validateH1Removal(html: string, mode: OutputMode): TestResult {
 
   if (!keyTakeawaysHeading) {
     return {
+      ruleId: 'h1-after-key-takeaways',
       feature: 'H1 Removal',
       mode,
       passed: true,
       message: 'No Key Takeaways section found (skipped)',
+      severity: 'info',
     };
   }
 
@@ -310,10 +520,12 @@ function validateH1Removal(html: string, mode: OutputMode): TestResult {
 
   if (!nextSibling || nextSibling.tagName.toLowerCase() !== 'ul') {
     return {
+      ruleId: 'h1-after-key-takeaways',
       feature: 'H1 Removal',
       mode,
       passed: true,
       message: 'Key Takeaways heading found but no list found (skipped)',
+      severity: 'info',
     };
   }
 
@@ -329,55 +541,58 @@ function validateH1Removal(html: string, mode: OutputMode): TestResult {
   const elementAfterUl = nodeAfterUl && nodeAfterUl.nodeType === Node.ELEMENT_NODE ? nodeAfterUl as Element : null;
   const hasH1After = elementAfterUl && elementAfterUl.tagName.toLowerCase() === 'h1';
 
+  // Check if feature is enabled (enabled by default)
+  const isEnabled = isFeatureEnabled(features, 'h1Removal', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that H1 is still present
+    return {
+      ruleId: 'h1-after-key-takeaways',
+      feature: 'H1 Removal',
+      mode,
+      passed: hasH1After,
+      message: hasH1After
+        ? 'H1 correctly preserved after Key Takeaways (feature disabled)'
+        : 'No H1 found after Key Takeaways (should be present when feature is disabled)',
+      severity: hasH1After ? 'info' : 'error',
+      expected: 'H1 preserved after Key Takeaways (feature disabled)',
+      actual: hasH1After ? 'H1 found after Key Takeaways' : 'No H1 found',
+    };
+  }
+
+  // Feature is enabled, validate that H1 is removed
   return {
+    ruleId: 'h1-after-key-takeaways',
     feature: 'H1 Removal',
     mode,
     passed: !hasH1After,
     message: hasH1After
       ? 'Found H1 after Key Takeaways (should be removed)'
       : 'No H1 after Key Takeaways (correct)',
+    severity: !hasH1After ? 'info' : 'error',
+    expected: 'No H1 after Key Takeaways',
+    actual: hasH1After ? 'H1 found after Key Takeaways' : 'No H1 found',
   };
 }
 
-function validateSpacing(html: string, mode: OutputMode, features?: FeatureFlags): TestResult {
-  // For shoppables mode, check if spacing is enabled
-  if (mode === 'shoppables') {
-    if (features?.spacing === true) {
-      // Spacing is enabled, validate that spacing is applied
-      // Continue to validation logic below
-    } else {
-      // Spacing is disabled (default), validate that spacing is NOT applied
-      return {
-        feature: 'Spacing Rules',
-        mode,
-        passed: true,
-        message: 'Spacing rules correctly disabled in Shoppables mode',
-      };
-    }
-  }
-  
-  if (mode !== 'blogs' && mode !== 'shoppables') {
-    return {
-      feature: 'Spacing Rules',
-      mode,
-      passed: true,
-      message: 'Spacing rules not required for this mode',
-    };
-  }
+/**
+ * Helper: Check if an element is a spacing element (<p>&nbsp;</p>)
+ * Handles single or multiple &nbsp; entities (some editors produce multiple)
+ */
+function isSpacingElement(element: Element | null): boolean {
+  if (!element || element.tagName.toLowerCase() !== 'p') return false;
+  const html = element.innerHTML.trim();
+  // Match single or multiple &nbsp; or \u00A0 (more forgiving for real-world content)
+  return /^(&nbsp;|\u00A0)+$/.test(html);
+}
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-
-  function isSpacingElement(element: Element | null): boolean {
-    if (!element || element.tagName.toLowerCase() !== 'p') return false;
-    const html = element.innerHTML.trim();
-    return html === '&nbsp;' || html === '\u00A0';
-  }
-
-  const issues: string[] = [];
-
+/**
+ * Helper: Validate spacing after Key Takeaways section
+ */
+function validateKeyTakeawaySpacing(doc: Document, issues: string[]): void {
   const headings = doc.querySelectorAll('h2');
   let keyTakeawaysHeading: Element | null = null;
+  
   for (let heading of Array.from(headings)) {
     const text = heading.textContent?.trim() || '';
     if (text.toLowerCase().includes('key takeaways')) {
@@ -398,55 +613,83 @@ function validateSpacing(html: string, mode: OutputMode, features?: FeatureFlags
       }
     }
   }
+}
 
+/**
+ * Helper: Validate spacing before headings (with FAQ exception)
+ */
+function validateHeadingSpacing(doc: Document, issues: string[]): void {
   const allHeadings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
   let foundFaqSection = false;
   let isFirstFaqQuestion = false;
 
   allHeadings.forEach((heading) => {
     const text = heading.textContent?.trim().toLowerCase() || '';
+    const tagName = heading.tagName.toLowerCase();
 
     if (text.includes('key takeaways')) {
       return;
     }
 
-    if (text.includes('frequently asked questions') || text.includes('faq')) {
+    // Reset FAQ state when encountering a higher-level heading (prevents state bleed across multiple FAQ sections)
+    if (tagName === 'h1' || tagName === 'h2') {
+      foundFaqSection = false;
+      isFirstFaqQuestion = false;
+    }
+
+    // More robust FAQ detection (handles "FAQs", "Frequently Asked Questions (FAQ)", etc.)
+    if (/faq|frequently asked/i.test(text)) {
       foundFaqSection = true;
       isFirstFaqQuestion = true;
     }
 
-    if (foundFaqSection && isFirstFaqQuestion && heading.tagName.toLowerCase() === 'h3') {
+    if (foundFaqSection && isFirstFaqQuestion && tagName === 'h3') {
       isFirstFaqQuestion = false;
       return;
     }
 
     const prevSibling = heading.previousElementSibling;
+    // Skip first heading in document (no previous sibling)
+    if (!prevSibling) {
+      return;
+    }
+
     if (!isSpacingElement(prevSibling)) {
       issues.push(`Missing spacing before heading: "${heading.textContent?.trim().substring(0, 30)}..."`);
     }
   });
+}
 
+/**
+ * Helper: Validate spacing before special paragraphs (Read More, Sources, Disclaimer, Alt Image Text)
+ */
+function validateSpecialParagraphSpacing(doc: Document, issues: string[]): void {
   const paragraphs = doc.querySelectorAll('p');
+  
   paragraphs.forEach((p) => {
     const text = p.textContent?.trim().toLowerCase() || '';
+    
     if (text.includes('read also:') || text.includes('read more:') || text.includes('see more:')) {
       const prevSibling = p.previousElementSibling;
       if (!isSpacingElement(prevSibling)) {
         issues.push(`Missing spacing before "${text.substring(0, 20)}..."`);
       }
     }
+    
     if (text.startsWith('sources:')) {
       const prevSibling = p.previousElementSibling;
       if (!isSpacingElement(prevSibling)) {
         issues.push('Missing spacing before "Sources:" section');
       }
     }
+    
     if (text.startsWith('disclaimer:')) {
       const prevSibling = p.previousElementSibling;
       if (!isSpacingElement(prevSibling)) {
         issues.push('Missing spacing before "Disclaimer:" section');
       }
     }
+    
     if (text.includes('alt image text:')) {
       const prevSibling = p.previousElementSibling;
       if (!isSpacingElement(prevSibling)) {
@@ -454,59 +697,168 @@ function validateSpacing(html: string, mode: OutputMode, features?: FeatureFlags
       }
     }
   });
+}
+
+function validateSpacing(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
+  if (mode !== 'blogs' && mode !== 'shoppables') {
+    return {
+      ruleId: 'spacing-rules',
+      feature: 'Spacing Rules',
+      mode,
+      passed: true,
+      message: 'Spacing rules not required for this mode',
+      severity: 'info',
+    };
+  }
+
+  // Check if spacing is enabled
+  // For blogs: enabled by default (undefined !== false), can be disabled (false)
+  // For shoppables: disabled by default (undefined !== true), enabled only when true
+  const isSpacingEnabled = mode === 'blogs' 
+    ? isFeatureEnabled(features, 'spacing', true)
+    : isFeatureEnabled(features, 'spacing', false);
+
+  // If spacing is disabled, validate that NO spacing elements exist
+  if (!isSpacingEnabled) {
+    const allParagraphs = doc.querySelectorAll('p');
+    const spacingElements: string[] = [];
+    
+    allParagraphs.forEach((p) => {
+      if (isSpacingElement(p)) {
+        spacingElements.push('Found spacing element that should not be present');
+      }
+    });
+
+    return {
+      ruleId: 'spacing-rules',
+      feature: 'Spacing Rules',
+      mode,
+      passed: spacingElements.length === 0,
+      message:
+        spacingElements.length === 0
+          ? 'Spacing rules correctly disabled (no spacing elements found)'
+          : `${spacingElements.length} spacing element(s) found (should not be present)`,
+      severity: spacingElements.length === 0 ? 'info' : 'error',
+      expected: 'No spacing elements present (feature disabled)',
+      actual: spacingElements.length === 0 
+        ? 'No spacing elements found'
+        : `${spacingElements.length} spacing element(s) found`,
+      details: spacingElements.length > 0 ? spacingElements : null,
+    };
+  }
+
+  // Spacing is enabled, validate that spacing IS applied correctly
+  const issues: string[] = [];
+  
+  validateKeyTakeawaySpacing(doc, issues);
+  validateHeadingSpacing(doc, issues);
+  validateSpecialParagraphSpacing(doc, issues);
 
   return {
+    ruleId: 'spacing-rules',
     feature: 'Spacing Rules',
     mode,
     passed: issues.length === 0,
     message:
       issues.length === 0 ? 'All spacing rules satisfied' : `${issues.length} spacing issues found`,
+    severity: issues.length === 0 ? 'info' : 'warning',
+    expected: 'All spacing rules satisfied',
+    actual: issues.length === 0 
+      ? 'All spacing rules satisfied'
+      : `${issues.length} spacing issue(s) found`,
     details: issues.length > 0 ? issues : null,
   };
 }
 
-function validateOlHeaderConversion(html: string, mode: OutputMode): TestResult {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+function validateOlHeaderConversion(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   const olElements = doc.querySelectorAll('ol');
 
   if (olElements.length === 0) {
     return {
+      ruleId: 'ol-header-conversion',
       feature: 'OL Header Conversion',
       mode,
       passed: true,
       message: 'No <ol> elements found (skipped)',
+      severity: 'info',
     };
   }
 
-  const headerLists = Array.from(olElements).filter((ol) => {
+  // Helper function to check if an ol is a header list
+  function isHeaderList(ol: Element): boolean {
     const listItems = ol.querySelectorAll(':scope > li');
     if (listItems.length === 0) return false;
 
     return Array.from(listItems).every((li) => {
-      const children = Array.from(li.childNodes);
-      const elementChildren = children.filter((node) => node.nodeType === 1);
-      if (elementChildren.length !== 1) return false;
-
-      const strongTag = elementChildren[0] as Element;
-      if (strongTag.tagName.toLowerCase() !== 'strong') return false;
-
-      const headingChildren = Array.from(strongTag.children).filter((node) =>
-        /^h[1-6]$/i.test(node.tagName)
-      );
-      return headingChildren.length === 1;
+      // Check for <strong> wrapping heading: <li><strong><hX>...</hX></strong></li>
+      const strongTag = li.querySelector(':scope > strong');
+      if (strongTag) {
+        const headingChildren = Array.from(strongTag.children).filter((node) =>
+          /^h[1-6]$/i.test(node.tagName)
+        );
+        if (headingChildren.length === 1) {
+          return true;
+        }
+      }
+      
+      // Check for direct heading: <li><hX><strong>...</strong></hX></li>
+      const directHeading = li.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6');
+      if (directHeading) {
+        const strongInHeading = directHeading.querySelector(':scope > strong');
+        return strongInHeading !== null;
+      }
+      
+      return false;
     });
-  });
+  }
+
+  const headerLists = Array.from(olElements).filter(isHeaderList);
 
   if (headerLists.length === 0) {
     return {
+      ruleId: 'ol-header-conversion',
       feature: 'OL Header Conversion',
       mode,
       passed: true,
       message: 'No header lists found (skipped)',
+      severity: 'info',
     };
   }
 
+  // Check if feature is enabled (enabled by default)
+  const isEnabled = isFeatureEnabled(features, 'olHeaderConversion', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that header lists are NOT converted (still exist as <ol>)
+    // Check if any header lists were converted (would appear as numbered headings)
+    const allHeadings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const numberedHeadings = Array.from(allHeadings).filter((h) => {
+      const text = h.textContent?.trim() || '';
+      // Check if heading starts with a number pattern (handles variations: "1. ", "1)", "1 -", "01.")
+      return /^\d+[\.\)\-]\s/.test(text);
+    });
+
+    // If we have header lists but no numbered headings, that's good (not converted)
+    // If we have numbered headings, that's bad (converted when shouldn't be)
+    return {
+      ruleId: 'ol-header-conversion',
+      feature: 'OL Header Conversion',
+      mode,
+      passed: numberedHeadings.length === 0,
+      message:
+        numberedHeadings.length === 0
+          ? `Header lists correctly preserved as <ol> elements (feature disabled)`
+          : `Found ${numberedHeadings.length} numbered heading(s) (should not be converted when feature is disabled)`,
+      severity: numberedHeadings.length === 0 ? 'info' : 'error',
+      expected: 'Header lists preserved as <ol> elements (feature disabled)',
+      actual: numberedHeadings.length === 0 
+        ? `${headerLists.length} header list(s) preserved as <ol>`
+        : `${numberedHeadings.length} numbered heading(s) found (should not be converted)`,
+    };
+  }
+
+  // Feature is enabled, validate that header lists ARE converted
+  // Check for unconverted lists (header lists that are not followed by another header list)
   const unconvertedLists = headerLists.filter((ol) => {
     let nextSibling = ol.nextElementSibling;
     while (nextSibling) {
@@ -517,29 +869,16 @@ function validateOlHeaderConversion(html: string, mode: OutputMode): TestResult 
           continue;
         }
       }
-      if (nextSibling.tagName.toLowerCase() === 'ol') {
-        const listItems = nextSibling.querySelectorAll(':scope > li');
-        const isHeaderList = Array.from(listItems).every((li) => {
-          const children = Array.from(li.childNodes);
-          const elementChildren = children.filter((node) => node.nodeType === 1);
-          if (elementChildren.length !== 1) return false;
-          const strongTag = elementChildren[0] as Element;
-          if (strongTag.tagName.toLowerCase() !== 'strong') return false;
-          const headingChildren = Array.from(strongTag.children).filter((node) =>
-            /^h[1-6]$/i.test(node.tagName)
-          );
-          return headingChildren.length === 1;
-        });
-        if (isHeaderList) {
-          return false;
-        }
+      if (nextSibling.tagName.toLowerCase() === 'ol' && isHeaderList(nextSibling)) {
+        return false; // Followed by another header list, so this one should remain
       }
       break;
     }
-    return true;
+    return true; // Not followed by header list, should be converted
   });
 
   return {
+    ruleId: 'ol-header-conversion',
     feature: 'OL Header Conversion',
     mode,
     passed: unconvertedLists.length === 0,
@@ -547,12 +886,15 @@ function validateOlHeaderConversion(html: string, mode: OutputMode): TestResult 
       unconvertedLists.length === 0
         ? 'All header lists correctly converted'
         : `${unconvertedLists.length} header list(s) should be converted but remain as <ol>`,
+    severity: unconvertedLists.length === 0 ? 'info' : 'warning',
+    expected: 'All header lists converted to numbered headings',
+    actual: unconvertedLists.length === 0 
+      ? `All ${headerLists.length} header list(s) converted`
+      : `${unconvertedLists.length} of ${headerLists.length} header list(s) remain unconverted`,
   };
 }
 
-function validateSourcesNormalize(html: string, mode: OutputMode): TestResult {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
+function validateSourcesNormalize(doc: Document, mode: OutputMode, features?: FeatureFlags): TestResult {
   const paragraphs = doc.querySelectorAll('p');
 
   let sourcesParagraph: Element | null = null;
@@ -566,13 +908,92 @@ function validateSourcesNormalize(html: string, mode: OutputMode): TestResult {
 
   if (!sourcesParagraph) {
     return {
+      ruleId: 'sources-normalization',
       feature: 'Sources Normalization',
       mode,
       passed: true,
       message: 'No Sources section found (skipped)',
+      severity: 'info',
     };
   }
 
+  let nextSibling = sourcesParagraph.nextElementSibling;
+  while (nextSibling && nextSibling.tagName.toLowerCase() !== 'ol') {
+    nextSibling = nextSibling.nextElementSibling;
+  }
+
+  if (!nextSibling || nextSibling.tagName.toLowerCase() !== 'ol') {
+    return {
+      ruleId: 'sources-normalization',
+      feature: 'Sources Normalization',
+      mode,
+      passed: true,
+      message: 'Sources paragraph found but no <ol> list found (skipped)',
+      severity: 'info',
+    };
+  }
+
+  const listItems = nextSibling.querySelectorAll('li');
+  if (listItems.length === 0) {
+    return {
+      ruleId: 'sources-normalization',
+      feature: 'Sources Normalization',
+      mode,
+      passed: true,
+      message: 'Sources paragraph found but <ol> has no items (skipped)',
+      severity: 'info',
+    };
+  }
+
+  // Check if feature is enabled (enabled by default)
+  const isEnabled = isFeatureEnabled(features, 'sourcesNormalize', true);
+
+  if (!isEnabled) {
+    // Feature is disabled, validate that sources are NOT normalized
+    const issues: string[] = [];
+
+    // Check paragraph formatting - should NOT have <strong><em> structure
+    const strongTag = sourcesParagraph.querySelector('strong');
+    if (strongTag) {
+      const emTag = strongTag.querySelector('em');
+      if (emTag) {
+        const emText = emTag.textContent?.trim().toLowerCase() || '';
+        if (emText === 'sources:') {
+          issues.push('Sources paragraph is normalized (should not have <strong><em> structure)');
+        }
+      }
+    }
+
+    // Check list items - should NOT be wrapped in <em>
+    listItems.forEach((li, index) => {
+      if (li.children.length === 1 && li.children[0].tagName.toLowerCase() === 'em') {
+        const hasTextOutside = Array.from(li.childNodes).some(
+          (node) =>
+            node.nodeType === Node.TEXT_NODE &&
+            node !== li.children[0] &&
+            (node as Text).textContent?.trim()
+        );
+        if (!hasTextOutside) {
+          issues.push(`List item ${index + 1} is wrapped in <em> tag (should not be normalized)`);
+        }
+      }
+    });
+
+    return {
+      ruleId: 'sources-normalization',
+      feature: 'Sources Normalization',
+      mode,
+      passed: issues.length === 0,
+      message:
+        issues.length === 0
+          ? `Sources section correctly not normalized (feature disabled)`
+          : `${issues.length} normalization issue(s) found: ${issues.join('; ')}`,
+      severity: issues.length === 0 ? 'info' : 'error',
+      details: issues.length > 0 ? issues : null,
+    };
+  }
+
+  // Feature is enabled, validate that sources ARE normalized
   const issues: string[] = [];
 
   const strongTag = sourcesParagraph.querySelector('strong');
@@ -592,36 +1013,6 @@ function validateSourcesNormalize(html: string, mode: OutputMode): TestResult {
     }
   }
 
-  let nextSibling = sourcesParagraph.nextElementSibling;
-  while (nextSibling && nextSibling.tagName.toLowerCase() !== 'ol') {
-    nextSibling = nextSibling.nextElementSibling;
-  }
-
-  if (!nextSibling || nextSibling.tagName.toLowerCase() !== 'ol') {
-    return {
-      feature: 'Sources Normalization',
-      mode,
-      passed: issues.length === 0,
-      message:
-        issues.length === 0
-          ? 'Sources paragraph formatted correctly but no <ol> list found'
-          : issues.join('; '),
-    };
-  }
-
-  const listItems = nextSibling.querySelectorAll('li');
-  if (listItems.length === 0) {
-    return {
-      feature: 'Sources Normalization',
-      mode,
-      passed: issues.length === 0,
-      message:
-        issues.length === 0
-          ? 'Sources paragraph formatted correctly but <ol> has no items'
-          : issues.join('; '),
-    };
-  }
-
   listItems.forEach((li, index) => {
     if (li.children.length === 1 && li.children[0].tagName.toLowerCase() === 'em') {
       const hasTextOutside = Array.from(li.childNodes).some(
@@ -639,6 +1030,7 @@ function validateSourcesNormalize(html: string, mode: OutputMode): TestResult {
   });
 
   return {
+    ruleId: 'sources-normalization',
     feature: 'Sources Normalization',
     mode,
     passed: issues.length === 0,
@@ -646,39 +1038,63 @@ function validateSourcesNormalize(html: string, mode: OutputMode): TestResult {
       issues.length === 0
         ? `Sources section correctly formatted (${listItems.length} item(s))`
         : `${issues.length} issue(s) found: ${issues.join('; ')}`,
+    severity: issues.length === 0 ? 'info' : 'error',
+    expected: `Sources section formatted with <strong><em>Sources:</em></strong> and all list items wrapped in <em>`,
+    actual: issues.length === 0 
+      ? `Sources section correctly formatted (${listItems.length} item(s))`
+      : `${issues.length} formatting issue(s) found`,
     details: issues.length > 0 ? issues : null,
   };
 }
 
-function validateRelativePaths(html: string, mode: OutputMode, features: FeatureFlags): TestResult {
-  if (!features.relativePaths) {
+function validateRelativePaths(doc: Document, mode: OutputMode, features: FeatureFlags): TestResult {
+  if (!isFeatureEnabled(features, 'relativePaths', false)) {
     return {
+      ruleId: 'relative-paths',
       feature: 'Relative Paths',
       mode,
       passed: true,
       message: 'Relative paths feature disabled (skipped)',
+      severity: 'info',
     };
   }
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
   const links = doc.querySelectorAll('a[href]');
 
   if (links.length === 0) {
     return {
+      ruleId: 'relative-paths',
       feature: 'Relative Paths',
       mode,
       passed: true,
       message: 'No links found (skipped)',
+      severity: 'info',
     };
   }
 
+  // Check for absolute URLs (includes protocol-relative URLs like //cdn.example.com)
+  // Exclude special link types: anchors, mail links, tel links, javascript, and data URIs
   const absoluteUrls = Array.from(links).filter((link) => {
     const href = link.getAttribute('href');
-    return href && href.includes('://');
+    if (!href) return false;
+    
+    // Skip special link types that shouldn't be converted to relative paths
+    if (
+      href.startsWith('#') ||
+      href.startsWith('mailto:') ||
+      href.startsWith('tel:') ||
+      href.startsWith('javascript:') ||
+      href.startsWith('data:')
+    ) {
+      return false;
+    }
+    
+    // Check for protocol-relative URLs (//example.com) or full URLs (http://example.com)
+    return href.includes('://') || href.startsWith('//');
   });
 
   return {
+    ruleId: 'relative-paths',
     feature: 'Relative Paths',
     mode,
     passed: absoluteUrls.length === 0,
@@ -686,26 +1102,31 @@ function validateRelativePaths(html: string, mode: OutputMode, features: Feature
       absoluteUrls.length === 0
         ? 'All URLs converted to relative paths'
         : `${absoluteUrls.length} absolute URL(s) found (should be converted)`,
+    severity: absoluteUrls.length === 0 ? 'info' : 'warning',
+    expected: 'All URLs converted to relative paths',
+    actual: absoluteUrls.length === 0 
+      ? `All ${links.length} link(s) use relative paths`
+      : `${absoluteUrls.length} of ${links.length} link(s) use absolute URLs`,
   };
 }
 
-function validateBasicStructure(html: string, mode: OutputMode): TestResult {
+function validateBasicStructure(doc: Document, mode: OutputMode): TestResult {
   if (mode !== 'regular') {
     return {
+      ruleId: 'basic-structure',
       feature: 'Basic HTML Structure',
       mode,
       passed: true,
       message: 'Basic structure validation not required for this mode',
+      severity: 'info',
     };
   }
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
 
   const hasContent = doc.body && doc.body.innerHTML.trim().length > 0;
   const hasValidElements = doc.body && doc.body.children.length > 0;
 
   return {
+    ruleId: 'basic-structure',
     feature: 'Basic HTML Structure',
     mode,
     passed: hasContent && hasValidElements,
@@ -713,65 +1134,44 @@ function validateBasicStructure(html: string, mode: OutputMode): TestResult {
       hasContent && hasValidElements
         ? 'HTML structure is valid'
         : 'HTML structure is invalid or empty',
+    severity: hasContent && hasValidElements ? 'info' : 'error',
   };
 }
 
 export function validateMode(html: string, mode: OutputMode, features: FeatureFlags): ValidationResults {
+  // Parse DOM once and pass Document to all validators (performance optimization)
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
   const results = new ValidationResultsImpl();
 
   if (mode === 'regular') {
-    results.addResult(validateBasicStructure(html, mode));
-    results.addResult(validateHeadingStrong(html, mode));
-    results.addResult(validateLinkAttributes(html, mode));
-    results.addResult(validateListNormalize(html, mode));
+    results.addResult(validateBasicStructure(doc, mode));
+    results.addResult(validateHeadingStrong(doc, mode, features));
+    results.addResult(validateLinkAttributes(doc, mode, features));
+    results.addResult(validateListNormalize(doc, mode));
   }
 
   if (mode === 'blogs') {
-    results.addResult(validateHeadingStrong(html, mode));
-    results.addResult(validateKeyTakeaways(html, mode));
-    results.addResult(validateH1Removal(html, mode));
-    results.addResult(validateLinkAttributes(html, mode));
-    results.addResult(validateSpacing(html, mode, features));
-    results.addResult(validateOlHeaderConversion(html, mode));
-    results.addResult(validateRelativePaths(html, mode, features));
-    results.addResult(validateListNormalize(html, mode));
-    results.addResult(validateSourcesNormalize(html, mode));
+    results.addResult(validateHeadingStrong(doc, mode, features));
+    results.addResult(validateKeyTakeaways(doc, mode, features));
+    results.addResult(validateH1AfterKeyTakeaways(doc, mode, features));
+    results.addResult(validateLinkAttributes(doc, mode, features));
+    results.addResult(validateSpacing(doc, mode, features));
+    results.addResult(validateOlHeaderConversion(doc, mode, features));
+    results.addResult(validateRelativePaths(doc, mode, features));
+    results.addResult(validateListNormalize(doc, mode));
+    results.addResult(validateSourcesNormalize(doc, mode, features));
   }
 
   if (mode === 'shoppables') {
-    results.addResult(validateHeadingStrong(html, mode));
-    results.addResult(validateLinkAttributes(html, mode));
-    results.addResult(validateOlHeaderConversion(html, mode));
-    results.addResult(validateRelativePaths(html, mode, features));
-    results.addResult(validateListNormalize(html, mode));
-    results.addResult(validateSourcesNormalize(html, mode));
-    const keyTakeawaysResult = validateKeyTakeaways(html, mode);
-    results.addResult({
-      feature: 'Key Takeaways Formatting (should NOT be applied)',
-      mode,
-      passed: keyTakeawaysResult.passed || keyTakeawaysResult.message.includes('not required'),
-      message: 'Key Takeaways formatting correctly not applied in Shoppables mode',
-    });
-    const h1RemovalResult = validateH1Removal(html, mode);
-    results.addResult({
-      feature: 'H1 Removal (should NOT be applied)',
-      mode,
-      passed: h1RemovalResult.passed || h1RemovalResult.message.includes('not required'),
-      message: 'H1 removal correctly not applied in Shoppables mode',
-    });
-    const spacingResult = validateSpacing(html, mode, features);
-    if (features?.spacing === true) {
-      // Spacing is enabled, validate that spacing is applied correctly
-      results.addResult(spacingResult);
-    } else {
-      // Spacing is disabled (default), validate that spacing is NOT applied
-      results.addResult({
-        feature: 'Spacing Rules (should NOT be applied)',
-        mode,
-        passed: spacingResult.passed || spacingResult.message.includes('not required') || spacingResult.message.includes('correctly disabled'),
-        message: 'Spacing rules correctly not applied in Shoppables mode',
-      });
-    }
+    results.addResult(validateHeadingStrong(doc, mode, features));
+    results.addResult(validateLinkAttributes(doc, mode, features));
+    results.addResult(validateOlHeaderConversion(doc, mode, features));
+    results.addResult(validateRelativePaths(doc, mode, features));
+    results.addResult(validateListNormalize(doc, mode));
+    results.addResult(validateSourcesNormalize(doc, mode, features));
+    results.addResult(validateSpacing(doc, mode, features));
   }
 
   return results;
