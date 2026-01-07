@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEO } from "@/components/SEO";
+import { FAQ } from "@/components/FAQ";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -488,6 +489,9 @@ export default function Index() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* CTA Section */}
       <section className="py-12 bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10">
