@@ -18,7 +18,7 @@ export default function ImageToolPage() {
       <SEO
         title="Image Tool - Compress, Convert, Resize"
         description="Free online image tool. Compress images, convert formats (PNG, JPEG, WebP), resize images, and generate favicons instantly. All processing happens in your browser - complete privacy."
-        canonical="https://rosettascript.github.io/tools/image-tool"
+        canonical="https://rosettascript.github.io/tools/image-tool/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

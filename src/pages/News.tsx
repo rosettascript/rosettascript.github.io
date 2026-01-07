@@ -78,7 +78,7 @@ export default function News() {
       <SEO
         title="Latest News & Updates"
         description="Latest updates, announcements, and feature highlights from RosettaScript. Stay informed about new tools, bug fixes, and improvements."
-        canonical="https://rosettascript.github.io/news"
+        canonical="https://rosettascript.github.io/news/"
         structuredData={{
           type: "WebPage",
         }}

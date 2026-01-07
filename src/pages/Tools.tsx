@@ -165,7 +165,7 @@ export default function Tools() {
       <SEO
         title="Free Online Developer Tools - 20+ Tools"
         description="Browse 20+ free online developer tools. Word to HTML converter, JSON formatter, Base64 encoder, hash generator, web scraper, and more. No signup required."
-        canonical="https://rosettascript.github.io/tools"
+        canonical="https://rosettascript.github.io/tools/"
         structuredData={{
           type: "WebPage",
         }}

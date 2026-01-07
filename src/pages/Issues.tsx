@@ -36,7 +36,7 @@ export default function Issues() {
       <SEO
         title="Report Issues & Share Feedback"
         description="Report bugs, request features, and share feedback for RosettaScript. Help me improve my developer tools through GitHub Issues."
-        canonical="https://rosettascript.github.io/issues"
+        canonical="https://rosettascript.github.io/issues/"
         structuredData={{
           type: "WebPage",
         }}

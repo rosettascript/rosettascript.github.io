@@ -18,7 +18,7 @@ export default function WebScraper() {
       <SEO
         title="Free Web Scraper - Extract Data Online"
         description="Extract data from any website using CSS selectors. Free online web scraper tool. No coding required, runs entirely in your browser. Perfect for data collection and research."
-        canonical="https://rosettascript.github.io/tools/web-scraper"
+        canonical="https://rosettascript.github.io/tools/web-scraper/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

@@ -70,6 +70,29 @@ export function SEO({
   // Truncate description
   const truncatedDescription = truncateDescription(description, 155);
 
+  // Normalize canonical URL to ensure trailing slash for directory URLs
+  // This prevents canonical mismatch between static HTML and rendered HTML
+  const normalizeCanonical = (url: string | undefined): string | undefined => {
+    if (!url) return undefined;
+    
+    // Don't modify homepage or URLs with file extensions
+    if (url === "https://rosettascript.github.io" || url === "https://rosettascript.github.io/") {
+      return "https://rosettascript.github.io/";
+    }
+    
+    // Check if URL has a file extension (don't add slash to files)
+    const hasFileExtension = /\.(xml|txt|html|json|ico|png|jpg|jpeg|svg|webmanifest|js|css|woff|woff2|ttf|eot|wasm|pdf|zip)$/i.test(url);
+    
+    if (hasFileExtension) {
+      return url; // Don't add slash to files
+    }
+    
+    // Add trailing slash if missing (for directory URLs)
+    return url.endsWith('/') ? url : `${url}/`;
+  };
+
+  const normalizedCanonical = normalizeCanonical(canonical);
+
   useEffect(() => {
     // Update document title only if different (prevents unnecessary DOM changes)
     if (document.title !== fullTitle) {
@@ -110,7 +133,7 @@ export function SEO({
     setMetaTag("property", "og:type", ogType);
     setMetaTag("property", "og:site_name", siteName);
     if (ogImage) setMetaTag("property", "og:image", ogImage);
-    if (canonical) setMetaTag("property", "og:url", canonical);
+    if (normalizedCanonical) setMetaTag("property", "og:url", normalizedCanonical);
 
     // Twitter Card tags
     setMetaTag("name", "twitter:card", "summary_large_image");
@@ -129,18 +152,19 @@ export function SEO({
     }
 
     // Canonical link - only update if different
+    // Use normalized canonical URL to ensure trailing slash consistency
     let canonicalLink = document.querySelector(
       'link[rel="canonical"]'
     ) as HTMLLinkElement;
-    if (canonical) {
+    if (normalizedCanonical) {
       if (!canonicalLink) {
         canonicalLink = document.createElement("link");
         canonicalLink.rel = "canonical";
         document.head.appendChild(canonicalLink);
-        canonicalLink.href = canonical;
-      } else if (canonicalLink.href !== canonical) {
+        canonicalLink.href = normalizedCanonical;
+      } else if (canonicalLink.href !== normalizedCanonical) {
         // Only update if href is different (prevents unnecessary DOM changes)
-        canonicalLink.href = canonical;
+        canonicalLink.href = normalizedCanonical;
       }
     }
 
@@ -175,7 +199,7 @@ export function SEO({
         jsonLd["@type"] = "SoftwareApplication";
         jsonLd.name = title.replace(` | ${siteName}`, "");
         jsonLd.description = truncatedDescription;
-        jsonLd.url = canonical || baseUrl;
+        jsonLd.url = normalizedCanonical || baseUrl;
         jsonLd.datePublished = new Date().toISOString().split('T')[0];
         jsonLd.dateModified = new Date().toISOString().split('T')[0];
         jsonLd.applicationCategory = structuredData.applicationCategory || "DeveloperApplication";
@@ -190,7 +214,7 @@ export function SEO({
         jsonLd["@type"] = "Article";
         jsonLd.headline = truncateTitle(title, 110); // Article headlines can be longer
         jsonLd.description = truncatedDescription;
-        jsonLd.url = canonical || baseUrl;
+        jsonLd.url = normalizedCanonical || baseUrl;
         if (article.publishedTime) {
           jsonLd.datePublished = article.publishedTime;
           jsonLd.dateModified = article.publishedTime;
@@ -212,7 +236,7 @@ export function SEO({
         jsonLd["@type"] = "WebPage";
         jsonLd.name = truncateTitle(title, 60);
         jsonLd.description = truncatedDescription;
-        jsonLd.url = canonical || baseUrl;
+        jsonLd.url = normalizedCanonical || baseUrl;
         jsonLd.datePublished = today;
         jsonLd.dateModified = today;
       }
@@ -225,7 +249,7 @@ export function SEO({
       structuredDataScript.textContent = JSON.stringify(jsonLd);
     } else {
       // Default WebSite schema for homepage
-      if (!canonical || canonical === baseUrl || canonical === `${baseUrl}/`) {
+      if (!normalizedCanonical || normalizedCanonical === baseUrl || normalizedCanonical === `${baseUrl}/`) {
         if (!structuredDataScript) {
           structuredDataScript = document.createElement("script");
           structuredDataScript.type = "application/ld+json";
@@ -257,7 +281,7 @@ export function SEO({
     return () => {
       document.title = siteName;
     };
-  }, [fullTitle, truncatedDescription, canonical, ogImage, ogType, article, structuredData]);
+  }, [fullTitle, truncatedDescription, normalizedCanonical, ogImage, ogType, article, structuredData]);
 
   return null;
 }

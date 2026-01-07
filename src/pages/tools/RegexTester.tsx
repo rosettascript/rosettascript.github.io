@@ -18,7 +18,7 @@ export default function RegexTester() {
       <SEO
         title="Regex Tester - Test Regular Expressions"
         description="Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. Free online regex tester. Perfect for developers validating patterns and testing regex."
-        canonical="https://rosettascript.github.io/tools/regex-tester"
+        canonical="https://rosettascript.github.io/tools/regex-tester/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

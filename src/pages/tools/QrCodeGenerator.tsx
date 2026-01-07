@@ -18,7 +18,7 @@ export default function QrCodeGenerator() {
       <SEO
         title="QR Code Generator - Free Online Creator"
         description="Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more instantly. Customizable size, downloadable PNG format. Free online QR code generator. Perfect for marketing and events."
-        canonical="https://rosettascript.github.io/tools/qr-code-generator"
+        canonical="https://rosettascript.github.io/tools/qr-code-generator/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

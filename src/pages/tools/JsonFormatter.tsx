@@ -18,7 +18,7 @@ export default function JsonFormatter() {
       <SEO
         title="JSON Formatter & Validator - Free Online"
         description="Format, minify, and validate JSON data with customizable indentation and syntax highlighting. Free online JSON formatter. Detect errors and make JSON readable instantly."
-        canonical="https://rosettascript.github.io/tools/json-formatter"
+        canonical="https://rosettascript.github.io/tools/json-formatter/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

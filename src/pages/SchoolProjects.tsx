@@ -75,7 +75,7 @@ export default function SchoolProjects() {
       <SEO
         title="School Projects"
         description="Ready-to-use project templates for students. Logic gates calculator, audio bandpass filter, and other educational projects with source code."
-        canonical="https://rosettascript.github.io/school-projects"
+        canonical="https://rosettascript.github.io/school-projects/"
         structuredData={{
           type: "WebPage",
         }}

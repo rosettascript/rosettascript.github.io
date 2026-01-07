@@ -18,7 +18,7 @@ export default function JwtEncoder() {
       <SEO
         title="JWT Encoder - Encode JSON Web Tokens"
         description="Encode and create JWT tokens instantly. Generate signed JSON Web Tokens with HS256, HS384, and HS512 algorithms. Free online JWT encoder. Perfect for testing authentication flows."
-        canonical="https://rosettascript.github.io/tools/jwt-encoder"
+        canonical="https://rosettascript.github.io/tools/jwt-encoder/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

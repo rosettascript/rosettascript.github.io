@@ -19,7 +19,7 @@ export default function Blogs() {
       <SEO
         title="Developer Blog & Tutorials"
         description="Tutorials, tips, and developer resources. Learn about web scraping, cryptography, post-quantum security, and more developer topics."
-        canonical="https://rosettascript.github.io/blogs"
+        canonical="https://rosettascript.github.io/blogs/"
         structuredData={{
           type: "WebPage",
         }}

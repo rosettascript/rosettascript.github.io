@@ -18,7 +18,7 @@ export default function HashGenerator() {
       <SEO
         title="Hash Generator - SHA-1, SHA-256, SHA-512"
         description="Generate SHA-1, SHA-256, SHA-384, and SHA-512 hash values from text instantly. Free online cryptographic hash generator. Perfect for password hashing and data integrity verification."
-        canonical="https://rosettascript.github.io/tools/hash-generator"
+        canonical="https://rosettascript.github.io/tools/hash-generator/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

@@ -36,8 +36,8 @@ export default function BlogPost() {
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
   const canonicalUrl = typeof window !== "undefined" 
-    ? `${window.location.origin}/blogs/${post.id}`
-    : `https://rosettascript.github.io/blogs/${post.id}`;
+    ? `${window.location.origin}/blogs/${post.id}/`
+    : `https://rosettascript.github.io/blogs/${post.id}/`;
 
   return (
     <Layout>

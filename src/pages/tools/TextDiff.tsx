@@ -18,7 +18,7 @@ export default function TextDiff() {
       <SEO
         title="Text Diff Tool - Compare Text Differences"
         description="Compare two texts and see differences instantly. Compare by characters, words, or lines. Free online diff tool. Perfect for code reviews, document comparison, and version control."
-        canonical="https://rosettascript.github.io/tools/text-diff"
+        canonical="https://rosettascript.github.io/tools/text-diff/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

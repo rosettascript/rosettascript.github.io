@@ -18,7 +18,7 @@ export default function Base64() {
       <SEO
         title="Base64 Encoder/Decoder - Free Online"
         description="Encode text to Base64 or decode Base64 strings back to plain text with UTF-8 support. Free online Base64 encoder and decoder. Essential for data encoding and API development."
-        canonical="https://rosettascript.github.io/tools/base64"
+        canonical="https://rosettascript.github.io/tools/base64/"
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",
