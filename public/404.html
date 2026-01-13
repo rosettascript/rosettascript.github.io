@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RosettaScript - Developer Tools Made Simple</title>
+    <script>
+      // GitHub Pages SPA redirect - optimized for bots and browsers
+      // This script redirects 404s to index.html for client-side routing
+      // Static files (xml, txt, etc.) are served directly by GitHub Pages
+      (function() {
+        // Set to 1 if hosted under /repo-name/ (e.g., username.github.io/repo-name/)
+        // Set to 0 for root-hosted sites (e.g., username.github.io/)
+        var pathSegmentsToKeep = 0;
+        var l = window.location;
+        var pathname = l.pathname;
+        
+        // CRITICAL: Check for static files FIRST before any redirect logic
+        // Static files should NEVER be redirected - they're served directly by GitHub Pages
+        var staticExtensions = ['.xml', '.txt', '.html', '.json', '.ico', '.png', '.jpg', '.jpeg', '.svg', '.webmanifest', '.js', '.css', '.woff', '.woff2', '.ttf', '.eot', '.wasm'];
+        var isStaticFile = staticExtensions.some(function(ext) {
+          return pathname.toLowerCase().endsWith(ext);
+        });
+        
+        // If it's a static file, do NOT redirect - let GitHub Pages serve it directly
+        if (isStaticFile) {
+          return; // Exit immediately - no redirect, no meta tag
+        }
+        
+        // Don't redirect standalone apps - let GitHub Pages serve them directly
+        // Case-insensitive check to handle /RUC-random-universe-cipher paths
+        var standaloneAppPaths = [
+          '/ruc-random-universe-cipher/random-universe-cipher',
+          '/ruc-random-universe-cipher'  // Also check for the parent path
+        ];
+        var lowerPathname = pathname.toLowerCase();
+        var isStandaloneApp = standaloneAppPaths.some(function(appPath) {
+          return lowerPathname.startsWith(appPath.toLowerCase());
+        });
+        
+        if (isStandaloneApp) {
+          // If the standalone app directory exists, GitHub Pages will serve it
+          // If it doesn't exist, we'll let the 404 show (don't redirect to SPA)
+          // This prevents the React Router from catching these paths
+          return; // Exit early, don't redirect, no meta tag
+        }
+        
+        // Build the redirect URL using the standard GitHub Pages SPA pattern
+        var basePath = pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+        if (basePath === '') basePath = '/';
+        if (!basePath.endsWith('/')) basePath += '/';
+        
+        // Encode the path properly for the redirect
+        var pathToRedirect = pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/');
+        
+        // Handle root path case - if pathToRedirect is empty, just redirect to /
+        var redirectPath;
+        if (!pathToRedirect || pathToRedirect === '') {
+          redirectPath = basePath;
+        } else {
+          redirectPath = basePath + '?/' + 
+            pathToRedirect.replace(/&/g, '~and~') +
+            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash;
+        }
+        
+        // Create meta refresh tag with the correct redirect path
+        // This ensures bots that read the meta tag get the correct URL
+        // We create it dynamically (not in HTML) to prevent redirects for static files
+        var meta = document.createElement('meta');
+        meta.httpEquiv = 'refresh';
+        meta.content = '0;url=' + redirectPath;
+        document.head.insertBefore(meta, document.head.firstChild);
+        
+        // JavaScript redirect for modern browsers (after meta refresh is set)
+        // Use replace instead of assign to avoid adding to history
+        l.replace(redirectPath);
+      })();
+    </script>
+    <!-- Meta refresh fallback for bots that don't execute JavaScript -->
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/">
+    </noscript>
+  </head>
+  <body></body>
+</html>

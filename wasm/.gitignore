@@ -1,0 +1,8 @@
+/target
+/pkg
+Cargo.lock
+*.wasm
+*.js
+*.d.ts
+!src/**
+

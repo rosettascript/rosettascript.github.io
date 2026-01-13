@@ -1,0 +1,19 @@
+{
+  "name": "ruc-wasm",
+  "type": "module",
+  "collaborators": [
+    "RosettaScript"
+  ],
+  "description": "WebAssembly-accelerated Random Universe Cipher",
+  "version": "0.2.0",
+  "files": [
+    "ruc_wasm_bg.wasm",
+    "ruc_wasm.js",
+    "ruc_wasm.d.ts"
+  ],
+  "main": "ruc_wasm.js",
+  "types": "ruc_wasm.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

@@ -1,0 +1,11 @@
+# Ensure JavaScript files are recognized correctly
+*.js text
+*.mjs text
+*.wasm binary
+*.css text
+*.html text
+*.json text
+
+# Auto detect text files and perform LF normalization
+* text=auto
+
