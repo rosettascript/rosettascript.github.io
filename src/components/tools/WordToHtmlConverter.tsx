@@ -138,7 +138,7 @@ export function WordToHtmlConverter() {
   const [showValidationDetails, setShowValidationDetails] = useState(false);
   const [showMaximizedOutput, setShowMaximizedOutput] = useState(false);
   const [maximizedPreviewMode, setMaximizedPreviewMode] = useState(false);
-  const [showHeadingVisualizer, setShowHeadingVisualizer] = useState(true);
+  const [showHeadingVisualizer, setShowHeadingVisualizer] = useState(false);
   
   // Feature flags
   const [features, setFeatures] = useState<FeatureFlags>({
