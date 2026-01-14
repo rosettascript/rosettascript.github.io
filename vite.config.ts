@@ -33,52 +33,52 @@ export default defineConfig(({ mode }) => {
       wasm(),
       topLevelAwait(),
       react(),
-      VitePWA({
-        registerType: "autoUpdate",
-        workbox: {
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
-          // Exclude static files from navigation route to prevent service worker from intercepting them
-          // This allows sitemap.xml, robots.txt, and other static files to be served directly
-          navigateFallbackDenylist: [
-            /^\/_/, // Exclude files starting with underscore
-            // Exclude common static file extensions
-            /\.(xml|txt|json|ico|png|jpg|jpeg|svg|webmanifest|js|css|woff|woff2|ttf|eot|wasm|map)$/i,
-          ],
-        },
-        devOptions: {
-          enabled: true,
-          type: 'module',
-          navigateFallback: 'index.html',
-        },
-        manifest: {
-          name: "RosettaScript",
-          short_name: "RosettaScript",
-          description: "Developer tools for converting, automating, and building. Word to HTML converters, database visualization, and more.",
-          start_url: basePath,
-          scope: basePath,
-          display: "standalone",
-          background_color: "#16181d",
-          theme_color: "#22c55e",
-          orientation: "portrait-primary",
-          icons: [
-            {
-              src: `${basePath}icon-192.png`,
-              sizes: "192x192",
-              type: "image/png",
-              purpose: "any maskable",
-            },
-            {
-              src: `${basePath}icon-512.png`,
-              sizes: "512x512",
-              type: "image/png",
-              purpose: "any maskable",
-            },
-          ],
-          categories: ["developer tools", "utilities", "productivity"],
-        },
-        // Use manifest.json instead of manifest.webmanifest
-        manifestFilename: "manifest.json",
-      }),
+      // VitePWA({
+      //   registerType: "autoUpdate",
+      //   workbox: {
+      //     maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
+      //     // Exclude static files from navigation route to prevent service worker from intercepting them
+      //     // This allows sitemap.xml, robots.txt, and other static files to be served directly
+      //     navigateFallbackDenylist: [
+      //       /^\/_/, // Exclude files starting with underscore
+      //       // Exclude common static file extensions
+      //       /\.(xml|txt|json|ico|png|jpg|jpeg|svg|webmanifest|js|css|woff|woff2|ttf|eot|wasm|map)$/i,
+      //     ],
+      //   },
+      //   devOptions: {
+      //     enabled: true,
+      //     type: 'module',
+      //     navigateFallback: 'index.html',
+      //   },
+      //   manifest: {
+      //     name: "RosettaScript",
+      //     short_name: "RosettaScript",
+      //     description: "Developer tools for converting, automating, and building. Word to HTML converters, database visualization, and more.",
+      //     start_url: basePath,
+      //     scope: basePath,
+      //     display: "standalone",
+      //     background_color: "#16181d",
+      //     theme_color: "#22c55e",
+      //     orientation: "portrait-primary",
+      //     icons: [
+      //       {
+      //         src: `${basePath}icon-192.png`,
+      //         sizes: "192x192",
+      //         type: "image/png",
+      //         purpose: "any maskable",
+      //       },
+      //       {
+      //         src: `${basePath}icon-512.png`,
+      //         sizes: "512x512",
+      //         type: "image/png",
+      //         purpose: "any maskable",
+      //       },
+      //     ],
+      //     categories: ["developer tools", "utilities", "productivity"],
+      //   },
+      //   // Use manifest.json instead of manifest.webmanifest
+      //   manifestFilename: "manifest.json",
+      // }),
     ],
     resolve: {
       alias: {
