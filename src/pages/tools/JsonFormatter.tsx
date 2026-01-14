@@ -67,12 +67,6 @@ export default function JsonFormatter() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JSON Formatter & Validator
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Format, minify, and validate JSON data instantly with this free online JSON formatter. Transform messy, unformatted JSON into beautifully indented, readable code with customizable spacing and syntax highlighting.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Perfect for web developers working with APIs, frontend developers debugging JSON responses, and backend engineers validating data structures. This tool detects syntax errors, validates JSON structure, and provides clear error messages to help you fix issues quickly. All processing happens in your browser—your data never leaves your device.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function JsonFormatter() {
             </span>
           </div>
           <JsonFormatterTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p className="mb-4">
+              Format, minify, and validate JSON data instantly with this free online JSON formatter. Transform messy, unformatted JSON into beautifully indented, readable code with customizable spacing and syntax highlighting.
+            </p>
+            <p>
+              Perfect for web developers working with APIs, frontend developers debugging JSON responses, and backend engineers validating data structures. This tool detects syntax errors, validates JSON structure, and provides clear error messages to help you fix issues quickly. All processing happens in your browser—your data never leaves your device.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

@@ -68,12 +68,6 @@ export default function RandomUniverseCipher() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Random Universe Cipher
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Encrypt and decrypt text and files with this 256-bit quantum-resistant symmetric encryption cipher. Features password-based authentication, AEAD (Authenticated Encryption with Associated Data), Argon2 key derivation function, and SHAKE256 for post-quantum security.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Designed for security-conscious users who need post-quantum encryption. The Random Universe Cipher provides strong protection against both classical and quantum computing attacks. All encryption and decryption happens entirely in your browser using WebAssembly—your data never leaves your device, ensuring maximum privacy and security.
-          </p>
         </div>
 
         {/* Cipher Specs */}
@@ -112,7 +106,13 @@ export default function RandomUniverseCipher() {
           </h2>
           <div className="space-y-3 text-muted-foreground">
             <p>
-              The Random Universe Cipher (RUC) is a symmetric block cipher designed for post-quantum security. 
+              Encrypt and decrypt text and files with this 256-bit quantum-resistant symmetric encryption cipher. Features password-based authentication, AEAD (Authenticated Encryption with Associated Data), Argon2 key derivation function, and SHAKE256 for post-quantum security.
+            </p>
+            <p>
+              Designed for security-conscious users who need post-quantum encryption. The Random Universe Cipher provides strong protection against both classical and quantum computing attacks. All encryption and decryption happens entirely in your browser using WebAssembly—your data never leaves your device, ensuring maximum privacy and security.
+            </p>
+            <p>
+              The Random Universe Cipher (RUC) is a symmetric block cipher designed for post-quantum security.
               It provides 256-bit quantum-resistant security using 512-bit keys.
             </p>
             <div>

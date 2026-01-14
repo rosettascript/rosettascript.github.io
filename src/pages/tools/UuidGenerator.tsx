@@ -67,12 +67,6 @@ export default function UuidGenerator() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             UUID Generator Tool
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Generate random UUID v4 identifiers instantly with this free online UUID generator. Create single or multiple UUIDs at once with optional hyphen formatting. Perfect for database IDs, API keys, session tokens, and unique identifiers.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for backend developers creating unique identifiers, frontend developers generating client-side IDs, and anyone working with distributed systems. All UUIDs are generated using cryptographically secure random number generation, ensuring uniqueness and security for your applications.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function UuidGenerator() {
             </span>
           </div>
           <UuidGeneratorTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Generate random UUID v4 identifiers instantly with this free online UUID generator. Create single or multiple UUIDs at once with optional hyphen formatting. Perfect for database IDs, API keys, session tokens, and unique identifiers.
+            </p>
+            <p className="mt-4">
+              Essential for backend developers creating unique identifiers, frontend developers generating client-side IDs, and anyone working with distributed systems. All UUIDs are generated using cryptographically secure random number generation, ensuring uniqueness and security for your applications.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

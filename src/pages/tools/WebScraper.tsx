@@ -67,12 +67,6 @@ export default function WebScraper() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Free Web Scraper Tool
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Extract data from any website using CSS selectors with this free online web scraper. No coding knowledge required—simply enter a URL, specify what elements to extract using CSS selectors, and get structured data instantly.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Perfect for researchers collecting data, developers testing web scraping logic, marketers analyzing competitor content, and anyone who needs to extract structured information from websites. All scraping happens in your browser, ensuring privacy and security. No server uploads, no data storage, completely free.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function WebScraper() {
             </span>
           </div>
           <WebScraperTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Extract data from any website using CSS selectors with this free online web scraper. No coding knowledge required—simply enter a URL, specify what elements to extract using CSS selectors, and get structured data instantly.
+            </p>
+            <p className="mt-4">
+              Perfect for researchers collecting data, developers testing web scraping logic, marketers analyzing competitor content, and anyone who needs to extract structured information from websites. All scraping happens in your browser, ensuring privacy and security. No server uploads, no data storage, completely free.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

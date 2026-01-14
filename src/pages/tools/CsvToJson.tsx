@@ -65,12 +65,6 @@ export default function CsvToJson() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             CSV to JSON Converter
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Convert CSV to JSON and JSON to CSV instantly with this free online converter. Customize delimiter and header options to match your data format. Perfect for data migration, API integration, and converting between spreadsheet and JSON formats.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers importing CSV data into applications, data analysts converting spreadsheet data to JSON for APIs, and anyone working with data format conversion. Handle comma-separated, tab-separated, or custom delimiters with full control over header row handling. All conversion happens instantly in your browser.
-          </p>
         </div>
 
         <div className="terminal-bg p-6 lg:p-8">
@@ -84,6 +78,19 @@ export default function CsvToJson() {
             </span>
           </div>
           <CsvToJsonTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Convert CSV to JSON and JSON to CSV instantly with this free online converter. Customize delimiter and header options to match your data format. Perfect for data migration, API integration, and converting between spreadsheet and JSON formats.
+            </p>
+            <p className="mt-4">
+              Essential for developers importing CSV data into applications, data analysts converting spreadsheet data to JSON for APIs, and anyone working with data format conversion. Handle comma-separated, tab-separated, or custom delimiters with full control over header row handling. All conversion happens instantly in your browser.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

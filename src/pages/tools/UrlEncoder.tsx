@@ -67,12 +67,6 @@ export default function UrlEncoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             URL Encoder/Decoder
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Encode special characters for safe URL usage or decode URL-encoded strings back to readable text instantly. This free online URL encoder handles percent encoding, query parameters, and ensures proper URL formatting for web development.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for web developers working with APIs, handling form data, and building URLs dynamically. Whether you're encoding query parameters, preparing data for GET requests, or decoding URL-encoded strings from web services, this tool processes everything securely in your browser without any data uploads.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function UrlEncoder() {
             </span>
           </div>
           <UrlEncoderTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Encode special characters for safe URL usage or decode URL-encoded strings back to readable text instantly. This free online URL encoder handles percent encoding, query parameters, and ensures proper URL formatting for web development.
+            </p>
+            <p className="mt-4">
+              Essential for web developers working with APIs, handling form data, and building URLs dynamically. Whether you're encoding query parameters, preparing data for GET requests, or decoding URL-encoded strings from web services, this tool processes everything securely in your browser without any data uploads.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

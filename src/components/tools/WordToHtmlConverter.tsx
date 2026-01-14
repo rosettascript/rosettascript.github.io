@@ -546,7 +546,7 @@ export function WordToHtmlConverter() {
         </div>
 
         {/* Input Section */}
-        <div className="flex flex-col bg-card/50 border border-border/50 rounded-xl p-3 md:p-4 backdrop-blur-sm min-w-0 max-w-full lg:h-[600px]">
+        <div className="flex flex-col bg-card/50 border border-border/50 rounded-xl p-3 md:p-4 backdrop-blur-sm min-w-0 max-w-full lg:h-[calc(100vh-280px)] lg:min-h-[400px] lg:max-h-[700px]">
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded bg-muted">
@@ -571,7 +571,7 @@ export function WordToHtmlConverter() {
             contentEditable
             tabIndex={0}
             data-placeholder="Paste your Word document content here..."
-            className="flex-1 min-h-[200px] max-h-[50vh] lg:max-h-[550px] p-4 text-sm bg-background/80 border border-border/50 rounded-lg overflow-y-auto overflow-x-hidden resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 input-editable"
+            className="flex-1 min-h-[200px] max-h-[50vh] lg:max-h-[calc(100vh-380px)] p-4 text-sm bg-background/80 border border-border/50 rounded-lg overflow-y-auto overflow-x-hidden resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 input-editable"
             style={{
               whiteSpace: 'pre-wrap',
               wordBreak: 'break-word',
@@ -610,7 +610,7 @@ export function WordToHtmlConverter() {
         </div>
 
         {/* Output Section */}
-        <div className="flex flex-col bg-card/50 border border-border/50 rounded-xl p-3 md:p-4 backdrop-blur-sm min-w-0 max-w-full lg:h-[600px]">
+        <div className="flex flex-col bg-card/50 border border-border/50 rounded-xl p-3 md:p-4 backdrop-blur-sm min-w-0 max-w-full lg:h-[calc(100vh-280px)] lg:min-h-[400px] lg:max-h-[700px]">
           <div className="flex items-center justify-between mb-3 flex-shrink-0">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded bg-primary/10">
@@ -701,7 +701,7 @@ export function WordToHtmlConverter() {
             </div>
           </div>
           {/* Output Container - matches original structure */}
-          <div className="relative flex-1 min-h-[200px] max-h-[50vh] lg:max-h-[550px] w-full overflow-hidden">
+          <div className="relative flex-1 min-h-[200px] max-h-[50vh] lg:max-h-[calc(100vh-380px)] w-full overflow-hidden">
             <div className="absolute inset-0 h-full w-full">
               {/* Preview Area - matches .output-area from original */}
               <div 

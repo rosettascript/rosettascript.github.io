@@ -67,12 +67,6 @@ export default function HashGenerator() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Hash Generator
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Generate cryptographic hash values from text instantly using SHA-1, SHA-256, SHA-384, and SHA-512 algorithms. This free online hash generator creates secure, one-way hash values perfect for password hashing, data integrity verification, and cryptographic operations.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers implementing authentication systems, security engineers verifying data integrity, and anyone working with cryptographic hashing. All hashing happens locally in your browser—your sensitive data never leaves your device, ensuring complete privacy and security.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function HashGenerator() {
             </span>
           </div>
           <HashGeneratorTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Generate cryptographic hash values from text instantly using SHA-1, SHA-256, SHA-384, and SHA-512 algorithms. This free online hash generator creates secure, one-way hash values perfect for password hashing, data integrity verification, and cryptographic operations.
+            </p>
+            <p className="mt-4">
+              Essential for developers implementing authentication systems, security engineers verifying data integrity, and anyone working with cryptographic hashing. All hashing happens locally in your browser—your sensitive data never leaves your device, ensuring complete privacy and security.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

@@ -67,12 +67,6 @@ export default function JwtEncoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JWT Encoder
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Encode and create JSON Web Tokens (JWT) instantly with this free online JWT encoder. Generate signed tokens with HMAC algorithms (HS256, HS384, HS512) for testing authentication flows, API development, and token generation.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers testing authentication systems, API developers creating test tokens, and anyone working with JWT-based authentication. All token generation and signing happens securely in your browser—your secrets never leave your device, ensuring complete privacy and security.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function JwtEncoder() {
             </span>
           </div>
           <JwtEncoderTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p className="mb-4">
+              Encode and create JSON Web Tokens (JWT) instantly with this free online JWT encoder. Generate signed tokens with HMAC algorithms (HS256, HS384, HS512) for testing authentication flows, API development, and token generation.
+            </p>
+            <p>
+              Essential for developers testing authentication systems, API developers creating test tokens, and anyone working with JWT-based authentication. All token generation and signing happens securely in your browser—your secrets never leave your device, ensuring complete privacy and security.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

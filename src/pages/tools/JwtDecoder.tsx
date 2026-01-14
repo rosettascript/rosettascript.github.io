@@ -67,12 +67,6 @@ export default function JwtDecoder() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JWT Decoder
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Decode and inspect JSON Web Tokens (JWT) instantly with this free online JWT decoder. View the header, payload, and signature in a readable format. Timestamps are automatically converted to human-readable dates, making it easy to check token expiration and claims.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers debugging authentication flows, API developers inspecting token contents, and security engineers analyzing JWT structure. Perfect for understanding token claims, verifying expiration times, and troubleshooting authentication issues. All decoding happens in your browser—your tokens never leave your device.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function JwtDecoder() {
             </span>
           </div>
           <JwtDecoderTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p className="mb-4">
+              Decode and inspect JSON Web Tokens (JWT) instantly with this free online JWT decoder. View the header, payload, and signature in a readable format. Timestamps are automatically converted to human-readable dates, making it easy to check token expiration and claims.
+            </p>
+            <p>
+              Essential for developers debugging authentication flows, API developers inspecting token contents, and security engineers analyzing JWT structure. Perfect for understanding token claims, verifying expiration times, and troubleshooting authentication issues. All decoding happens in your browser—your tokens never leave your device.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

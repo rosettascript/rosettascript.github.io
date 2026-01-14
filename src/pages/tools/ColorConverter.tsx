@@ -67,12 +67,6 @@ export default function ColorConverter() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Color Converter Tool
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Convert colors between HEX, RGB, and HSL formats instantly with live color preview. Use the color picker or enter values manually to see real-time conversions. Perfect for web developers and designers working with CSS, color palettes, and design systems.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for frontend developers converting design specs to CSS, designers creating consistent color systems, and anyone working with web colors. All conversions happen instantly in your browser with visual feedback, making it easy to find the perfect color format for your project.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function ColorConverter() {
             </span>
           </div>
           <ColorConverterTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Convert colors between HEX, RGB, and HSL formats instantly with live color preview. Use the color picker or enter values manually to see real-time conversions. Perfect for web developers and designers working with CSS, color palettes, and design systems.
+            </p>
+            <p className="mt-4">
+              Essential for frontend developers converting design specs to CSS, designers creating consistent color systems, and anyone working with web colors. All conversions happen instantly in your browser with visual feedback, making it easy to find the perfect color format for your project.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

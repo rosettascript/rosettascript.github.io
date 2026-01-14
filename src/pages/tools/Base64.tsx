@@ -67,12 +67,6 @@ export default function Base64() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Base64 Encoder/Decoder
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Encode text to Base64 or decode Base64 strings back to plain text instantly. This free online Base64 converter supports full UTF-8 character encoding, making it perfect for encoding images, API data, and text content.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for web developers working with APIs, data transmission, and embedding binary data in JSON or XML. Whether you're encoding images for data URIs, preparing data for API requests, or decoding Base64 strings from web services, this tool handles it all securely in your browser without any data uploads.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function Base64() {
             </span>
           </div>
           <Base64Tool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Encode text to Base64 or decode Base64 strings back to plain text instantly. This free online Base64 converter supports full UTF-8 character encoding, making it perfect for encoding images, API data, and text content.
+            </p>
+            <p className="mt-4">
+              Essential for web developers working with APIs, data transmission, and embedding binary data in JSON or XML. Whether you're encoding images for data URIs, preparing data for API requests, or decoding Base64 strings from web services, this tool handles it all securely in your browser without any data uploads.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

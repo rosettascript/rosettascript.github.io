@@ -65,12 +65,6 @@ export default function TextDiff() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Text Diff Tool
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Compare two texts and see differences instantly with this free online diff tool. Compare by characters, words, or lines to find exactly what changed between versions. Perfect for code reviews, document comparison, and version control.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers reviewing code changes, content editors comparing document versions, and anyone working with text-based files. See additions, deletions, and modifications highlighted clearly, making it easy to spot differences and track changes. All comparison happens instantly in your browser.
-          </p>
         </div>
 
         <div className="terminal-bg p-6 lg:p-8">
@@ -84,6 +78,19 @@ export default function TextDiff() {
             </span>
           </div>
           <TextDiffTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Compare two texts and see differences instantly with this free online diff tool. Compare by characters, words, or lines to find exactly what changed between versions. Perfect for code reviews, document comparison, and version control.
+            </p>
+            <p className="mt-4">
+              Essential for developers reviewing code changes, content editors comparing document versions, and anyone working with text-based files. See additions, deletions, and modifications highlighted clearly, making it easy to spot differences and track changes. All comparison happens instantly in your browser.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

@@ -67,12 +67,6 @@ export default function JsonExtractor() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             JSON Data Extractor
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Extract specific data from JSON structures instantly with this free online JSON data extractor. Get field values, use path syntax, or extract all values from arrays. Perfect for parsing API responses, processing nested JSON data, and data analysis.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers working with APIs, data analysts extracting specific fields from large JSON datasets, and anyone processing structured data. Use simple field names or advanced path syntax to extract exactly what you need from complex JSON structures—all processing happens instantly in your browser.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function JsonExtractor() {
             </span>
           </div>
           <JsonExtractorTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p className="mb-4">
+              Extract specific data from JSON structures instantly with this free online JSON data extractor. Get field values, use path syntax, or extract all values from arrays. Perfect for parsing API responses, processing nested JSON data, and data analysis.
+            </p>
+            <p>
+              Essential for developers working with APIs, data analysts extracting specific fields from large JSON datasets, and anyone processing structured data. Use simple field names or advanced path syntax to extract exactly what you need from complex JSON structures—all processing happens instantly in your browser.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

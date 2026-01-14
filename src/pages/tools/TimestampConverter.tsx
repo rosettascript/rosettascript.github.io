@@ -67,12 +67,6 @@ export default function TimestampConverter() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Timestamp Converter
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Convert between Unix timestamps and human-readable dates instantly. This free online timestamp converter supports both seconds and milliseconds precision, making it perfect for working with APIs, databases, and time-based data.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Essential for developers working with APIs that return Unix timestamps, database administrators converting epoch times, and anyone dealing with time-based data. Convert timestamps to readable dates, or generate Unix timestamps from dates—all conversions happen instantly in your browser.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function TimestampConverter() {
             </span>
           </div>
           <TimestampConverterTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Convert between Unix timestamps and human-readable dates instantly. This free online timestamp converter supports both seconds and milliseconds precision, making it perfect for working with APIs, databases, and time-based data.
+            </p>
+            <p className="mt-4">
+              Essential for developers working with APIs that return Unix timestamps, database administrators converting epoch times, and anyone dealing with time-based data. Convert timestamps to readable dates, or generate Unix timestamps from dates—all conversions happen instantly in your browser.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

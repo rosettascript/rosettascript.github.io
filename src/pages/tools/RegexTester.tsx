@@ -67,12 +67,6 @@ export default function RegexTester() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Regex Tester
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. This free online regex tester helps you validate patterns, test complex expressions, and debug regex issues instantly.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Perfect for developers validating input patterns, data scientists extracting information from text, and anyone working with text processing. View capture groups, match positions, and see exactly how your regex pattern matches against test strings—all in real-time as you type.
-          </p>
         </div>
 
         {/* Tool */}
@@ -87,6 +81,19 @@ export default function RegexTester() {
             </span>
           </div>
           <RegexTesterTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Test and debug regular expressions with live matching, syntax highlighting, and capture group extraction. This free online regex tester helps you validate patterns, test complex expressions, and debug regex issues instantly.
+            </p>
+            <p className="mt-4">
+              Perfect for developers validating input patterns, data scientists extracting information from text, and anyone working with text processing. View capture groups, match positions, and see exactly how your regex pattern matches against test strings—all in real-time as you type.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

@@ -67,16 +67,23 @@ export default function ImageToolPage() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             Image Tool
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Compress, convert, resize images, and generate favicons instantly with this free online image tool. All processing happens entirely in your browser—your images never leave your device, ensuring complete privacy and security.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Perfect for web developers optimizing images for faster load times, designers converting between formats, and anyone working with image files. Compress images to reduce file size, convert between PNG, JPEG, and WebP formats, resize images to specific dimensions, and generate favicons for websites. All without uploading to any server.
-          </p>
         </div>
 
         <div className="max-w-6xl mx-auto">
           <ImageTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p>
+              Compress, convert, resize images, and generate favicons instantly with this free online image tool. All processing happens entirely in your browser—your images never leave your device, ensuring complete privacy and security.
+            </p>
+            <p className="mt-4">
+              Perfect for web developers optimizing images for faster load times, designers converting between formats, and anyone working with image files. Compress images to reduce file size, convert between PNG, JPEG, and WebP formats, resize images to specific dimensions, and generate favicons for websites. All without uploading to any server.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>

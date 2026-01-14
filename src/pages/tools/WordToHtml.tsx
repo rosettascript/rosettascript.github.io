@@ -39,12 +39,12 @@ export default function WordToHtml() {
           },
         }}
       />
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 pt-4 pb-2">
         {/* Update Notification */}
         <UpdateNotification />
         
         {/* Breadcrumb */}
-        <Breadcrumb className="mb-8">
+        <Breadcrumb className="mb-3">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
@@ -67,32 +67,26 @@ export default function WordToHtml() {
           </BreadcrumbList>
         </Breadcrumb>
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-mono mb-4">
-            <Code2 className="h-4 w-4" />
+        {/* Header - Compact */}
+        <div className="text-center mb-3">
+          <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-mono mb-2">
+            <Code2 className="h-3 w-3" />
             Online Tools
           </div>
-          <h1 className="text-3xl lg:text-4xl font-bold mb-4">
+          <h1 className="text-2xl lg:text-3xl font-bold">
             Word to HTML Converter
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-4">
-            Convert Word documents to clean, semantic HTML code instantly. This free online Word to HTML converter transforms messy Word-generated markup into SEO-friendly, well-structured HTML that works perfectly for web content, blogs, and e-commerce sites.
-          </p>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Whether you're a content editor preparing articles for publication, an SEO specialist optimizing web content, or a web developer cleaning up client documents, this tool helps you convert Word content to professional HTML without the bloat. Simply paste from Microsoft Word and get properly formatted HTML with advanced features for regular content, blog posts, and shoppable product descriptions.
-          </p>
         </div>
       </div>
 
       {/* Converter Tool - Full Width */}
-      <div className="w-full mb-12 px-4 lg:px-8 xl:px-12 -mt-[30px]">
-        <div 
+      <div className="w-full mb-8 px-4 lg:px-6 xl:px-8">
+        <div
           ref={containerRef}
           tabIndex={-1}
-          className="terminal-bg p-4 md:p-6 lg:p-8 max-w-[1920px] w-full max-w-full mx-auto outline-none"
+          className="terminal-bg p-3 md:p-4 lg:p-6 max-w-[1920px] w-full max-w-full mx-auto outline-none"
         >
-          <div className="flex items-center gap-2 pb-4 mb-6 border-b border-border">
+          <div className="flex items-center gap-2 pb-3 mb-4 border-b border-border">
             <div className="w-3 h-3 rounded-full bg-destructive/80" />
             <div className="w-3 h-3 rounded-full bg-[hsl(var(--syntax-yellow))]/80" />
             <div className="w-3 h-3 rounded-full bg-primary/80" />
@@ -102,6 +96,19 @@ export default function WordToHtml() {
             </span>
           </div>
           <WordToHtmlConverter />
+        </div>
+      </div>
+
+      {/* Tool Description Section */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="prose prose-sm max-w-none text-muted-foreground">
+          <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+          <p className="mb-4">
+            Convert Word documents to clean, semantic HTML code instantly. This free online Word to HTML converter transforms messy Word-generated markup into SEO-friendly, well-structured HTML that works perfectly for web content, blogs, and e-commerce sites.
+          </p>
+          <p>
+            Whether you're a content editor preparing articles for publication, an SEO specialist optimizing web content, or a web developer cleaning up client documents, this tool helps you convert Word content to professional HTML without the bloat. Simply paste from Microsoft Word and get properly formatted HTML with advanced features for regular content, blog posts, and shoppable product descriptions.
+          </p>
         </div>
       </div>
 

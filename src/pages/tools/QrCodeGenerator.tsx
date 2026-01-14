@@ -65,12 +65,6 @@ export default function QrCodeGenerator() {
           <h1 className="text-3xl lg:text-4xl font-bold mb-4">
             QR Code Generator
           </h1>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto mb-4">
-            Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more instantly with this free online QR code generator. Customize the size, choose from multiple QR code types, and download as PNG for use in marketing materials, websites, or print.
-          </p>
-          <p className="text-muted-foreground max-w-[1920px] mx-auto">
-            Perfect for marketers creating QR codes for campaigns, event organizers sharing WiFi credentials, businesses adding contact information to materials, and developers embedding QR codes in applications. All QR code generation happens instantly in your browser—no server uploads required.
-          </p>
         </div>
 
         <div className="terminal-bg p-6 lg:p-8">
@@ -84,6 +78,19 @@ export default function QrCodeGenerator() {
             </span>
           </div>
           <QrCodeGeneratorTool />
+        </div>
+
+        {/* Tool Description Section */}
+        <div className="mt-8">
+          <div className="prose prose-sm max-w-none text-muted-foreground">
+            <h2 className="text-xl font-semibold mb-4 text-foreground">About This Tool</h2>
+            <p className="mb-4">
+              Generate QR codes for WiFi, email, SMS, phone, contacts, events, files, and more instantly with this free online QR code generator. Customize the size, choose from multiple QR code types, and download as PNG for use in marketing materials, websites, or print.
+            </p>
+            <p>
+              Perfect for marketers creating QR codes for campaigns, event organizers sharing WiFi credentials, businesses adding contact information to materials, and developers embedding QR codes in applications. All QR code generation happens instantly in your browser—no server uploads required.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>
