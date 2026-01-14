@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => {
     server: {
       host: "::",
       port: 8000,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      },
       proxy: {
         // Proxy for web scraping (optional - uncomment to use)
         // '/api/scrape': {
@@ -39,6 +44,11 @@ export default defineConfig(({ mode }) => {
             // Exclude common static file extensions
             /\.(xml|txt|json|ico|png|jpg|jpeg|svg|webmanifest|js|css|woff|woff2|ttf|eot|wasm|map)$/i,
           ],
+        },
+        devOptions: {
+          enabled: true,
+          type: 'module',
+          navigateFallback: 'index.html',
         },
         manifest: {
           name: "RosettaScript",
