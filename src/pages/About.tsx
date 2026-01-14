@@ -1,12 +1,8 @@
 import { Layout } from "@/components/layout/Layout";
 import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Terminal, Target, Heart, Zap, Mail, Github } from "lucide-react";
+import { Terminal, Target, Heart, Zap, Mail, Github, Linkedin, Phone } from "lucide-react";
 import { XIcon } from "@/components/icons/XIcon";
-import { toast } from "@/hooks/use-toast";
 
 const values = [
   {
@@ -37,14 +33,6 @@ const stats = [
 ];
 
 export default function About() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "Thanks for reaching out. I'll get back to you soon.",
-    });
-  };
-
   return (
     <Layout>
       <SEO
@@ -121,6 +109,33 @@ export default function About() {
           </div>
         </div>
 
+        {/* Author */}
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold text-center mb-8">About Kim Galicia</h2>
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            <img src="/author-profile.png" alt="Kim Galicia" className="w-32 h-32 rounded-full object-cover flex-shrink-0" />
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-xl font-semibold">Kim Galicia</h3>
+                <p className="text-primary font-medium">IT Network & Systems Administrator</p>
+                <p className="text-muted-foreground text-sm">Maypangdan, Borongan City, Philippines</p>
+              </div>
+              <p className="text-muted-foreground">
+                Network-focused Computer Engineering graduate with 3+ years of hands-on experience administering Linux systems and network-exposed services. Strong foundation in TCP/IP networking, DNS, routing, firewalling, and packet-level troubleshooting.
+              </p>
+              <div>
+                <h4 className="font-semibold mb-2">Key Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">Linux Administration</span>
+                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">Network Security</span>
+                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">AWS Infrastructure</span>
+                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">System Monitoring</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Contact */}
         <div className="grid lg:grid-cols-2 gap-12">
           <div>
@@ -141,28 +156,16 @@ export default function About() {
                 <XIcon size={20} className="h-5 w-5" />
                 @rosettascript
               </a>
+              <a href="https://linkedin.com/in/x6galixia" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                <Linkedin className="h-5 w-5" />
+                linkedin.com/in/x6galixia
+              </a>
+              <a href="tel:+639776611597" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                <Phone className="h-5 w-5" />
+                +63 977 661 1597
+              </a>
             </div>
           </div>
-
-          <Card className="bg-card/50 border-border">
-            <CardHeader>
-              <CardTitle>Send me a Message</CardTitle>
-              <CardDescription>Fill out the form and I'll get back to you</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <Input placeholder="Your name" className="bg-background" />
-                  <Input type="email" placeholder="Your email" className="bg-background" />
-                </div>
-                <Input placeholder="Subject" className="bg-background" />
-                <Textarea placeholder="Your message..." className="bg-background min-h-[120px]" />
-                <Button type="submit" className="w-full">
-                  Send Message
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </Layout>
