@@ -8,6 +8,9 @@
 // Regex pattern for checking if text ends with whitespace (space, newline, or non-breaking space)
 const WHITESPACE_END_RE = /[\s\u00A0]$/;
 
+// Regex pattern for checking if text ends with opening punctuation (including smart quotes)
+const OPENING_PUNCTUATION_RE = /[\("'\[\{\u201C\u2018]$/;
+
 export function addLinkSpacing(html: string): string {
   if (!html || typeof html !== 'string') {
     return '';
@@ -20,6 +23,11 @@ export function addLinkSpacing(html: string): string {
     // Helper function to check if text ends with whitespace
     const endsWithWhitespace = (text: string): boolean => {
       return WHITESPACE_END_RE.test(text);
+    };
+    
+    // Helper function to check if text ends with opening punctuation
+    const endsWithOpeningPunctuation = (text: string): boolean => {
+      return OPENING_PUNCTUATION_RE.test(text);
     };
     
     // Helper function to get the last text node from an element
@@ -64,9 +72,7 @@ export function addLinkSpacing(html: string): string {
       let textContent = '';
       
       if (!prevSibling) {
-        // No previous sibling - insert space node
-        const spaceNode = doc.createTextNode(' ');
-        anchor.parentNode.insertBefore(spaceNode, anchor);
+        // No previous sibling - link is first child, no spacing needed
         return;
       }
       
@@ -97,15 +103,15 @@ export function addLinkSpacing(html: string): string {
       }
       
       // Add space if needed
-      if (textNodeToModify && textContent.trim() && !endsWithWhitespace(textContent)) {
-        // Text node exists, has content, and doesn't end with whitespace - add space
+      if (textNodeToModify && textContent.trim() && !endsWithWhitespace(textContent) && !endsWithOpeningPunctuation(textContent)) {
+        // Text node exists, has content, doesn't end with whitespace, and doesn't end with opening punctuation - add space
         textNodeToModify.textContent = textContent + ' ';
       } else if (!textNodeToModify) {
         // No text node found - insert a space node before the anchor
         const spaceNode = doc.createTextNode(' ');
         anchor.parentNode.insertBefore(spaceNode, anchor);
       }
-      // If text ends with whitespace, we don't need to do anything
+      // If text ends with whitespace or opening punctuation, we don't need to do anything
     });
     
     return doc.body.innerHTML;
