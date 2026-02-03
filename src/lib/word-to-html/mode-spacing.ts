@@ -95,9 +95,9 @@ function addSpacingBeforeReadSection(doc: Document): void {
   
   paragraphs.forEach(p => {
     const text = p.textContent?.trim().toLowerCase() || '';
-    if (text.includes('read also:') || 
-        text.includes('read more:') || 
-        text.includes('see more:')) {
+    if (text.includes('read also') || 
+        text.includes('read more') || 
+        text.includes('see more')) {
       
       let prevSibling = p.previousElementSibling;
       if (prevSibling && isSpacingElement(prevSibling)) {
@@ -124,7 +124,7 @@ function addSpacingBeforeSources(doc: Document): void {
   
   paragraphs.forEach(p => {
     const text = p.textContent?.trim().toLowerCase() || '';
-    if (text.startsWith('sources:') &&
+    if (text.startsWith('sources') &&
         p.previousElementSibling &&
         p.previousElementSibling.tagName.toLowerCase() === 'p') {
       
@@ -154,7 +154,7 @@ function addSpacingBeforeDisclaimer(doc: Document): void {
   
   paragraphs.forEach(p => {
     const text = p.textContent?.trim().toLowerCase() || '';
-    if (text.startsWith('disclaimer:')) {
+    if (text.startsWith('disclaimer')) {
       
       let prevSibling = p.previousElementSibling;
       const hasExistingSpacing = prevSibling && isSpacingElement(prevSibling);
