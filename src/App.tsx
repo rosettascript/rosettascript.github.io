@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-ro
 import { ThemeProvider } from "next-themes";
 import { useEffect, lazy, Suspense } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { QuickSearch } from "@/components/QuickSearch";
 
 const Index = lazy(() => import("./pages/Index"));
 const Tools = lazy(() => import("./pages/Tools"));
@@ -89,7 +88,6 @@ const App = () => (
                 <div className="flex items-center justify-center min-h-screen">Loading...</div>
               </ErrorBoundary>
             }>
-            <QuickSearch />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/tools" element={<Tools />} />
