@@ -28,7 +28,7 @@ function getBlogPosts() {
     while ((idMatch = idPattern.exec(content)) !== null) {
       const postId = idMatch[1];
       const searchStart = Math.max(0, idMatch.index - 500);
-      const searchEnd = Math.min(content.length, idMatch.index + 10000);
+      const searchEnd = Math.min(content.length, idMatch.index + 50000); // Increased to capture full content
       const block = content.substring(searchStart, searchEnd);
       
       const titleMatch = block.match(/title:\s*"([^"]+)"/);
@@ -72,7 +72,8 @@ function getBlogPosts() {
           image: imageMatch ? imageMatch[1] : '/og-image.png',
           author: authorMatch ? authorMatch[1] : 'RosettaScript',
           tags: tags,
-          firstParagraph: firstParagraph || excerptMatch[1]
+          firstParagraph: firstParagraph || excerptMatch[1],
+          content: contentMatch ? contentMatch[1] : ''
         });
       }
     }
@@ -265,16 +266,46 @@ function getToolsMetadata() {
 }
 
 /**
+ * Extract YouTube video IDs from blog content
+ */
+function extractYouTubeVideos(content) {
+  if (!content) return [];
+  
+  const videoIds = [];
+  
+  // Match standalone YouTube URLs
+  const patterns = [
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/g,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/g,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/g,
+    /youtube\.com\/v\/([a-zA-Z0-9_-]{11})/g,
+  ];
+  
+  for (const pattern of patterns) {
+    const matches = content.matchAll(pattern);
+    for (const match of matches) {
+      if (!videoIds.includes(match[1])) {
+        videoIds.push(match[1]);
+      }
+    }
+  }
+  
+  return videoIds;
+}
+
+/**
  * Generate JSON-LD structured data for a blog post
  */
 function generateBlogPostStructuredData(post) {
-  return {
+  const videoIds = extractYouTubeVideos(post.content || '');
+  
+  const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
     "description": post.excerpt,
     "datePublished": post.date,
-    "dateModified": post.date, // Use published date as modified date if not available
+    "dateModified": post.date,
     "author": {
       "@type": "Organization",
       "name": post.author
@@ -288,8 +319,23 @@ function generateBlogPostStructuredData(post) {
       "@type": "WebPage",
       "@id": `${baseUrl}/blogs/${post.id}`
     },
-    "keywords": post.tags.join(", ")
+    "keywords": post.tags ? post.tags.join(", ") : ""
   };
+  
+  // Add video if found
+  if (videoIds.length > 0) {
+    structuredData.video = {
+      "@type": "VideoObject",
+      "name": post.title,
+      "description": post.excerpt,
+      "thumbnailUrl": `https://img.youtube.com/vi/${videoIds[0]}/maxresdefault.jpg`,
+      "uploadDate": post.date,
+      "contentUrl": `https://www.youtube.com/watch?v=${videoIds[0]}`,
+      "embedUrl": `https://www.youtube.com/embed/${videoIds[0]}`
+    };
+  }
+  
+  return structuredData;
 }
 
 /**
