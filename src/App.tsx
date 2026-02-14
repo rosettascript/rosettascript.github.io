@@ -84,12 +84,12 @@ const App = () => (
         <Sonner />
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <RedirectHandler />
-          <QuickSearch />
           <Suspense fallback={
               <ErrorBoundary>
                 <div className="flex items-center justify-center min-h-screen">Loading...</div>
               </ErrorBoundary>
             }>
+            <QuickSearch />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/tools" element={<Tools />} />
