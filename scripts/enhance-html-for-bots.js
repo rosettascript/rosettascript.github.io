@@ -462,6 +462,14 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
     /(<meta name="viewport"[^>]*>)/,
     `$1${metaTags}`
   );
+
+  // Remove Dublin Core metadata for all pages except homepage
+  // Dublin Core is only for homepage/organization
+  if (route !== '/') {
+    // Remove Dublin Core section entirely
+    const dcRegex = /<!--\s*Dublin Core Metadata\s*-->[\s\S]*?<!--\s*Open\s+Graph\s*-->/gi;
+    html = html.replace(dcRegex, '<!-- Open Graph -->');
+  }
   
   // Ensure title tag exists (in case viewport replacement didn't work)
   if (!html.includes(`<title>${escapeHtml(fullTitle)}</title>`)) {
