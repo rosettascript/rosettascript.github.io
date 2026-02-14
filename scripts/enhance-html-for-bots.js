@@ -324,12 +324,17 @@ function generateBlogPostStructuredData(post) {
   
   // Add video if found
   if (videoIds.length > 0) {
+    // Format date with timezone (ISO 8601)
+    const uploadDate = post.date && /^\d{4}-\d{2}-\d{2}$/.test(post.date) 
+      ? post.date + 'T00:00:00+00:00' 
+      : new Date().toISOString();
+    
     structuredData.video = {
       "@type": "VideoObject",
       "name": post.title,
       "description": post.excerpt,
       "thumbnailUrl": `https://img.youtube.com/vi/${videoIds[0]}/maxresdefault.jpg`,
-      "uploadDate": post.date,
+      "uploadDate": uploadDate,
       "contentUrl": `https://www.youtube.com/watch?v=${videoIds[0]}`,
       "embedUrl": `https://www.youtube.com/embed/${videoIds[0]}`
     };
