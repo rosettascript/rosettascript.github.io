@@ -20,6 +20,10 @@ interface SEOProps {
       priceCurrency: string;
     };
   };
+  breadcrumbs?: {
+    name: string;
+    url: string;
+  }[];
 }
 
 export function SEO({
@@ -30,6 +34,7 @@ export function SEO({
   ogType = "website",
   article,
   structuredData,
+  breadcrumbs,
 }: SEOProps) {
   const siteName = "RosettaScript";
   
@@ -277,11 +282,37 @@ export function SEO({
       }
     }
 
+    // Add BreadcrumbList schema if breadcrumbs are provided
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      let breadcrumbScript = document.querySelector(
+        'script[data-breadcrumb-schema]'
+      ) as HTMLScriptElement;
+      
+      const breadcrumbSchema = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbs.map((crumb, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": crumb.name,
+          "item": crumb.url,
+        })),
+      };
+
+      if (!breadcrumbScript) {
+        breadcrumbScript = document.createElement("script");
+        breadcrumbScript.type = "application/ld+json";
+        breadcrumbScript.setAttribute("data-breadcrumb-schema", "true");
+        document.head.appendChild(breadcrumbScript);
+      }
+      breadcrumbScript.textContent = JSON.stringify(breadcrumbSchema);
+    }
+
     // Cleanup function
     return () => {
       document.title = siteName;
     };
-  }, [fullTitle, truncatedDescription, normalizedCanonical, ogImage, ogType, article, structuredData]);
+  }, [fullTitle, truncatedDescription, normalizedCanonical, ogImage, ogType, article, structuredData, breadcrumbs]);
 
   return null;
 }

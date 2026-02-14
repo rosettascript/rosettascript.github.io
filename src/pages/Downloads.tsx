@@ -193,6 +193,10 @@ export default function Downloads() {
         structuredData={{
           type: "WebPage",
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Downloads", url: "https://rosettascript.github.io/downloads/" },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

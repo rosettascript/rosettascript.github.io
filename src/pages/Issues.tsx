@@ -40,6 +40,10 @@ export default function Issues() {
         structuredData={{
           type: "WebPage",
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Issues", url: "https://rosettascript.github.io/issues/" },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

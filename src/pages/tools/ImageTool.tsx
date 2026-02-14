@@ -20,6 +20,11 @@ export default function ImageToolPage() {
         title="Image Tool - Compress, Convert, Resize"
         description="Free online image tool. Compress images, convert formats (PNG, JPEG, WebP), resize images, and generate favicons instantly. All processing happens in your browser - complete privacy."
         canonical="https://rosettascript.github.io/tools/image-tool/"
+breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Tools", url: "https://rosettascript.github.io/tools/" },
+          { name: "Image Tool", url: "https://rosettascript.github.io/tools/image-tool/" },
+        ]}
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

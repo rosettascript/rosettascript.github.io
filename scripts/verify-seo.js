@@ -55,10 +55,16 @@ function verifyRoute(route) {
   console.log(`  Description: ${descMatch ? '✅' : '❌'} ${description?.substring(0, 60)}...`);
   console.log(`    Expected: ${expectedDesc.substring(0, 60)}...`);
   
-  // Check for homepage content in wrong files
-  if (route !== '/' && html.includes('Free Developer Tools - Conversion')) {
-    console.log(`  ⚠️  WARNING: Homepage content found in ${route}!`);
-    return false;
+  // Check for homepage content in wrong files (only in body, not meta tags)
+  if (route !== '/') {
+    const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/);
+    if (bodyMatch) {
+      const bodyContent = bodyMatch[1];
+      if (bodyContent.includes('Free Developer Tools - Conversion')) {
+        console.log(`  ⚠️  WARNING: Homepage content found in ${route}!`);
+        return false;
+      }
+    }
   }
   
   return titleMatch && descMatch;

@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { useEffect, lazy, Suspense } from "react";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { QuickSearch } from "@/components/QuickSearch";
 
 const Index = lazy(() => import("./pages/Index"));
 const Tools = lazy(() => import("./pages/Tools"));
@@ -34,6 +36,7 @@ const News = lazy(() => import("./pages/News"));
 const NewsArticle = lazy(() => import("./pages/NewsArticle"));
 const SchoolProjects = lazy(() => import("./pages/SchoolProjects"));
 const About = lazy(() => import("./pages/About"));
+const FAQ = lazy(() => import("./pages/FAQ"));
 const Issues = lazy(() => import("./pages/Issues"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -81,7 +84,12 @@ const App = () => (
         <Sonner />
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <RedirectHandler />
-          <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
+          <QuickSearch />
+          <Suspense fallback={
+              <ErrorBoundary>
+                <div className="flex items-center justify-center min-h-screen">Loading...</div>
+              </ErrorBoundary>
+            }>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/tools" element={<Tools />} />
@@ -111,6 +119,7 @@ const App = () => (
               <Route path="/news/:slug" element={<NewsArticle />} />
               <Route path="/school-projects" element={<SchoolProjects />} />
               <Route path="/about" element={<About />} />
+              <Route path="/faq" element={<FAQ />} />
               <Route path="/issues" element={<Issues />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

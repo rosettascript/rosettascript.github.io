@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { SEO } from "@/components/SEO";
 import { FAQ } from "@/components/FAQ";
+import { JsonLDScript } from "@/components/JsonLDScript";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -93,6 +94,7 @@ export default function Index() {
           type: "WebSite",
         }}
       />
+      <JsonLDScript />
       
       {/* Hero Section */}
       <section className="relative overflow-hidden">
@@ -103,6 +105,17 @@ export default function Index() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-mono">
                 <Terminal className="h-4 w-4" />
                 Developer Tools Made Simple
+                <a 
+                  href="https://github.com/rosettascript/rosettascript.github.io" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="ml-2 px-2 py-0.5 bg-muted hover:bg-muted/80 rounded-full text-xs flex items-center gap-1 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                  <span>Star</span>
+                </a>
               </div>
               <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
                 Free Online Developer Tools for Text, Code & Document Conversion
@@ -123,18 +136,22 @@ export default function Index() {
                     Download Tools
                   </Link>
                 </Button>
+                <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                  <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">Ctrl+K</kbd>
+                  <span>to search</span>
+                </div>
               </div>
             </div>
 
             {/* Code Preview */}
-            <div className="terminal-bg p-1 w-full max-w-full overflow-hidden">
+            <div className="terminal-bg p-1 w-full max-w-full overflow-hidden rounded-lg">
               <div className="flex items-center gap-2 px-4 py-2 border-b border-border">
                 <div className="w-3 h-3 rounded-full bg-destructive/80" />
                 <div className="w-3 h-3 rounded-full bg-[hsl(var(--syntax-yellow))]/80" />
                 <div className="w-3 h-3 rounded-full bg-primary/80" />
-                <span className="ml-2 text-xs text-muted-foreground font-mono">tools.ts</span>
+                <span className="ml-2 text-xs text-muted-foreground font-mono hidden sm:inline">tools.ts</span>
               </div>
-              <pre className="p-4 overflow-auto max-w-full">
+              <pre className="p-4 overflow-x-auto max-w-full text-xs sm:text-sm">
                 <code className="text-sm font-mono block min-w-0">
                   {codeSnippet.split("\n").map((line, i) => (
                     <div key={i} className="flex min-w-0">
@@ -201,74 +218,8 @@ export default function Index() {
         </div>
       </section>
 
-      {/* SEO Content Section - Why Use */}
-      <section className="py-12 bg-card/30">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-6 text-center">Why Use RosettaScript Developer Tools</h2>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div>
-              <h3 className="text-xl font-semibold mb-3">No Signup Required</h3>
-              <p className="text-muted-foreground mb-6">
-                All my developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-3">Runs Locally in Browser</h3>
-              <p className="text-muted-foreground mb-6">
-                Every tool processes data entirely in your browser. Your content never leaves your device, ensuring complete privacy and security for sensitive documents and code.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-3">Privacy-Focused</h3>
-              <p className="text-muted-foreground mb-6">
-                I don't store, track, or analyze your data. All processing happens client-side, making these tools perfect for handling confidential information and proprietary code.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-3">Open Source</h3>
-              <p className="text-muted-foreground mb-6">
-                RosettaScript is an open-source project built by a developer, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEO Content Section - Who It's For */}
+      {/* News & Blog Posts Section - MOVED UP */}
       <section className="py-12">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-6 text-center">Who These Tools Are For</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Web Developers</h3>
-              <p className="text-sm text-muted-foreground">
-                Format JSON, encode data, generate UUIDs, test regex patterns, and convert between formats quickly.
-              </p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Content Editors</h3>
-              <p className="text-sm text-muted-foreground">
-                Convert Word documents to clean HTML, format text, and prepare content for web publishing.
-              </p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Technical Writers</h3>
-              <p className="text-sm text-muted-foreground">
-                Clean up HTML from documentation tools, format code snippets, and ensure consistent formatting.
-              </p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">SEO Specialists</h3>
-              <p className="text-sm text-muted-foreground">
-                Convert documents to SEO-friendly HTML, clean up messy markup, and optimize content structure.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* News & Blog Posts Section */}
-      <section className="py-12 bg-card/30">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-5 gap-8">
             {/* Blog Posts - Main Content */}
@@ -348,7 +299,7 @@ export default function Index() {
             {/* News Sidebar */}
             {getLatestNews(2).length > 0 && (
               <div className="lg:col-span-1">
-                <div className="sticky top-24">
+                <div className="sticky top-24 h-full">
                   <div className="mb-6">
                     <div className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-mono mb-2">
                       <Newspaper className="h-3 w-3" />
@@ -360,7 +311,7 @@ export default function Index() {
                     </p>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-3 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 250px)' }}>
                     {getLatestNews(2).map((article, index) => (
                       <Link key={article.id} to={`/news/${article.slug}`} className="block">
                         <Card 
@@ -416,36 +367,92 @@ export default function Index() {
         </div>
       </section>
 
+      {/* SEO Content Section - Who It's For */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center">Who These Tools Are For</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Web Developers</h3>
+              <p className="text-sm text-muted-foreground">
+                Format JSON, encode data, generate UUIDs, test regex patterns, and convert between formats quickly.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Content Editors</h3>
+              <p className="text-sm text-muted-foreground">
+                Convert Word documents to clean HTML, format text, and prepare content for web publishing.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Technical Writers</h3>
+              <p className="text-sm text-muted-foreground">
+                Clean up HTML from documentation tools, format code snippets, and ensure consistent formatting.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">SEO Specialists</h3>
+              <p className="text-sm text-muted-foreground">
+                Convert documents to SEO-friendly HTML, clean up messy markup, and optimize content structure.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Use RosettaScript - Moved from above */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-6 text-center">Why Use RosettaScript Developer Tools</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">No Signup Required</h3>
+              <p className="text-sm text-muted-foreground">
+                All my developer tools are completely free and require no account creation. Start using any tool instantly—no email, no passwords, no barriers.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Runs Locally in Browser</h3>
+              <p className="text-sm text-muted-foreground">
+                Every tool processes data entirely in your browser. Your content never leaves your device, ensuring complete privacy and security for sensitive documents and code.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Privacy-Focused</h3>
+              <p className="text-sm text-muted-foreground">
+                I don't store, track, or analyze your data. All processing happens client-side, making these tools perfect for handling confidential information and proprietary code.
+              </p>
+            </div>
+            <div className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+              <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">Open Source</h3>
+              <p className="text-sm text-muted-foreground">
+                RosettaScript is an open-source project built by a developer, for developers. You can review the code, contribute improvements, or use it as a reference for your own projects.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="py-12 bg-card/30 w-full">
-        <div className="container mx-auto px-4 w-full">
+      <section className="py-12 bg-card/30">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold mb-3">Everything You Need</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Everything You Need</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Explore my collection of online tools, downloadable utilities, educational resources, and developer guides
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {features.map((feature) => (
-              <Link key={feature.title} to={feature.link}>
-                <Card className="h-full bg-card/50 border-border hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/5 group flex flex-col min-h-[280px]">
-                  <CardHeader className="pb-4">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <feature.icon className={`h-6 w-6 ${feature.color} group-hover:scale-110 transition-transform`} />
-                    </div>
-                    <CardTitle className="text-xl font-bold mb-2 leading-tight">{feature.title}</CardTitle>
-                    <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-                      {feature.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0 mt-auto">
-                    <div className="flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all">
-                      <span>Explore</span>
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </CardContent>
-                </Card>
+              <Link key={feature.title} to={feature.link} className="p-4 bg-card/50 rounded-lg border border-border hover:border-primary/50 transition-all group">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <feature.icon className={`h-6 w-6 ${feature.color} group-hover:scale-110 transition-transform`} />
+                </div>
+                <h3 className="font-semibold mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {feature.description}
+                </p>
               </Link>
             ))}
           </div>
@@ -475,7 +482,7 @@ export default function Index() {
       {/* SEO Content Section - Explore All Tools */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 text-center">Explore All Free Developer Tools</h2>
+          <h2 className="text-3xl font-bold mb-6 text-center">Explore All Free Developer Tools</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8 text-center">
             Browse my complete collection of 20+ free online developer tools. From document conversion and code formatting to data encoding and web scraping—find the perfect tool for your workflow.
           </p>

@@ -109,6 +109,11 @@ export default function NewsArticle() {
           author: article.author,
           tags: article.tags,
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "News", url: "https://rosettascript.github.io/news/" },
+          { name: article.title, url: canonicalUrl },
+        ]}
       />
       
       <article className="container mx-auto px-4 py-12 max-w-4xl">

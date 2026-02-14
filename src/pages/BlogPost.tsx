@@ -55,6 +55,11 @@ export default function BlogPost() {
         structuredData={{
           type: "Article",
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Blog", url: "https://rosettascript.github.io/blogs/" },
+          { name: post.title, url: canonicalUrl },
+        ]}
       />
       
       <article className="container mx-auto px-4 py-12 max-w-4xl">

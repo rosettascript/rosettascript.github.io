@@ -10,7 +10,9 @@ import { blogPosts, categories } from "@/data/blogPosts";
 export default function Blogs() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = [...blogPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .filter((post) => {
     return selectedCategory === "All" || post.category === selectedCategory;
   });
 
@@ -23,6 +25,10 @@ export default function Blogs() {
         structuredData={{
           type: "WebPage",
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Blog", url: "https://rosettascript.github.io/blogs/" },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

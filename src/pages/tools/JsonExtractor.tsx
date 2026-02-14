@@ -20,6 +20,11 @@ export default function JsonExtractor() {
         title="JSON Data Extractor - Extract from JSON"
         description="Extract specific data from JSON structures instantly. Get field values, use path syntax, or extract array values. Free online JSON data extractor. Perfect for parsing API responses."
         canonical="https://rosettascript.github.io/tools/json-extractor/"
+breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Tools", url: "https://rosettascript.github.io/tools/" },
+          { name: "JSON Extractor", url: "https://rosettascript.github.io/tools/json-extractor/" },
+        ]}
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

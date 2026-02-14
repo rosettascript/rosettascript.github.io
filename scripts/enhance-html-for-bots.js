@@ -34,6 +34,7 @@ function getBlogPosts() {
       const titleMatch = block.match(/title:\s*"([^"]+)"/);
       const excerptMatch = block.match(/excerpt:\s*"([^"]+)"/);
       const dateMatch = block.match(/date:\s*"([^"]+)"/);
+      const imageMatch = block.match(/image:\s*"([^"]+)"/);
       const authorMatch = block.match(/author:\s*"([^"]+)"/);
       const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/);
       // Extract first paragraph of content (before first ##)
@@ -68,6 +69,7 @@ function getBlogPosts() {
           title: titleMatch[1],
           excerpt: excerptMatch[1],
           date: dateMatch[1],
+          image: imageMatch ? imageMatch[1] : '/og-image.png',
           author: authorMatch ? authorMatch[1] : 'RosettaScript',
           tags: tags,
           firstParagraph: firstParagraph || excerptMatch[1]
@@ -104,6 +106,7 @@ function getNewsArticles() {
       const titleMatch = block.match(/title:\s*"([^"]+)"/);
       const excerptMatch = block.match(/excerpt:\s*"([^"]+)"/);
       const dateMatch = block.match(/date:\s*"([^"]+)"/);
+      const imageMatch = block.match(/image:\s*"([^"]+)"/);
       const categoryMatch = block.match(/category:\s*"([^"]+)"/);
       const authorMatch = block.match(/author:\s*"([^"]+)"/);
       const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/);
@@ -122,6 +125,7 @@ function getNewsArticles() {
           title: titleMatch[1],
           excerpt: excerptMatch[1],
           date: dateMatch[1],
+          image: imageMatch ? imageMatch[1] : '/og-image.png',
           category: categoryMatch ? categoryMatch[1] : 'Updates',
           author: authorMatch ? authorMatch[1] : 'RosettaScript',
           tags: tags
@@ -428,11 +432,18 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
   html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/gi, '');
+  html = html.replace(/<meta\s+property=["']og:image["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+name=["']twitter:title["'][^>]*>/gi, '');
   html = html.replace(/<meta\s+name=["']twitter:description["'][^>]*>/gi, '');
+  html = html.replace(/<meta\s+name=["']twitter:image["'][^>]*>/gi, '');
   html = html.replace(/<title>[^<]*<\/title>/gi, ''); // Remove title tag - will be added back
   
   // Create meta tags HTML (use truncated values) - include title tag
+  // Check if image is external URL (starts with http/https) or local path
+  const isExternalImage = metadata.ogImage && (metadata.ogImage.startsWith('http://') || metadata.ogImage.startsWith('https://'));
+  const ogImageUrl = isExternalImage ? metadata.ogImage : (metadata.ogImage ? `${baseUrl}${metadata.ogImage}` : '');
+  const ogImageTag = ogImageUrl ? `<meta property="og:image" content="${ogImageUrl}" />` : '';
+  const twitterImageTag = ogImageUrl ? `<meta name="twitter:image" content="${ogImageUrl}" />` : '';
   const metaTags = `
     <title>${escapeHtml(fullTitle)}</title>
     <meta name="description" content="${escapeHtml(truncatedDescription)}" />
@@ -440,8 +451,10 @@ function injectMetaTags(html, metadata, route, structuredData = null) {
     <meta property="og:title" content="${escapeHtml(fullTitle)}" />
     <meta property="og:description" content="${escapeHtml(truncatedDescription)}" />
     <meta property="og:url" content="${canonicalUrl}" />
+    ${ogImageTag}
     <meta name="twitter:title" content="${escapeHtml(fullTitle)}" />
     <meta name="twitter:description" content="${escapeHtml(truncatedDescription)}" />
+    ${twitterImageTag}
   `;
   
   // Update or add meta tags after the viewport tag (includes title)

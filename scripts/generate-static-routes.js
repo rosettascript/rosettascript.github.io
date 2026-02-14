@@ -90,6 +90,7 @@ const routes = [
   '/news',
   '/school-projects',
   '/about',
+  '/faq',
 ];
 
 // Add blog post routes dynamically
@@ -147,6 +148,11 @@ const routeMetadata = {
     title: 'About RosettaScript',
     description: 'Learn more about RosettaScript and my mission. Developer tools made simple, built by a developer for developers. Free, open-source, and community-driven.'
   },
+  '/faq': {
+    title: 'FAQ - Frequently Asked Questions',
+    description: 'Find answers to common questions about RosettaScript free developer tools, privacy, usage, and more. Learn how to use Word to HTML converter, JSON formatter, and other tools.',
+    ogImage: '/og-image.png'
+  },
   '/': {
     title: 'Free Developer Tools - Conversion & Formatting',
     description: 'Free online developer tools for Word to HTML conversion, text formatting, code cleanup, and automation. No signup, fast & privacy-friendly.'
@@ -176,7 +182,8 @@ function enhanceHtmlForRoute(html, route) {
       const structuredData = generateBlogPostStructuredData(post);
       enhancedHtml = injectMetaTags(enhancedHtml, {
         title: post.title,
-        description: post.excerpt
+        description: post.excerpt,
+        ogImage: post.image
       }, route, structuredData);
       
       // Pre-render blog post content
@@ -200,7 +207,8 @@ function enhanceHtmlForRoute(html, route) {
       const structuredData = generateNewsArticleStructuredData(article);
       enhancedHtml = injectMetaTags(enhancedHtml, {
         title: article.title,
-        description: article.excerpt
+        description: article.excerpt,
+        ogImage: article.image
       }, route, structuredData);
       
       // Pre-render news article content

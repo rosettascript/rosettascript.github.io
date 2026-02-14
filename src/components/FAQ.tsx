@@ -96,10 +96,10 @@ export function FAQ() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
               <HelpCircle className="h-8 w-8 text-primary" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+            <h2 className="text-3xl font-bold mb-6">
               Frequently Asked Questions
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto">
               Find answers to common questions about RosettaScript's free developer tools, privacy, usage, and more.
             </p>
           </div>

@@ -20,6 +20,11 @@ export default function ColorConverter() {
         title="Color Converter - HEX, RGB, HSL Online"
         description="Convert colors between HEX, RGB, and HSL formats instantly with live color preview. Free online color converter. Perfect for web developers and designers working with CSS."
         canonical="https://rosettascript.github.io/tools/color-converter/"
+breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Tools", url: "https://rosettascript.github.io/tools/" },
+          { name: "Color Converter", url: "https://rosettascript.github.io/tools/color-converter/" },
+        ]}
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

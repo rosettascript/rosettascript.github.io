@@ -79,6 +79,10 @@ export default function SchoolProjects() {
         structuredData={{
           type: "WebPage",
         }}
+        breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "School Projects", url: "https://rosettascript.github.io/school-projects/" },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

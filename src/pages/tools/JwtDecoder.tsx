@@ -20,6 +20,11 @@ export default function JwtDecoder() {
         title="JWT Decoder - Decode JSON Web Tokens"
         description="Decode and inspect JWT tokens instantly. View header, payload, and signature. Check expiration times and token claims. Free online JWT decoder. Perfect for debugging authentication tokens."
         canonical="https://rosettascript.github.io/tools/jwt-decoder/"
+breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Tools", url: "https://rosettascript.github.io/tools/" },
+          { name: "JWT Decoder", url: "https://rosettascript.github.io/tools/jwt-decoder/" },
+        ]}
         structuredData={{
           type: "SoftwareApplication",
           applicationCategory: "DeveloperApplication",

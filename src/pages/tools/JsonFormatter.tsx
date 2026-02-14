@@ -29,6 +29,11 @@ export default function JsonFormatter() {
             priceCurrency: "USD",
           },
         }}
+breadcrumbs={[
+          { name: "Home", url: "https://rosettascript.github.io/" },
+          { name: "Tools", url: "https://rosettascript.github.io/tools/" },
+          { name: "JSON Formatter", url: "https://rosettascript.github.io/tools/json-formatter/" },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Update Notification */}
